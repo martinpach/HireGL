@@ -1,0 +1,58 @@
+body{
+	background-color: #eeeeee;
+}
+
+#wrapper{
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	margin-top: 20vh !important;
+}
+
+.mui-col-md-12{
+	padding: 0;
+}
+
+.mui-appbar{
+	background-color: #d4e157;
+}
+
+img{
+	display: block;
+	margin: auto;
+	padding: 20px 0;
+}
+
+form{
+	background-color: #fafafa;
+	padding: 20px 20px;
+}
+
+legend{
+	color: #757575 !important;
+	font-size: 15px !important;
+	font-weight: bold;
+	margin: 0 !important;
+}
+
+.mui-divider{
+	margin-bottom: 30px;
+}
+
+button{
+	background-color: #d4e157 !important;
+	float: right;
+	margin: 0 !important;
+	font-weight: bold !important;
+}
+
+#error-field{
+	display: inline-block;
+	color: #da2121;
+}
+
+input:focus{
+	border-bottom-color: #afb42b !important;
+}
+
+.mui-textfield label{
+	color: #a1a1a1 !important;
+}
