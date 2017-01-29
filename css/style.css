@@ -108,3 +108,53 @@ i{
 #new-interview{
     display:none;
 }
+
+.menu-responsive{
+    display:none;
+    background-color:#D4E157;
+    padding:5%;
+    height:10%;
+}
+
+#logo-responsive{
+    display:block;
+    position:relative;
+    float:left;
+    width:20%;
+}
+
+#alt-menu{
+    position:relative;
+    display:block;
+    float:right;
+    height:12%;
+    width:12%;
+    color:white;
+    margin-right:2%;
+}
+           
+
+
+
+
+@media screen and (max-width: 1024px){
+    #menu{
+        display: none;
+    }
+    #header{
+        display:none;
+    }
+    .logo{
+        display:none;
+    }
+    .lower{
+        min-height:100%;
+    }
+    .sidebar{
+        display:none;
+    }
+    .menu-responsive{
+        display:block;
+    }
+}
+
