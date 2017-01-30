@@ -69,10 +69,7 @@ h1{
     position:relative;
     margin:10px;
 }
-.fa-arrow-right{
-    position:relative;
-    margin: 10px;
-}
+
 
 .content{
     border-left:1px solid lightgrey;
@@ -112,6 +109,7 @@ i{
     position:relative;
     color:grey;
     padding-right:20px;
+    vertical-align:bottom;
 }
 .text{
     position:relative;
@@ -124,6 +122,7 @@ i{
 .item-wrapper-responsive{
     text-align: center;
     width:100%;
+    position:relative;
 }
 .account-management{
     position:relative;
@@ -145,7 +144,9 @@ i{
 .menu-responsive{
     display:none;
     background-color:#D4E157;
-    padding:5%;
+    padding-top:5%;
+    padding-right:5%;
+    padding-left:5%;
     height:10%;
 }
 
@@ -177,6 +178,22 @@ i{
 
 .menu-container {
     z-index: 50000 !important;
+}
+.mini-header{
+    padding-left:2%;
+    padding-top:1%;
+    display:none;
+}
+.more{
+    float:right;
+    margin-right:5%;
+    vertical-align:middle;
+}
+h3{
+    position:relative;
+    color:grey;
+    display:inline;
+    margin-left:5%;
 }           
 
 @media screen and (max-width: 768px){
@@ -196,6 +213,9 @@ i{
         display:none;
     }
     .menu-responsive{
+        display:block;
+    }
+    .mini-header{
         display:block;
     }
 }
