@@ -194,7 +194,12 @@ h3{
     color:grey;
     display:inline;
     margin-left:5%;
-}           
+}    
+
+.footer-responsive{
+    background-color:lightgrey;
+    display:none;
+}  
 
 @media screen and (max-width: 768px){
     #menu{
@@ -216,6 +221,14 @@ h3{
         display:block;
     }
     .mini-header{
+        display:block;
+    }
+
+    .footer{
+        display:none;
+    }
+
+    .footer-responsive{
         display:block;
     }
 }
@@ -287,8 +300,8 @@ option:first-child {
 
 .content-tab {
     padding: 30px;
-    overflow-x: auto;
 }
+
 
 th {
     padding: 0 10px 10px 0 !important;
@@ -299,12 +312,6 @@ th {
 
 td {
     padding: 10px 10px 10px 0 !important;
-    border: none !important;
-}
-
-.table-content {
-    border-bottom: 1px solid rgb(227,227,227) !important;
-
 }
 
 .name-of-applicant {
@@ -320,13 +327,14 @@ td {
 }
 
 .edit-icon, .delete-icon {
+    opacity: 0.7;
     padding: 3px;
 }
 
 .edit-icon:hover,
 .delete-icon:hover{
     cursor: pointer;
-    opacity: 0.7;
+    opacity: 1;
 }
 
 /*
