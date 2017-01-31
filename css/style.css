@@ -287,8 +287,8 @@ option:first-child {
 
 .content-tab {
     padding: 30px;
+    overflow-x: auto;
 }
-
 
 th {
     padding: 0 10px 10px 0 !important;
@@ -299,6 +299,12 @@ th {
 
 td {
     padding: 10px 10px 10px 0 !important;
+    border: none !important;
+}
+
+.table-content {
+    border-bottom: 1px solid rgb(227,227,227) !important;
+
 }
 
 .name-of-applicant {
@@ -314,14 +320,13 @@ td {
 }
 
 .edit-icon, .delete-icon {
-    opacity: 0.7;
     padding: 3px;
 }
 
 .edit-icon:hover,
 .delete-icon:hover{
     cursor: pointer;
-    opacity: 1;
+    opacity: 0.7;
 }
 
 /*
