@@ -37,7 +37,7 @@ legend{
 	margin-bottom: 30px;
 }
 
-button{
+#login-btn{
 	background-color: #d4e157 !important;
 	float: right;
 	margin: 0 !important;
