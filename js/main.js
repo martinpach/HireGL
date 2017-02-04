@@ -1,30 +1,20 @@
 $(document).ready(function() {
 
-	var user;
+	/* retrieving data from url and load user information */
+    $.urlParam = function(name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        return results[1] || 0;
+    }
 
-    /* event handlers */
+    var data = {
+    	firstName : $.urlParam('firstName'),
+    	lastName : $.urlParam('lastName'),
+    	photoUrl : $.urlParam('photoUrl')
+    };
 
-    /* login request */
-    $('#login-btn').on('click', function(event) {
+    var userDataWrapper = '<div><img src="{{photoUrl}}">{{firstName}} {{lastName}}</div>';
+    var html = Mustache.to_html(userDataWrapper, data);
+    $('#user-account-wrapper').html(html);
 
-        var userName = $('#user-name').val();
-        var password = $('#password').val();
-        var errorField = $('#error-field');
-        var link = $(this).children();
-
-        $.ajax({
-            url: 'http://localhost:8081/api/auth/login',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ "userName": userName, "password": password }),
-            success: function(data) {
-                user = data.user;
-                window.location.href = 'my-interviews.html';                                   
-            },
-            error: function () {
-            	errorField.show();            	
-            }
-        });
-    });
-    /* /login request */
+    /* /retrieving data from url and load user information */
 });
