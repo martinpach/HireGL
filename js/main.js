@@ -12,9 +12,12 @@ $(document).ready(function() {
     	photoUrl : $.urlParam('photoUrl')
     };
 
-    var userDataWrapper = '<div><img src="{{photoUrl}}">{{firstName}} {{lastName}}</div>';
+    var userDataWrapper = '<div id="userData"><span id="v-align"><img src="{{photoUrl}}" id="user-icon">{{firstName}} {{lastName}}</span><i class="material-icons" id="logout">arrow_forward</i></div>';
     var html = Mustache.to_html(userDataWrapper, data);
+    var userDataWrapperResponsive = '<div id="userData-r"><img src="{{photoUrl}}" id="user-icon-r"><i class="material-icons" id="logout-r">arrow_forward</i></div>';
+    var htmlResponsive = Mustache.to_html(userDataWrapperResponsive, data);
     $('#user-account-wrapper').html(html);
+    $('#user-account-wrapper-r').html(htmlResponsive);
 
     /* /retrieving data from url and load user information */
 });
