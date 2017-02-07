@@ -1,3 +1,4 @@
+/*general layout*/
 body{
     font-family: "Roboto", "Helvetica Neue", Helvetica, Arial;
     position: relative;
@@ -9,48 +10,65 @@ body{
 .mui-panel{
     margin-bottom:2px;
 }
-
 .upper{
     height:150px;
     background-color:#EEEEEE;
     margin-top:0%;
     padding:0%;
-    
 }
-
-.lower{
-    margin:0%;
-}
-
-
+/*sidebar*/
 .menu-container{
     padding:0;
 }
-
 #logo{
     display:block;
     margin:0 auto;
     margin-top:10%;
-
 }
-
 .logo{
     background-color:#D4E157;
 }
-
-.page-title{
-    position:relative;
-    color:grey;
-    margin-left:10%;
-    margin-top:8%;
-}
-
 h1{
     position:relative;
     margin-top:90px;
     margin-left:50px;
     color:grey;
 }
+#menu{
+    position:relative;
+    list-style-type:none;
+    width:100%;
+}
+
+.menu-item{
+    background-color:#EEEEEE;
+    padding:20px;
+    padding-left:20%;
+    padding-right:20%;
+    margin-bottom:5px;
+}
+.menu-item-r{
+    background-color:#e0ea87;
+    margin:10px;
+    padding:10px;
+}
+i{
+    position:relative;
+    color:grey;
+    padding-right:20px;
+    vertical-align:bottom;
+}
+.sidebar, .logo {
+    position: relative;
+    z-index: 9999;
+}
+.sidebar, .content {
+    height: 100vh;
+}
+.menu-container {
+    z-index: 50000 !important;
+}
+/*account info*/
 #user-account-wrapper,#user-account-wrapper-r{
     position:relative;
     display:block;
@@ -65,30 +83,6 @@ h1{
 #user-account-wrapper-r{
     padding-top:0px;
 }
-#v-align{
-    vertical-align: middle;
-}
-
-.content{
-    border-left:1px solid lightgrey;
-}
-
-#menu{
-    position:relative;
-    list-style-type:none;
-    width:100%;
-}
-
-#options-responsive{
-    position:relative;
-    list-style-type:none;
-    width:100%;
-}
-
-#header{
-    position:relative;
-}
-
 #user-icon{
     width:20px;
     margin-right:5px;
@@ -97,69 +91,24 @@ h1{
     width:25px;
     margin-right:5px;
 }
-
+#logout-r{
+    cursor:pointer;
+}
 #userData{
     margin-right:5%;
 }
 #userData-r{
     margin-top:5px;
 }
-
 #logout{
     margin-left:5px;
-
-}
-
-.menu-item{
-    background-color:#EEEEEE;
-    padding:20px;
-    padding-left:20%;
-    padding-right:20%;
-    margin-bottom:5px;
-}
-
-.menu-item-r{
-    background-color:#e0ea87;
-    margin:10px;
-    padding:10px;
-}
-
-i{
-    position:relative;
-    color:grey;
-    padding-right:20px;
-    vertical-align:bottom;
-}
-.text{
-    position:relative;
-    float:left;
+    font-size:20px;
+    cursor:pointer;
 }
 .item-wrapper{
     width:100%;
 }
-
-.item-wrapper-responsive{
-    text-align: center;
-    width:100%;
-    position:relative;
-}
-.account-management{
-    position:relative;
-    float:left;
-    margin-left:10%;
-}
-
-.site-content{
-    position:relative;
-    margin: 2%;
-    padding:15%;
-    background-color:#eeeeee;
-}
-
-#new-interview{
-    display:none;
-}
-
+/*responsive layout parts*/
 .menu-responsive{
     display:none;
     background-color:#D4E157;
@@ -168,14 +117,17 @@ i{
     padding-left:5%;
     height:10%;
 }
-
 #logo-responsive{
     display:block;
     position:relative;
     margin:0 auto;
     width:20%;
 }
-
+#options-responsive{
+    position:relative;
+    list-style-type:none;
+    width:100%;
+}
 #alt-menu{
     position:relative;
     display:block;
@@ -185,19 +137,6 @@ i{
     color:white;
     margin-right:2%;
 }
-
-.sidebar, .logo {
-    position: relative;
-    z-index: 9999;
-}
-
-.sidebar, .content {
-    height: 100vh;
-}
-
-.menu-container {
-    z-index: 50000 !important;
-}
 .mini-header{
     padding-left:2%;
     padding-top:1%;
@@ -205,23 +144,21 @@ i{
     background-color:#f2f2f2;
     display:none;
 }
-.more{
-    float:right;
-    margin-right:5%;
-    vertical-align:middle;
-}
 h3{
-    position:relative;
+   position:relative;
     color:grey;
     display:inline;
     margin-left:5%;
-}    
-
+}  
+.item-wrapper-responsive{
+    text-align: center;
+    width:100%;
+    position:relative;
+}  
 .footer-responsive{
     background-color:lightgrey;
     display:none;
 }  
-
 @media screen and (max-width: 768px){
     #menu{
         display: none;
@@ -248,45 +185,35 @@ h3{
     .footer{
         display:none;
     }
-
     .footer-responsive{
         display:block;
     }
 }
-
 /*New interview*/
-
 .mui-table>thead>tr>th {
     border-bottom: 2px solid rgb(227,227,227);
 }
-
 input:focus, .mui-select:focus>select{
     border-bottom: 3px solid  #afb42b !important;
 }
-
 legend {
     color: #757575 !important;
     font-size: 14px !important;
     padding-bottom: 10px !important;
     border-bottom: 1px solid rgb(227,227,227) !important;
 }
-
 label {
     color: rgb(155, 155, 155) !important;
 }
-
 option:first-child {
     color: rgb(155, 155, 155) !important;
 }
-
 ::-webkit-input-placeholder {
    color: rgb(155, 155, 155) !important;
 }
-
 .mui-select:focus {
     color: #757575 !important;
 }
-
 .form_btn_cancel, .form_btn_save {
     font-weight: bold;
     width: 120px;
@@ -294,75 +221,60 @@ option:first-child {
     float: right;
     margin: 22px 10px;
 }
-
 .form_btn_save {
     background-color:#D4E157;
     margin-right: 62px;
 }
-
 .btn_footer {
     background-color: rgb(236, 239, 241);
     padding: 0 !important;
     position: absolute;
     bottom: 0;
 }
-
 .new_int_table {
     padding-top: 30px;
 }
-
 .mui-col-md-4 {
     padding: 0 30px;
 }
-
 /*
     My interviews
 */
-
 .content-tab {
     padding: 30px;
     overflow-x: auto;
 }
-
 th {
     padding: 0 10px 10px 0 !important;
     color: #757575 !important;
     font-size: 14px !important;
     border: none !important;
 }
-
 td {
     padding: 10px 10px 10px 0 !important;
     border: none !important;
 }
-
 .table-content {
     border-bottom: 1px solid rgb(227,227,227) !important;
 
 }
-
 .name-of-applicant {
     font-weight: bold;
 }
-
 .job-type {
     font-size: 12px;
 }
-
 .delete-icon {
     padding-right: 7px;
 }
-
 .edit-icon, .delete-icon {
     padding: 3px;
 }
-
 .edit-icon:hover,
 .delete-icon:hover{
     cursor: pointer;
     opacity: 0.7;
 }
-
 /*
     My interviews END
 */
