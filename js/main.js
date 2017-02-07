@@ -1,5 +1,15 @@
 $(document).ready(function() {
 
+    /* loading templates */
+    $('#menu-new-interview').on('click', function() {
+        $('#main-content').load('templates/new-interview.html');
+    });
+
+    $('#menu-interviews').on('click', function () {
+        $('#main-content').load('templates/my-interviews.html');
+    });
+
+
     /* retrieving data from local storage and load user information */
 
     var data = {
@@ -30,7 +40,7 @@ $(document).ready(function() {
             },
             url: 'http://localhost:8081/api/auth/logout',
             type: 'POST',
-            success : function () {
+            success: function() {
                 window.location.href = 'login.html';
             }
         });
@@ -55,60 +65,60 @@ $(document).ready(function() {
 
     /**NEW INTERVIEW FORM VALIDATION*/
     /*Function for Wrong input text*/
-    function fieldWrongInput (inpfield) {
+    function fieldWrongInput(inpfield) {
         var input = $(inpfield);
         var pos = input.position();
         $('<div class="wrong-input" />')
-        .html("Incorrect format")
-        .css({
-            top: pos.top + input.height()  + 5,
-        }).insertAfter(input);
+            .html("Incorrect format")
+            .css({
+                top: pos.top + input.height() + 5,
+            }).insertAfter(input);
     }
 
     /*Input validation - firstName*/
-    $("#new-int-firstName").blur(function () {
+    $("#new-int-firstName").blur(function() {
         var firstName = $(this).val();
         var regex = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð']+$/;
-        if ( !regex.test(firstName) && firstName.length!=0) {
+        if (!regex.test(firstName) && firstName.length != 0) {
             fieldWrongInput("#new-int-firstName");
         }
-        if ( regex.test(firstName) && firstName.length!=0) {
+        if (regex.test(firstName) && firstName.length != 0) {
             $('#new-int-firstName + div.wrong-input').hide();
         }
     });
 
     /*Input validation - lastName*/
-    $("#new-int-lastName").blur(function () {
+    $("#new-int-lastName").blur(function() {
         var lastName = $(this).val();
         var regex = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð']+$/;
-        if ( !regex.test(lastName) && lastName.length!=0) {
+        if (!regex.test(lastName) && lastName.length != 0) {
             fieldWrongInput("#new-int-lastName");
         }
-        if ( regex.test(lastName) && lastName.length!=0) {
+        if (regex.test(lastName) && lastName.length != 0) {
             $('#new-int-lastName + div.wrong-input').hide();
         }
     });
 
     /*Input validation - Phone number*/
-    $("#new-int-phone").blur(function () {
+    $("#new-int-phone").blur(function() {
         var phone = $(this).val();
         var regex = /^[\s()+-]*([0-9][\s()+-]*){6,20}$/;
-        if ( !regex.test(phone) && phone.length!=0) {
+        if (!regex.test(phone) && phone.length != 0) {
             fieldWrongInput("#new-int-phone");
         }
-        if ( regex.test(phone) && phone.length!=0) {
+        if (regex.test(phone) && phone.length != 0) {
             $('#new-int-phone + div.wrong-input').hide();
         }
     });
 
     /*Input validation - Email*/
-    $("#new-int-email").blur(function () {
+    $("#new-int-email").blur(function() {
         var email = $(this).val();
         var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if ( !regex.test(email) && email.length!=0) {
+        if (!regex.test(email) && email.length != 0) {
             fieldWrongInput("#new-int-email");
         }
-        if ( regex.test(email) && email.length!=0) {
+        if (regex.test(email) && email.length != 0) {
             $('#new-int-email + div.wrong-input').hide();
         }
     });
@@ -143,11 +153,11 @@ $(document).ready(function() {
     $("#btn-my-int-save").on('click', function(event) {
         event.preventDefault();
         //if (validData == 5) {
-            sendNewInterviewToServer();
+        sendNewInterviewToServer();
         //}
     });
 
-    function sendNewInterviewToServer () {
+    function sendNewInterviewToServer() {
 
         var time = "2016-12-13T09:34Z";
 
@@ -157,7 +167,7 @@ $(document).ready(function() {
             phone: $("#new-int-phone").val(),
             skype: $("#new-int-skype").val(),
             email: $("#new-int-email").val(),
-            position: $( "#new-int-position option:selected" ).text().toUpperCase(),
+            position: $("#new-int-position option:selected").text().toUpperCase(),
         };
         var interview = {
             location: $("#new-int-location option:selected").text().toUpperCase(),
@@ -165,7 +175,7 @@ $(document).ready(function() {
             dateTime: time,
             userId: $("#new-int-assperson option:selected").text(),
         }
-        console.log(JSON.stringify({"candidate":candidate, "interview":interview}));
+        console.log(JSON.stringify({ "candidate": candidate, "interview": interview }));
         $.ajax({
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
@@ -173,12 +183,12 @@ $(document).ready(function() {
             url: 'http://localhost:8081/api/interviews',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({"candidate":candidate, "interview":interview}),
-            success: function () {
-                window.location.href = 'index.html';    
+            data: JSON.stringify({ "candidate": candidate, "interview": interview }),
+            success: function() {
+                window.location.href = 'index.html';
             }
         });
     }
-    
+
     /*NEW INTERVIEW DATA**/
 });
