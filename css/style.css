@@ -190,30 +190,50 @@ h3{
     }
 }
 /*New interview*/
+
 .mui-table>thead>tr>th {
     border-bottom: 2px solid rgb(227,227,227);
 }
-input:focus, .mui-select:focus>select{
+
+input:invalid {
+    border-bottom: 3px solid rgb(227,227,227) !important;
+}
+
+input:focus, input:valid, .mui-select:focus>select{
     border-bottom: 3px solid  #afb42b !important;
 }
+
+.wrong-input {
+    width: 100%;
+    float: right;
+    color: rgb(218,33,33);
+    position: absolute;
+    text-align: right;
+}
+
 legend {
     color: #757575 !important;
     font-size: 14px !important;
     padding-bottom: 10px !important;
     border-bottom: 1px solid rgb(227,227,227) !important;
 }
+
 label {
     color: rgb(155, 155, 155) !important;
 }
+
 option:first-child {
     color: rgb(155, 155, 155) !important;
 }
+
 ::-webkit-input-placeholder {
    color: rgb(155, 155, 155) !important;
 }
+
 .mui-select:focus {
     color: #757575 !important;
 }
+
 .form_btn_cancel, .form_btn_save {
     font-weight: bold;
     width: 120px;
@@ -221,19 +241,23 @@ option:first-child {
     float: right;
     margin: 22px 10px;
 }
+
 .form_btn_save {
     background-color:#D4E157;
     margin-right: 62px;
 }
+
 .btn_footer {
     background-color: rgb(236, 239, 241);
     padding: 0 !important;
     position: absolute;
     bottom: 0;
 }
+
 .new_int_table {
     padding-top: 30px;
 }
+
 .mui-col-md-4 {
     padding: 0 30px;
 }
