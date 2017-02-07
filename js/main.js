@@ -170,5 +170,194 @@ $(document).ready(function () {
             }
         });
     }
+    /*MODAL*/
+    var picture = "pictures/mato.png";
+    var candicateName = "Martin Pach";
+    var workPosition = "Sr. UX Designer";
+    var candicateTelephone = "(650) 555-1234";
+    var candicateEmail = "aliconnors@example.com";
+    var candicateSkype = "skypeID";
+    var interviewDate = "8.12.2016";
+    var interviewTime = "14:00";
+    var interviewLocation = "Košice";
+    var interviewRoom = "Mordor";
+    var interviewAssignedPerson = "Eric Forman";
+    var interviewNotes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras feugiat eget justo ac fermentum. Donec ante orci, scelerisque nec purus non";
+    var idRow = 1;
+    $("h1").on('click', function () {
+        $.ajax({
+            url: 'http://localhost:8081/api/interviews/' + idRow
+            , type: 'GET'
+            , beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+            }
+            , success: function (data) {
+                console.log(data);
+                candicateName = (data.candidate.firstName) + " " + (data.candidate.lastName);
+                workPosition = data.candidate.position;
+                candicateTelephone = data.candidate.phone;
+                candicateEmail = data.candidate.email;
+                candicateSkype = data.candidate.skype;
+                interviewDate = (data.interview.dateTime).slice(0, (data.interview.dateTime).indexOf('T'));
+                interviewTime = (data.interview.dateTime).slice((data.interview.dateTime).indexOf('T') + 1);
+                interviewLocation = data.interview.location;
+                interviewRoom = data.interview.room;
+                interviewNotes = data.interview.note;
+                activateModal();
+            }
+            , error: function () {
+                console.log("error");
+            }
+        , });
+    });
+
+    function activateModal() {
+        // initialize modal element
+        var modalEl = document.createElement('div');
+        modalEl.className = "mui-col-md-8 mui-col-sm-12 mui--z5 center";
+        modalEl.style.margin = '100px auto';
+        mui.overlay('on', modalEl);
+        // left
+        $('<div />', {
+            "class": 'left mui-col-md-6'
+        }).appendTo(".center");
+        $('<i />', {
+            "class": 'material-icons icoDisable'
+            , "id": 'icoDisableLeft'
+        }).text("clear").appendTo(".left");
+        $('<h1 />', {
+            "class": 'heading'
+            , "id": 'hCandidate'
+        }).appendTo(".left");
+        $("#hCandidate").text("Candidate");
+        //adding candicate image
+        $('<div />', {
+            "class": 'flex'
+            , "id": 'cMain'
+        }).appendTo(".left");
+        $('<img />', {
+            "class": 'candidateImage'
+            , "src": picture
+        }).appendTo("#cMain");
+        //candidate name
+        $('<div />', {
+            "id": 'cDetails'
+        }).appendTo("#cMain");
+        $('<h3 />', {
+            "class": 'candidateName'
+        }).appendTo("#cDetails");
+        $(".candidateName").text(candicateName);
+        //candidate position
+        $('<h5 />', {
+            "class": 'workPosition'
+        }).appendTo("#cDetails");
+        $(".workPosition").text(workPosition);
+        //telephone
+        $('<div />', {
+            "class": 'flex'
+            , "id": 'cTelephone'
+        }).appendTo(".left");
+        $('<i />', {
+            "class": 'material-icons candidateInfoLeft'
+        }).text("call").appendTo("#cTelephone");
+        $('<h5 />', {
+            "class": 'candidateInfoRight'
+        }).text(candicateTelephone).appendTo("#cTelephone");
+        //email
+        $('<div />', {
+            "class": 'flex'
+            , "id": 'cEmail'
+        }).appendTo(".left");
+        $('<i />', {
+            "class": 'material-icons candidateInfoLeft'
+        }).text("email").appendTo("#cEmail");
+        $('<h5 />', {
+            "class": 'candidateInfoRight'
+        }).text(candicateEmail).appendTo("#cEmail");
+        //skype
+        $('<div />', {
+            "class": 'flex'
+            , "id": 'cSkype'
+        }).appendTo(".left");
+        $('<i />', {
+            "class": 'zmdi zmdi-skype zmdi-hc-2x candidateInfoLeft'
+        }).appendTo("#cSkype");
+        $('<h5 />', {
+            "class": 'candidateInfoRight'
+        }).text(candicateSkype).appendTo("#cSkype");
+        //right
+        $('<div />', {
+            "class": 'right mui-col-md-6'
+        }).appendTo(".center");
+        $('<i />', {
+            "class": 'material-icons icoDisable'
+            , "id": 'icoDisableRight'
+        }).text("clear").appendTo(".right");
+        $('<h1 />', {
+            "class": 'heading'
+            , "id": 'hInterview'
+        }).appendTo(".right");
+        $("#hInterview").text("Interview");
+        $('<label />', {
+            "class": 'mui--text-dark-secondary infoLeft'
+        }).text("Date").appendTo(".right");
+        $('<h5 />', {
+            "class": 'infoLeft'
+        }).text(interviewDate).appendTo(".right");
+        $('<label />', {
+            "class": 'mui--text-dark-secondary infoLeft'
+        }).text("Time").appendTo(".right");
+        $('<h5 />', {
+            "class": 'infoLeft'
+        }).text(interviewTime).appendTo(".right");
+        $('<label />', {
+            "class": 'mui--text-dark-secondary infoLeft'
+        }).text("Location").appendTo(".right");
+        $('<h5 />', {
+            "class": 'infoLeft'
+        }).text(interviewLocation).appendTo(".right");
+        $('<label />', {
+            "class": 'mui--text-dark-secondary infoLeft'
+        }).text("Room").appendTo(".right");
+        $('<h5 />', {
+            "class": 'infoLeft'
+        }).text(interviewRoom).appendTo(".right");
+        $('<label />', {
+            "class": 'mui--text-dark-secondary infoLeft'
+        }).text("Assigned Person").appendTo(".right");
+        $('<h5 />', {
+            "class": 'infoLeft'
+        }).text(interviewAssignedPerson).appendTo(".right");
+        $('<label />', {
+            "class": 'mui--text-dark-secondary infoLeft'
+        }).text("Notes").appendTo(".right");
+        $('<h5 />', {
+            "class": 'infoLeft'
+        }).text(interviewNotes).appendTo(".right");
+        $('<div />', {
+            "id": 'editInterview'
+        }).appendTo(".right");
+        $('<i />', {
+            "class": 'material-icons'
+            , "id": 'edit'
+        }).text("create").appendTo("#editInterview");
+        $('<i />', {
+            "class": 'material-icons'
+            , "id": 'delete'
+        }).text("delete").appendTo("#editInterview");
+        $("#delete").on('mouseenter', function () {
+            $(this).text("delete_forever");
+        });
+        $("#delete").on('mouseleave', function () {
+            $(this).text("delete");
+        });
+        $("#icoDisableRight").on('click', function () {
+            mui.overlay('off');
+        });
+        $("#icoDisableLeft").on('click', function () {
+            mui.overlay('off');
+        });
+    }
+    /*MODAL END*/
     /*NEW INTERVIEW DATA**/
 });
