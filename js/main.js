@@ -12,7 +12,7 @@ $(document).ready(function () {
         , lastName: localStorage.getItem("lastName")
         , photoUrl: localStorage.getItem("photoUrl")
     };
-    var token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE0ODE2MzU2ODksInN1YiI6InVzZXIxIn0.urh7CmQmz4c03dVq5qoFyFwXypTqW_95x9uBtvoKrVY9IVDeMXBjK2nCp_R9hXgPKuR_ggdqUhZPMu7uSZlUeA";
+    var token = localStorage.getItem("token");
     var userDataWrapper = '<div id="userData"><span id="v-align"><img src="{{photoUrl}}" id="user-icon">{{firstName}} {{lastName}}</span><i class="material-icons" id="logout">arrow_forward</i></div>';
     var html = Mustache.to_html(userDataWrapper, data);
     var userDataWrapperResponsive = '<div id="userData-r"><img src="{{photoUrl}}" id="user-icon-r"><i class="material-icons" id="logout-r">arrow_forward</i></div>';
@@ -171,18 +171,18 @@ $(document).ready(function () {
         });
     }
     /*MODAL*/
-    var picture = "pictures/mato.png";
-    var candicateName = "Martin Pach";
-    var workPosition = "Sr. UX Designer";
-    var candicateTelephone = "(650) 555-1234";
-    var candicateEmail = "aliconnors@example.com";
-    var candicateSkype = "skypeID";
-    var interviewDate = "8.12.2016";
-    var interviewTime = "14:00";
-    var interviewLocation = "Košice";
-    var interviewRoom = "Mordor";
-    var interviewAssignedPerson = "Eric Forman";
-    var interviewNotes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras feugiat eget justo ac fermentum. Donec ante orci, scelerisque nec purus non";
+    var picture = "pictures/default-user.png";
+    var candicateName = "";
+    var workPosition = "";
+    var candicateTelephone = "";
+    var candicateEmail = "";
+    var candicateSkype = "";
+    var interviewDate = "";
+    var interviewTime = "";
+    var interviewLocation = "";
+    var interviewRoom = "";
+    var interviewAssignedPerson = "";
+    var interviewNotes = "";
     var idRow = 1;
     $("h1").on('click', function () {
         $.ajax({

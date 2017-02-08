@@ -19,6 +19,7 @@
                  localStorage.setItem("firstName", user.firstName);
                  localStorage.setItem("lastName", user.lastName);
                  localStorage.setItem("photoUrl", user.photoUrl);
+                 localStorage.setItem("token", data.token);
                  window.location.href = 'main.html';
              }
              , error: function () {
