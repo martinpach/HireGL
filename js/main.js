@@ -362,5 +362,24 @@ $(document).ready(function () {
         });
     }
     /*MODAL END*/
+    /*ERROR MODAL*/
+    function activateErrorModal() {
+        // initialize modal element
+        var modalEl = document.createElement('div');
+        modalEl.className = "mui-col-md-6 mui-col-sm-12 mui--z5 center ";
+        modalEl.style.margin = '100px auto';
+        mui.overlay('on', modalEl);
+        $('<i />', {
+            "class": 'material-icons icoDisable'
+            , "id": 'icoDisableRight'
+        }).text("clear").appendTo(".center");
+        $('<h1 />', {
+            "class": 'mui--text-danger mui--text-center textCenter'
+        }).text("Application error has occurred.").appendTo(".center");
+        $("#icoDisableRight").on('click', function () {
+            mui.overlay('off');
+        });
+    }
+    /*ERROR MODAL*/
     /*NEW INTERVIEW DATA**/
 });
