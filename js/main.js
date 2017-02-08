@@ -1,11 +1,14 @@
 $(document).ready(function () {
     /* loading templates */
-    $('#menu-new-interview').on('click', function () {
+    $('#menu-new-interview , #new-interview-r').on('click', function () {
         $('#main-content').load('templates/new-interview.html');
+        $("#page-title, #title-r").html("New Interview");
     });
-    $('#menu-interviews').on('click', function () {
+    $('#menu-interviews, #my-interviews-r').on('click', function () {
         $('#main-content').load('templates/my-interviews.html');
+        $("#page-title, #title-r").html("My Interviews");
     });
+    $("#menu-interviews").trigger("click");
     /* retrieving data from local storage and load user information */
     var data = {
         firstName: localStorage.getItem("firstName")
