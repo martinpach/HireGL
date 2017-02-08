@@ -41,16 +41,34 @@ h1{
 }
 
 .menu-item{
-    background-color:#EEEEEE;
     padding:20px;
     padding-left:20%;
     padding-right:20%;
     margin-bottom:5px;
+    color:grey;
+}
+.menu-item:hover{
+    cursor:pointer;
+    background-color:#EEEEEE;
+    font-weight:bold;
+}
+.selected{
+    background-color:#EEEEEE;
+    font-weight:bold;
 }
 .menu-item-r{
     background-color:#e0ea87;
     margin:10px;
     padding:10px;
+}
+
+.menu-item-r:hover{
+    cursor:pointer;
+    background-color:#eef4be;
+}
+.selected-r{
+    background-color:#eef4be;
+    font-weight:bold;
 }
 i{
     position:relative;

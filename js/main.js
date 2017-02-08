@@ -3,10 +3,22 @@ $(document).ready(function () {
     $('#menu-new-interview , #new-interview-r').on('click', function () {
         $('#main-content').load('templates/new-interview.html');
         $("#page-title, #title-r").html("New Interview");
+        $("#menu-interviews").removeClass("selected");
+        $("#menu-new-interview").addClass("selected");
+    });
+    $("#new-interview-r").on("click",function(){
+        $("#new-interview-r").addClass("selected-r");
+        $("#my-interviews-r").removeClass("selected-r");
     });
     $('#menu-interviews, #my-interviews-r').on('click', function () {
         $('#main-content').load('templates/my-interviews.html');
         $("#page-title, #title-r").html("My Interviews");
+        $("#menu-new-interview").removeClass("selected");
+        $("#menu-interviews").addClass("selected");
+    });
+    $("#my-interviews-r").on("click",function(){
+        $("#my-interviews-r").addClass("selected-r");
+        $("#new-interview-r").removeClass("selected-r");
     });
     $("#menu-interviews").trigger("click");
     /* retrieving data from local storage and load user information */
