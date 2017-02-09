@@ -146,7 +146,7 @@ $(document).ready(function () {
         event.preventDefault();
         //if (validData == 5) {
         sendNewInterviewToServer();
-        generateInterviewRows(0,5);
+        getInterviews(1,5);
         //}
 
     });
@@ -404,23 +404,22 @@ $(document).ready(function () {
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
             },
-            url: 'http://localhost:8081/api/interviews?limit=' + limit + '?start=' + start,
+            url: 'http://localhost:8081/api/interviews?limit=' + limit + '&start=' + start,
             type: 'GET',
             success: function (data) {
-                window.location.href = 'index.html';
-                //var obj = JSON.parse(data);
-                return data;
+                $('#main-content').load('../templates/my-interviews.html');
+                console.log(data);
+                generateInterviewRows(data);
+
+            },
+            error: function () {
+                console.log("get int error");
             }
         });
     }
 
-    $(document).on('click', '#my-inv-btn', function(){
-        generateInterviewRows(0,5);
-    });
+    function generateInterviewRows(interviews){
 
-    function generateInterviewRows(start, limit){
-
-        var interviews = getInterviews(start, limit);
         alert(interviews);
 
         for(var i = 0; i < interviews.length; i++){
@@ -441,7 +440,7 @@ $(document).ready(function () {
 
             var div_name = $('<div />', {
                 "class": 'table-content'
-            }).text(interviews.candidate.firstName + " " + interviews.candidate.lastName).appendTo("name-of-applicant");
+            }).text(interviews[i].candidate.firstName + " " + interviews[i].candidate.lastName).appendTo("name-of-applicant");
 
 
 
