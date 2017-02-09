@@ -142,7 +142,7 @@ $(document).ready(function () {
     // });
     /*NEW INTERVIEW FORM VALIDATION**/
     /**NEW INTERVIEW DATA*/
-    $("#btn-my-int-save").on('click', function (event) {
+    $(document).on('click','#btn-my-int-save', function (event) {
         event.preventDefault();
         //if (validData == 5) {
         sendNewInterviewToServer();
