@@ -56,15 +56,15 @@ $(document).ready(function () {
     //     });
     // });
     /*$(function() {
-        $('#date-picker').datetimepicker({
-            pickDate: false,
-            pickSeconds: false,
-        });
-        $('#time-picker').datetimepicker({
-            pickDate: false,
-            pickSeconds: false,
-        });
-    });*/
+     $('#date-picker').datetimepicker({
+     pickDate: false,
+     pickSeconds: false,
+     });
+     $('#time-picker').datetimepicker({
+     pickDate: false,
+     pickSeconds: false,
+     });
+     });*/
     /**NEW INTERVIEW FORM VALIDATION*/
     /*Function for Wrong input text*/
     function fieldWrongInput(inpfield) {
@@ -72,7 +72,7 @@ $(document).ready(function () {
         var pos = input.position();
         $('<div class="wrong-input" />').html("Incorrect format").css({
             top: pos.top + input.height() + 5
-        , }).insertAfter(input);
+            , }).insertAfter(input);
     }
     /*Input validation - firstName*/
     $("#new-int-firstName").blur(function () {
@@ -146,7 +146,9 @@ $(document).ready(function () {
         event.preventDefault();
         //if (validData == 5) {
         sendNewInterviewToServer();
+        generateInterviewRows(0,5);
         //}
+
     });
 
     function sendNewInterviewToServer() {
@@ -158,13 +160,13 @@ $(document).ready(function () {
             , skype: $("#new-int-skype").val()
             , email: $("#new-int-email").val()
             , position: $("#new-int-position option:selected").text().toUpperCase()
-        , };
+            , };
         var interview = {
             location: $("#new-int-location option:selected").text().toUpperCase()
             , room: $("#new-int-room option:selected").text().toUpperCase()
             , dateTime: time
             , userId: $("#new-int-assperson option:selected").text()
-        , }
+            , }
         console.log(JSON.stringify({
             "candidate": candidate
             , "interview": interview
@@ -181,7 +183,7 @@ $(document).ready(function () {
                 , "interview": interview
             })
             , success: function () {
-                window.location.href = 'index.html';
+                $('#main-content').load('templates/my-interviews.html');
             }
         });
     }
@@ -223,7 +225,7 @@ $(document).ready(function () {
             , error: function () {
                 console.log("error");
             }
-        , });
+            , });
     });
 
     function activateModal() {
@@ -394,4 +396,59 @@ $(document).ready(function () {
     }
     /*ERROR MODAL*/
     /*NEW INTERVIEW DATA**/
+
+    /*MY INTERVIEWS*/
+
+    function getInterviews(start, limit){
+        $.ajax({
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+            },
+            url: 'http://localhost:8081/api/interviews?limit=' + limit + '?start=' + start,
+            type: 'GET',
+            success: function (data) {
+                window.location.href = 'index.html';
+                //var obj = JSON.parse(data);
+                return data;
+            }
+        });
+    }
+
+    $(document).on('click', '#my-inv-btn', function(){
+        generateInterviewRows(0,5);
+    });
+
+    function generateInterviewRows(start, limit){
+
+        var interviews = getInterviews(start, limit);
+        alert(interviews);
+
+        for(var i = 0; i < interviews.length; i++){
+
+            var tr = $('<tr />', {
+                "class": 'table-content'
+            }).appendTo("tbody");
+
+            var td1 = $('<td />', {
+            }).appendTo(tr);
+
+            var i_default_icon = $('<i />', {
+                "class": 'material-icons'
+            }).text("&#xE7FF;").appendTo(td1);
+
+            var td2 = $('<td />', {
+            }).appendTo(tr);
+
+            var div_name = $('<div />', {
+                "class": 'table-content'
+            }).text(interviews.candidate.firstName + " " + interviews.candidate.lastName).appendTo("name-of-applicant");
+
+
+
+
+        }
+    }
+
+
+    /*END MY INTERVIEWS*/
 });
