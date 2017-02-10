@@ -1,10 +1,30 @@
 $(document).ready(function () {
+    var token = localStorage.getItem("token");
     /* loading templates */
     $('#main-content').load('../templates/my-interviews.html', function () {
         getInterviews(1, 5);
     });
     $('#menu-new-interview , #new-interview-r').on('click', function () {
-        $('#main-content').load('templates/new-interview.html');
+        $('#main-content').load('templates/new-interview.html', function () {
+            $.ajax({
+                url: 'http://localhost:8081/api/locations'
+                , type: 'GET'
+                , beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                }
+                , success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $('<option />', {
+                            "class": 'locations'
+                            , "value": 'loc_' + data[i].toLowerCase().replace(/ /g, "_")
+                        }).text(data[i]).appendTo("#new-int-location");
+                    }
+                }
+                , error: function () {
+                    console.log("error");
+                }
+            , });
+        });
         $("#page-title, #title-r").html("New Interview");
         $("#menu-interviews").removeClass("selected");
         $("#menu-new-interview").addClass("selected");
@@ -31,7 +51,6 @@ $(document).ready(function () {
         , lastName: localStorage.getItem("lastName")
         , photoUrl: localStorage.getItem("photoUrl")
     };
-    var token = localStorage.getItem("token");
     var userDataWrapper = '<div id="userData"><span id="v-align"><img src="{{photoUrl}}" id="user-icon">{{firstName}} {{lastName}}</span><i class="material-icons" id="logout">arrow_forward</i></div>';
     var html = Mustache.to_html(userDataWrapper, data);
     var userDataWrapperResponsive = '<div id="userData-r"><img src="{{photoUrl}}" id="user-icon-r"><i class="material-icons" id="logout-r">arrow_forward</i></div>';
