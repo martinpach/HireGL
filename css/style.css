@@ -3,13 +3,6 @@ body{
     font-family: "Roboto", "Helvetica Neue", Helvetica, Arial;
     position: relative;
 }
-.mui-col{
-    padding:0%;
-    margin:0%;
-}
-.mui-panel{
-    margin-bottom:2px;
-}
 .upper{
     height:150px;
     background-color:#EEEEEE;
