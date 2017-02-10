@@ -1,5 +1,8 @@
 $(document).ready(function () {
     /* loading templates */
+    $('#main-content').load('../templates/my-interviews.html', function(){
+        getInterviews(1,5);
+    });
     $('#menu-new-interview , #new-interview-r').on('click', function () {
         $('#main-content').load('templates/new-interview.html');
         $("#page-title, #title-r").html("New Interview");
@@ -407,20 +410,18 @@ $(document).ready(function () {
             url: 'http://localhost:8081/api/interviews?limit=' + limit + '&start=' + start,
             type: 'GET',
             success: function (data) {
-                $('#main-content').load('../templates/my-interviews.html');
-                console.log(data);
-                generateInterviewRows(data);
+                $('#main-content').load('../templates/my-interviews.html', function(){
+                    generateInterviewRows(data);
+                });
 
             },
             error: function () {
-                console.log("get int error");
+                console.log("Error pulling interviews!");
             }
         });
     }
 
     function generateInterviewRows(interviews){
-
-        alert(interviews);
 
         for(var i = 0; i < interviews.length; i++){
 
@@ -429,21 +430,33 @@ $(document).ready(function () {
             }).appendTo("tbody");
 
             var td1 = $('<td />', {
-            }).appendTo(tr);
-
-            var i_default_icon = $('<i />', {
-                "class": 'material-icons'
-            }).text("&#xE7FF;").appendTo(td1);
+            }).html('<i class="material-icons mui--no-user-select">&#xE7FF;</i>').appendTo(tr);
 
             var td2 = $('<td />', {
             }).appendTo(tr);
 
             var div_name = $('<div />', {
-                "class": 'table-content'
-            }).text(interviews[i].candidate.firstName + " " + interviews[i].candidate.lastName).appendTo("name-of-applicant");
+                "class": 'name-of-applicant'
+            }).text(interviews[i].candidate.firstName + " " + interviews[i].candidate.lastName).appendTo(td2);
 
+            var div_position = $('<div />', {
+                "class": 'job-type'
+            }).text(interviews[i].candidate.position).appendTo(td2);
 
+            div_name.appendTo(td2);
+            div_position.appendTo(td2);
 
+            var td3 = $('<td />', {
+            }).text(interviews[i].candidate.phone).appendTo(tr);
+
+            var td4 = $('<td />', {
+            }).text(interviews[i].candidate.email).appendTo(tr);
+
+            var td5 = $('<td />', {
+            }).text(interviews[i].interview.status).appendTo(tr);
+
+            var td6 = $('<td />', {
+            }).html('<i class="material-icons delete-icon">&#xE872;</i><i class="material-icons edit-icon">&#xE150;</i>').appendTo(tr);
 
         }
     }
