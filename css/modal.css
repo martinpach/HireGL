@@ -8,17 +8,17 @@
     overflow: hidden;
     position: relative;
     background-color: white;
-    min-height: 600px;
+    min-height: 500px;
 }
 
 .left {
-    min-height: 600px;
+    min-height: 500px;
     position: relative;
 }
 
 .right {
     position: relative;
-    min-height: 600px;
+    min-height: 500px;
     background-color: rgba(0, 0, 0, 0.05);
 }
 
