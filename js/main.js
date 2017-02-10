@@ -152,6 +152,9 @@ $(document).ready(function() {
         sendNewInterviewToServer();
         $('#main-content').load('../templates/my-interviews.html', function() {
             getInterviews(1, 5);
+            $("#page-title, #title-r").html("My Interviews");
+        	$("#menu-new-interview").removeClass("selected");
+        	$("#menu-interviews").addClass("selected");
         });
 
         //}
