@@ -14,10 +14,31 @@ $(document).ready(function () {
                 }
                 , success: function (data) {
                     for (var i = 0; i < data.length; i++) {
+                        var text = data[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
+                            return letter.toUpperCase();
+                        });
                         $('<option />', {
                             "class": 'locations'
                             , "value": 'loc_' + data[i].toLowerCase().replace(/ /g, "_")
-                        }).text(data[i]).appendTo("#new-int-location");
+                        }).text(text).appendTo("#new-int-location");
+                    }
+                }
+                , error: function () {
+                    console.log("error");
+                }
+            , });
+            $.ajax({
+                url: 'http://localhost:8081/api/positions'
+                , type: 'GET'
+                , beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                }
+                , success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var text = data[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
+                            return letter.toUpperCase();
+                        });
+                        $('<option />').text(text).appendTo("#new-int-position");
                     }
                 }
                 , error: function () {
