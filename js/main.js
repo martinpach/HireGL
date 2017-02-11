@@ -66,6 +66,9 @@ $(document).ready(function () {
 
     });
     $("#my-interviews-r").on("click", function () {
+        $('#main-content').load('../templates/my-interviews.html', function () {
+            getInterviews(1, 5);
+        });
         $("#my-interviews-r").addClass("selected-r");
         $("#new-interview-r").removeClass("selected-r");
     });
