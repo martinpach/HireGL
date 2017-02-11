@@ -57,11 +57,13 @@ $(document).ready(function () {
         $("#my-interviews-r").removeClass("selected-r");
     });
     $('#menu-interviews, #my-interviews-r').on('click', function () {
-        $('#main-content').load('templates/my-interviews.html');
+        $('#main-content').load('../templates/my-interviews.html', function () {
+            getInterviews(1, 5);
+        });
         $("#page-title, #title-r").html("My Interviews");
         $("#menu-new-interview").removeClass("selected");
         $("#menu-interviews").addClass("selected");
-        getInterviews(1, 5);
+
     });
     $("#my-interviews-r").on("click", function () {
         $("#my-interviews-r").addClass("selected-r");
