@@ -4,54 +4,57 @@
             <legend>CANDIDATE</legend>
             <div class="mui-textfield">
                 <label>Name</label>
-                <input type="text" placeholder="Enter Name" required="required" id="new-int-firstName"> </div>
+                <input type="text" placeholder="Enter Name" required="required" id="new-int-firstName"> 
+            </div>
             <div class="mui-textfield">
                 <label>Surname</label>
-                <input type="text" placeholder="Enter Surname" required="required" id="new-int-lastName"> </div>
+                <input type="text" placeholder="Enter Surname" required="required" id="new-int-lastName"> 
+            </div>
             <div class="mui-textfield">
                 <label>Phone</label>
-                <input type="phone" placeholder="Enter Phone" required="required" id="new-int-phone"> </div>
+                <input type="phone" placeholder="Enter Phone" required="required" id="new-int-phone"> 
+            </div>
             <div class="mui-textfield">
                 <label>Email</label>
-                <input type="text" placeholder="Enter Email" required="required" id="new-int-email"> </div>
+                <input type="text" placeholder="Enter Email" required="required" id="new-int-email"> 
+            </div>
             <div class="mui-textfield">
                 <label>Skype</label>
-                <input type="text" placeholder="Enter Skype" required="required" id="new-int-skype"> </div>
+                <input type="text" placeholder="Enter Skype" required="required" id="new-int-skype"> 
+            </div>
             <div class="mui-select">
                 <label>Position</label>
                 <select id="new-int-position">
-                    <option disabled>Choose position</option>
+                    <option value="" disabled selected hidden>Choose position</option>
                 </select>
             </div>
         </div>
-        <div class="mui-col-md-4">
+        <div class="mui-col-md-4 form-div">
             <legend>INTERVIEW</legend>
             <div class="mui-textfield">
                 <label>Date</label>
-                <input type="date" placeholder="Set Date" id="new-int-date">
-                <!-- <span class="add-on">
-                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-                  </span> --></div>
+                <input type="date" id="new-int-date">
+            </div>
             <div class="mui-textfield">
                 <label>Time</label>
-                <input type="time" placeholder="Set Time" id="new-int-time"> </div>
+                <input type="time" id="new-int-time"> 
+            </div>
             <div class="mui-select">
                 <label>Location</label>
                 <select id="new-int-location">
-                    <option value="" disabled selected>Enter Location</option>
+                    <option value="" disabled selected hidden>Enter Location</option>
                 </select>
             </div>
             <div class="mui-select">
                 <label>Room</label>
                 <select id="new-int-room">
-                    <option value="" disabled selected>Choose Room</option>
-
+                    <option value="" disabled selected hidden>Choose Room</option>
                 </select>
             </div>
             <div class="mui-select">
                 <label>Assigned Person</label>
                 <select id="new-int-assperson">
-                    <option value="" style="display:none;" selected disabled>Choose person</option>
+                    <option value="" selected disabled hidden>Choose person</option>
                     <option value="ass_person_norris">1</option>
                     <option value="ass_person_macgyver">1</option>
                 </select>
@@ -66,8 +69,6 @@
             <button class="mui-btn mui-btn--raised form_btn_cancel" id="btn-my-int-cancel">CANCEL</button>
         </div>
     </div>
-</div>
-</div>
 </div>
 <div class="mui-row footer-responsive">
     <div class="mui-col-md-7">

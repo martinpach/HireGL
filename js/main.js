@@ -129,110 +129,141 @@ $(document).ready(function () {
             }
         });
     });
-    // $(function() {
-    //     $('#datetimepicker1').datetimepicker({
-    //         language: 'pt-BR',
-    //         pickTime: false,
-    //     });
-    // });
-    /*$(function() {
-     $('#date-picker').datetimepicker({
-     pickDate: false,
-     pickSeconds: false,
-     });
-     $('#time-picker').datetimepicker({
-     pickDate: false,
-     pickSeconds: false,
-     });
-     });*/
+    
     /**NEW INTERVIEW FORM VALIDATION*/
+    
     /*Function for Wrong input text*/
-    function fieldWrongInput(inpfield) {
+    function fieldWrongInput(inpfield, fieldMessage) {
         var input = $(inpfield);
         var pos = input.position();
-        $('<div class="wrong-input" />').html("Incorrect format").css({
-            top: pos.top + input.height() + 5,
-        }).insertAfter(input);
+        $('<div class="wrong-input" />').html(fieldMessage).css({
+            top: pos.top + input.height() + 5
+        , }).insertAfter(input);
+        if (fieldMessage == "Incorrect format") {
+            $(".wrong-input").hide();
+        }
+        else
+            $("inpfield + div.wrong-input").hide();
     }
-    /*Input validation - firstName*/
-    $("#new-int-firstName").blur(function () {
+
+    /*Forbidden keys - firstName, lastName*/
+    $(document).on('keyup', "#new-int-firstName, #new-int-lastName", function () {
         var firstName = $(this).val();
-        var regex = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð']+$/;
-        if (!regex.test(firstName) && firstName.length != 0) {
-            fieldWrongInput("#new-int-firstName");
-        }
-        if (regex.test(firstName) && firstName.length != 0) {
-            $('#new-int-firstName + div.wrong-input').hide();
+        var regex = /[^a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð']+/;
+        if (regex.test(firstName)) {
+            this.value = this.value.replace(regex, '');
         }
     });
-    /*Input validation - lastName*/
-    $("#new-int-lastName").blur(function () {
-        var lastName = $(this).val();
-        var regex = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð']+$/;
-        if (!regex.test(lastName) && lastName.length != 0) {
-            fieldWrongInput("#new-int-lastName");
-        }
-        if (regex.test(lastName) && lastName.length != 0) {
-            $('#new-int-lastName + div.wrong-input').hide();
-        }
-    });
-    /*Input validation - Phone number*/
-    $("#new-int-phone").blur(function () {
+
+    /*Input format validation - Phone number*/
+    $(document).on('blur', "#new-int-phone", function () {
         var phone = $(this).val();
-        var regex = /^[\s()+-]*([0-9][\s()+-]*){6,20}$/;
+        var regex = /^[\s()+-]*([0-9][\s)]*){6,20}$/;
+        fieldWrongInput("#new-int-phone", "Incorrect format");
         if (!regex.test(phone) && phone.length != 0) {
-            fieldWrongInput("#new-int-phone");
+            $('#new-int-phone + div.wrong-input').show();
         }
         if (regex.test(phone) && phone.length != 0) {
             $('#new-int-phone + div.wrong-input').hide();
         }
     });
-    /*Input validation - Email*/
-    $("#new-int-email").blur(function () {
+
+    /*Forbidden keys - phone*/
+    $(document).on('keyup', "#new-int-phone", function () {
+        var phone = $(this).val();
+        var regex = /[^0-9\s()+-]+/;
+        if (regex.test(phone)) {
+            this.value = this.value.replace(regex, '');
+        }
+    });
+
+    /*Input format validation - Email*/
+    $(document).on('blur', "#new-int-email", function () {
         var email = $(this).val();
         var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        fieldWrongInput("#new-int-email", "Incorrect format");
         if (!regex.test(email) && email.length != 0) {
-            fieldWrongInput("#new-int-email");
+            $('#new-int-email + div.wrong-input').show();
         }
         if (regex.test(email) && email.length != 0) {
             $('#new-int-email + div.wrong-input').hide();
         }
     });
-    /*Input validation - Date*/
-    // $("#new-int-date").blur(function () {
-    //     var date = $(this).val();
-    //     var regex = /^(?:(?:(?:0?[13578]|1[02])(\/|-|\.)31)\1|(?:(?:0?[1,3-9]|1[0-2])(\/|-|\.)(?:29|30)\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:0?2(\/|-|\.)29\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:(?:0?[1-9])|(?:1[0-2]))(\/|-|\.)(?:0?[1-9]|1\d|2[0-8])\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
-    //     if ( !regex.test(date) && date.length!=0) {
-    //         fieldWrongInput("#new-int-date");
-    //     }
-    //     if ( regex.test(date) && date.length!=0) {
-    //         $('#new-int-date + div.wrong-input').hide();
-    //     }
-    // });
-    /*Input validation - Time*/
-    // $("#new-int-time").blur(function () {
-    //     var time = $(this).val();
-    //     var regex = /^([0-2][1-9]):[0-5][0-9]$/;
-    //     if ( !regex.test(time) && time.length!=0) {
-    //         fieldWrongInput("#new-int-time");
-    //     }
-    //     if ( regex.test(time) && time.length!=0) {
-    //         $('#new-int-time + div.wrong-input').hide();
-    //     }
-    // });
-    /*NEW INTERVIEW FORM VALIDATION**/
+
+    /*NEW INTERVIEW INPUTS VALIDATIONS END**/
+
     /**NEW INTERVIEW DATA*/
+    function areInputsFill () {
+        var notEmpty = 1;
+        $('.wrong-input').hide();
+        if ($('#new-int-firstName').val().length == 0) {
+            notEmpty==0;
+            fieldWrongInput("#new-int-firstName", "Name cannot be empty");
+            $('#new-int-firstName + div.wrong-input').show();
+        }
+        if ($('#new-int-lastName').val().length == 0) {
+            notEmpty==0;
+            fieldWrongInput("#new-int-lastName", "Surname cannot be empty");
+            $('#new-int-lastName + div.wrong-input').show();
+        }
+        if ($('#new-int-phone').val().length == 0) {
+            notEmpty==0;
+            fieldWrongInput("#new-int-phone", "Phone cannot be empty");
+            $('#new-int-phone + div.wrong-input').show();
+        }
+        if ($('#new-int-email').val().length == 0) {
+            notEmpty==0;
+            fieldWrongInput("#new-int-email", "Email cannot be empty");
+            $('#new-int-email + div.wrong-input').show();
+        }
+        if ($('#new-int-date').val().length == 0) {
+            notEmpty==0;
+            fieldWrongInput("#new-int-date", "Date must be set");
+            $('#new-int-date + div.wrong-input').show();
+        }
+        if ($('#new-int-time').val().length == 0) {
+            notEmpty==0;
+            fieldWrongInput("#new-int-time", "Time must be set");
+            $('#new-int-time + div.wrong-input').show();
+        }
+        if ($("#new-int-position option:selected").text() == "Choose position") {
+            notEmpty==0;
+            fieldWrongInput("#new-int-position", "Please choose one option");
+            $('#new-int-position + div.wrong-input').show();
+        }
+        if ($("#new-int-location option:selected").text() == "Enter Location") {
+            notEmpty==0;
+            fieldWrongInput("#new-int-location", "Please choose one option");
+            $('#new-int-location + div.wrong-input').show();
+        }
+        if ($("#new-int-room option:selected").text() == "Choose Room") {
+            notEmpty==0;
+            fieldWrongInput("#new-int-room", "Please choose one option");
+            $('#new-int-room + div.wrong-input').show();
+        }
+        if ($("#new-int-assperson option:selected").text() == "Choose person") {
+            notEmpty==0;
+            fieldWrongInput("#new-int-assperson", "Please choose one option");
+            $('#new-int-assperson + div.wrong-input').show();
+        }
+        else if (notEmpty == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    /*New interview save button*/
     $(document).on('click', '#btn-my-int-save', function (event) {
         event.preventDefault();
-        //if (validData == 5) {
-        sendNewInterviewToServer();
-        $('#main-content').load('../templates/my-interviews.html', function () {
-            getInterviews(1, 5);
-            $("#page-title, #title-r").html("My Interviews");
-            $("#menu-new-interview").removeClass("selected");
-            $("#menu-interviews").addClass("selected");
-        });
-        //}
+        if (areInputsFill ()) {
+            sendNewInterviewToServer();
+            $('#main-content').load('../templates/my-interviews.html', function () {
+                getInterviews(1, 5);
+                $("#page-title, #title-r").html("My Interviews");
+                $("#menu-new-interview").removeClass("selected");
+                $("#menu-interviews").addClass("selected");
+            });
+        }
     });
 
     function sendNewInterviewToServer() {
