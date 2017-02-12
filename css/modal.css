@@ -100,8 +100,12 @@
     color: grey;
 }
 
-#edit,
-#save {
+#edit:hover,
+#delete:hover {
+    opacity: 0.7;
+}
+
+#edit {
     cursor: pointer;
     float: right;
     bottom: 0;
