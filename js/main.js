@@ -1,5 +1,9 @@
 $(document).ready(function () {
     var token = localStorage.getItem("token");
+    /* loading templates */
+    $('#main-content').load('../templates/my-interviews.html', function () {
+        getInterviews(1, 5);
+    });
     /*on click to new interview*/
     $('#menu-new-interview , #new-interview-r').on('click', function () {
         /*changing main content to new interview form and getting from server positons, locations and rooms*/
@@ -250,14 +254,10 @@ $(document).ready(function () {
             fieldWrongInput("#new-int-room", "Please choose one option");
             $('#new-int-room + div.wrong-input').show();
         }
-        if ($("#new-int-assperson option:selected").text() == "Choose person") {
-            notEmpty = 0;
-            fieldWrongInput("#new-int-assperson", "Please choose one option");
-            $('#new-int-assperson + div.wrong-input').show();
-        }
         if (notEmpty == 0) {
             return false;
-        } else {
+        }
+        else {
             return true;
         }
     }
@@ -290,7 +290,7 @@ $(document).ready(function () {
             location: $("#new-int-location option:selected").text().toUpperCase(),
             room: $("#new-int-room option:selected").text().toUpperCase(),
             dateTime: time,
-            userId: $("#new-int-assperson option:selected").text(),
+            userId: 1,
         }
         console.log(JSON.stringify({
             "candidate": candidate,
@@ -488,8 +488,12 @@ $(document).ready(function () {
             "class": 'material-icons',
             "id": 'delete'
         }).text("delete").appendTo("#editInterview");
-
-
+        $("#delete").on('mouseenter', function () {
+            $(this).text("delete_forever");
+        });
+        $("#delete").on('mouseleave', function () {
+            $(this).text("delete");
+        });
         $("#icoDisableRight").on('click', function () {
             mui.overlay('off');
         });
