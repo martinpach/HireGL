@@ -7,6 +7,7 @@ body{
     height:150px;
     background-color:#EEEEEE;
     margin-top:0%;
+    margin-bottom:0%;
     padding:0%;
 }
 /*sidebar*/
@@ -63,7 +64,7 @@ body{
     background-color:#eef4be;
     font-weight:bold;
 }
-i{
+.basic-icon{
     position:relative;
     color:grey;
     padding-right:20px;
@@ -126,6 +127,7 @@ i{
     padding-top:5%;
     padding-right:5%;
     padding-left:5%;
+    margin-bottom:0;
     height:10%;
 }
 #logo-responsive{
