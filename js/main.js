@@ -592,42 +592,45 @@ $(document).ready(function() {
     function setPaginationButtons() {
         var btnNext = $('#next-page');
         var btnPrev = $('#prev-page');
-        if (getNumberOfInterviews() <= 5) {
-            btnNext.prop('disabled', true);
-        } else {
+        if (getNumberOfInterviews() - startingInterview >= 5 && startingInterview == 1) {
             btnNext.prop('disabled', false);
-        }
-        if (startingInterview == 1) {
+            btnPrev.prop('disabled', true);
+        } else if (getNumberOfInterviews() - startingInterview >= 5 && startingInterview != 1) {
+            btnNext.prop('disabled', false);
+            btnPrev.prop('disabled', false);
+        } else if (getNumberOfInterviews() - startingInterview <= 5 && startingInterview >= 6) {
+            btnNext.prop('disabled', false);
             btnPrev.prop('disabled', true);
         } else {
-            btnPrev.prop('disabled', false);
+            btnNext.prop('disabled', true);
+            btnPrev.prop('disabled', true);
         }
     }
 
     function setText() {
+        var to = (startingInterview + 4 > getNumberOfInterviews()) ? getNumberOfInterviews() : startingInterview + 4;
         var data = {
-            from : startingInterview,
-            to : startingInterview + 4,
-            total : getNumberOfInterviews()
+            from: startingInterview,
+            to: to,
+            total: getNumberOfInterviews()
         }
         var text = 'SHOWING {{from}} - {{to}} FROM {{total}}';
         var html = Mustache.to_html(text, data);
         $('#showed-pages').html(html);
-        alert("HEJ");
     }
 
     setText();
     setPaginationButtons();
 
     $('#main-content').on('click', '#prev-page', function() {
-        startingInterview -= 4;
+        startingInterview -= 5;
         getInterviews(startingInterview, 5);
         setText();
         setPaginationButtons();
     });
 
     $('#main-content').on('click', '#next-page', function() {
-        startingInterview += 4;
+        startingInterview += 5;
         getInterviews(startingInterview, 5);
         setText();
         setPaginationButtons();
