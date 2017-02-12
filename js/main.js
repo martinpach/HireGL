@@ -22,8 +22,37 @@ $(document).ready(function () {
                             "value": 'loc_' + data[i].toLowerCase().replace(/ /g, "_")
                         }).text(text).appendTo("#new-int-location");
                     }
+                    $("#new-int-location").on('change', function () {
+                        var option = $("#new-int-location option:selected").text().toUpperCase();
 
+                        $.ajax({
+                            url: 'http://localhost:8081/api/locations/' + option + '/rooms',
+                            type: 'GET',
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                            },
+                            success: function (data) {
+                                /*cleaning room options*/
+                                var to = ($("#new-int-room").children().length) - 1;
+                                for (var g = 1; g <= to; g++) {
+                                    $("#new-int-room").children().eq(1).remove();
+                                }
+                                /*cleaning room options*/
+                                for (var j = 0; j < data.length; j++) {
+                                    var text = data[j].toLowerCase().replace(/\b[a-z]/g, function (letter) {
+                                        return letter.toUpperCase();
+                                    });
+                                    $('<option />', {
+                                        "value": 'room_' + data[j].toLowerCase().replace(/ /g, "_")
+                                    }).text(text).appendTo("#new-int-room");
+                                }
+                            },
+                            error: function () {
+                                activateErrorModal();
+                            },
+                        });
 
+                    });
                 },
                 error: function () {
                     activateErrorModal();
@@ -57,7 +86,7 @@ $(document).ready(function () {
         $("#my-interviews-r").removeClass("selected-r");
     });
     $('#menu-interviews, #my-interviews-r').on('click', function () {
-        $('#main-content').load('../templates/my-interviews.html', function () {
+        $('#main-content').load('templates/my-interviews.html', function () {
             getInterviews(1, 5);
         });
         $("#page-title, #title-r").html("My Interviews");
