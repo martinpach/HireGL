@@ -4,8 +4,11 @@ $(document).ready(function () {
     $('#main-content').load('../templates/my-interviews.html', function () {
         getInterviews(1, 5);
     });
+    /*on click to new interview*/
     $('#menu-new-interview , #new-interview-r').on('click', function () {
+        /*changing main content to new interview form and getting from server positons, locations and rooms*/
         $('#main-content').load('templates/new-interview.html', function () {
+            /*call server to receive locations*/
             $.ajax({
                 url: 'http://localhost:8081/api/locations',
                 type: 'GET',
@@ -13,6 +16,7 @@ $(document).ready(function () {
                     xhr.setRequestHeader('Authorization', 'Bearer ' + token);
                 },
                 success: function (data) {
+                    /*changing format of data form server and creating new options to select tag in locations*/
                     for (var i = 0; i < data.length; i++) {
                         var text = data[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
                             return letter.toUpperCase();
@@ -22,9 +26,11 @@ $(document).ready(function () {
                             "value": 'loc_' + data[i].toLowerCase().replace(/ /g, "_")
                         }).text(text).appendTo("#new-int-location");
                     }
+                    /*changing format of data form server and creating new options to select tag in locations END*/
+                    //if is location choosen/changed
                     $("#new-int-location").on('change', function () {
                         var option = $("#new-int-location option:selected").text().toUpperCase();
-
+                        //getting from server rooms which are in selected location
                         $.ajax({
                             url: 'http://localhost:8081/api/locations/' + option + '/rooms',
                             type: 'GET',
@@ -42,9 +48,11 @@ $(document).ready(function () {
                                     var text = data[j].toLowerCase().replace(/\b[a-z]/g, function (letter) {
                                         return letter.toUpperCase();
                                     });
+                                    /*creating new room options and changing text format*/
                                     $('<option />', {
                                         "value": 'room_' + data[j].toLowerCase().replace(/ /g, "_")
                                     }).text(text).appendTo("#new-int-room");
+                                    /*creating new room options and changing text format END*/
                                 }
                             },
                             error: function () {
@@ -58,6 +66,8 @@ $(document).ready(function () {
                     activateErrorModal();
                 },
             });
+            /*call server and receive locations END*/
+            /*call server and receive positions*/
             $.ajax({
                 url: 'http://localhost:8081/api/positions',
                 type: 'GET',
@@ -65,22 +75,26 @@ $(document).ready(function () {
                     xhr.setRequestHeader('Authorization', 'Bearer ' + token);
                 },
                 success: function (data) {
+                    /*creating new positon options*/
                     for (var i = 0; i < data.length; i++) {
                         var text = data[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
                             return letter.toUpperCase();
                         });
                         $('<option />').text(text).appendTo("#new-int-position");
                     }
+                    /*creating new positon options END*/
                 },
                 error: function () {
                     activateErrorModal();
                 },
             });
+            /*call server and receive positions END*/
         });
         $("#page-title, #title-r").html("New Interview");
         $("#menu-interviews").removeClass("selected");
         $("#menu-new-interview").addClass("selected");
     });
+    /*on click to new interview*/
     $("#new-interview-r").on("click", function () {
         $("#new-interview-r").addClass("selected-r");
         $("#my-interviews-r").removeClass("selected-r");
@@ -129,20 +143,19 @@ $(document).ready(function () {
             }
         });
     });
-    
+
     /**NEW INTERVIEW FORM VALIDATION*/
-    
+
     /*Function for Wrong input text*/
     function fieldWrongInput(inpfield, fieldMessage) {
         var input = $(inpfield);
         var pos = input.position();
         $('<div class="wrong-input" />').html(fieldMessage).css({
-            top: pos.top + input.height() + 5
-        , }).insertAfter(input);
+            top: pos.top + input.height() + 5,
+        }).insertAfter(input);
         if (fieldMessage == "Incorrect format") {
             $(".wrong-input").hide();
-        }
-        else
+        } else
             $("inpfield + div.wrong-input").hide();
     }
 
@@ -193,60 +206,59 @@ $(document).ready(function () {
     /*NEW INTERVIEW INPUTS VALIDATIONS END**/
 
     /**NEW INTERVIEW DATA*/
-    function areInputsFill () {
+    function areInputsFill() {
         var notEmpty = 1;
         $('.wrong-input').hide();
         if ($('#new-int-firstName').val().length == 0) {
-            notEmpty==0;
+            notEmpty == 0;
             fieldWrongInput("#new-int-firstName", "Name cannot be empty");
             $('#new-int-firstName + div.wrong-input').show();
         }
         if ($('#new-int-lastName').val().length == 0) {
-            notEmpty==0;
+            notEmpty == 0;
             fieldWrongInput("#new-int-lastName", "Surname cannot be empty");
             $('#new-int-lastName + div.wrong-input').show();
         }
         if ($('#new-int-phone').val().length == 0) {
-            notEmpty==0;
+            notEmpty == 0;
             fieldWrongInput("#new-int-phone", "Phone cannot be empty");
             $('#new-int-phone + div.wrong-input').show();
         }
         if ($('#new-int-email').val().length == 0) {
-            notEmpty==0;
+            notEmpty == 0;
             fieldWrongInput("#new-int-email", "Email cannot be empty");
             $('#new-int-email + div.wrong-input').show();
         }
         if ($('#new-int-date').val().length == 0) {
-            notEmpty==0;
+            notEmpty == 0;
             fieldWrongInput("#new-int-date", "Date must be set");
             $('#new-int-date + div.wrong-input').show();
         }
         if ($('#new-int-time').val().length == 0) {
-            notEmpty==0;
+            notEmpty == 0;
             fieldWrongInput("#new-int-time", "Time must be set");
             $('#new-int-time + div.wrong-input').show();
         }
         if ($("#new-int-position option:selected").text() == "Choose position") {
-            notEmpty==0;
+            notEmpty == 0;
             fieldWrongInput("#new-int-position", "Please choose one option");
             $('#new-int-position + div.wrong-input').show();
         }
         if ($("#new-int-location option:selected").text() == "Enter Location") {
-            notEmpty==0;
+            notEmpty == 0;
             fieldWrongInput("#new-int-location", "Please choose one option");
             $('#new-int-location + div.wrong-input').show();
         }
         if ($("#new-int-room option:selected").text() == "Choose Room") {
-            notEmpty==0;
+            notEmpty == 0;
             fieldWrongInput("#new-int-room", "Please choose one option");
             $('#new-int-room + div.wrong-input').show();
         }
         if ($("#new-int-assperson option:selected").text() == "Choose person") {
-            notEmpty==0;
+            notEmpty == 0;
             fieldWrongInput("#new-int-assperson", "Please choose one option");
             $('#new-int-assperson + div.wrong-input').show();
-        }
-        else if (notEmpty == 1) {
+        } else if (notEmpty == 1) {
             return true;
         }
         return false;
@@ -255,7 +267,7 @@ $(document).ready(function () {
     /*New interview save button*/
     $(document).on('click', '#btn-my-int-save', function (event) {
         event.preventDefault();
-        if (areInputsFill ()) {
+        if (areInputsFill()) {
             sendNewInterviewToServer();
             $('#main-content').load('../templates/my-interviews.html', function () {
                 getInterviews(1, 5);
@@ -510,6 +522,7 @@ $(document).ready(function () {
             mui.overlay('off');
         });
     }
+
     /*ERROR MODAL*/
     /*NEW INTERVIEW DATA**/
     /*MY INTERVIEWS*/
