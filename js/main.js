@@ -210,58 +210,61 @@ $(document).ready(function () {
         var notEmpty = 1;
         $('.wrong-input').hide();
         if ($('#new-int-firstName').val().length == 0) {
-            notEmpty == 0;
+            notEmpty = 0;
             fieldWrongInput("#new-int-firstName", "Name cannot be empty");
             $('#new-int-firstName + div.wrong-input').show();
         }
         if ($('#new-int-lastName').val().length == 0) {
-            notEmpty == 0;
+            notEmpty = 0;
             fieldWrongInput("#new-int-lastName", "Surname cannot be empty");
             $('#new-int-lastName + div.wrong-input').show();
         }
         if ($('#new-int-phone').val().length == 0) {
-            notEmpty == 0;
+            notEmpty = 0;
             fieldWrongInput("#new-int-phone", "Phone cannot be empty");
             $('#new-int-phone + div.wrong-input').show();
         }
         if ($('#new-int-email').val().length == 0) {
-            notEmpty == 0;
+            notEmpty = 0;
             fieldWrongInput("#new-int-email", "Email cannot be empty");
             $('#new-int-email + div.wrong-input').show();
         }
         if ($('#new-int-date').val().length == 0) {
-            notEmpty == 0;
+            notEmpty = 0;
             fieldWrongInput("#new-int-date", "Date must be set");
             $('#new-int-date + div.wrong-input').show();
         }
         if ($('#new-int-time').val().length == 0) {
-            notEmpty == 0;
+            notEmpty = 0;
             fieldWrongInput("#new-int-time", "Time must be set");
             $('#new-int-time + div.wrong-input').show();
         }
         if ($("#new-int-position option:selected").text() == "Choose position") {
-            notEmpty == 0;
+            notEmpty = 0;
             fieldWrongInput("#new-int-position", "Please choose one option");
             $('#new-int-position + div.wrong-input').show();
         }
         if ($("#new-int-location option:selected").text() == "Enter Location") {
-            notEmpty == 0;
+            notEmpty = 0;
             fieldWrongInput("#new-int-location", "Please choose one option");
             $('#new-int-location + div.wrong-input').show();
         }
         if ($("#new-int-room option:selected").text() == "Choose Room") {
-            notEmpty == 0;
+            notEmpty = 0;
             fieldWrongInput("#new-int-room", "Please choose one option");
             $('#new-int-room + div.wrong-input').show();
         }
         if ($("#new-int-assperson option:selected").text() == "Choose person") {
-            notEmpty == 0;
+            notEmpty = 0;
             fieldWrongInput("#new-int-assperson", "Please choose one option");
             $('#new-int-assperson + div.wrong-input').show();
-        } else if (notEmpty == 1) {
+        } 
+        if (notEmpty == 0) {
+            return false;
+        }
+        else {
             return true;
         }
-        return false;
     }
 
     /*New interview save button*/
