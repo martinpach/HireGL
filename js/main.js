@@ -531,7 +531,7 @@ $(document).ready(function () {
             var tr = $('<tr />', {
                 "class": 'table-content'
             }).appendTo("tbody");
-            var td1 = $('<td />', {}).html('<i class="material-icons mui--no-user-select">&#xE7FF;</i>').appendTo(tr);
+            var td1 = $('<td />', {}).html('<i class="material-icons mui--no-user-select basic-icon">&#xE7FF;</i>').appendTo(tr);
             var td2 = $('<td />', {}).appendTo(tr);
             var div_name = $('<div />', {
                 "class": 'name-of-applicant'
@@ -544,7 +544,7 @@ $(document).ready(function () {
             var td3 = $('<td />', {}).text(interviews[i].candidate.phone).appendTo(tr);
             var td4 = $('<td />', {}).text(interviews[i].candidate.email).appendTo(tr);
             var td5 = $('<td />', {}).text(interviews[i].interview.status).appendTo(tr);
-            var td6 = $('<td />', {}).html('<i class="material-icons delete-icon">&#xE872;</i><i class="material-icons edit-icon">&#xE150;</i>').appendTo(tr);
+            var td6 = $('<td />', {}).html('<i class="material-icons delete-icon basic-icon">&#xE872;</i><i class="material-icons edit-icon basic-icon">&#xE150;</i>').appendTo(tr);
         }
     }
     /*END MY INTERVIEWS*/
