@@ -288,7 +288,7 @@ $(document).ready(function () {
     }
 
     function showEditInterviewTab() {
-        $('#main-content').load('templates/edit-interviews.html', function () {
+        $('#main-content').load('templates/edit-interview.html', function () {
             $("#page-title, #title-r").html("Edit Interviews");
             $("#menu-new-interview").removeClass("selected");
             $("#menu-interviews").removeClass("selected");
