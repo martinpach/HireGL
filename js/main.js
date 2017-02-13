@@ -1,9 +1,6 @@
 $(document).ready(function() {
     var token = localStorage.getItem("token");
     var startingInterview = 1;
-    /* loading templates */
-
-
     /*on click to new interview*/
     $('#menu-new-interview , #new-interview-r').on('click', function() {
         /*changing main content to new interview form and getting from server positons, locations and rooms*/
@@ -59,7 +56,6 @@ $(document).ready(function() {
                                 activateErrorModal();
                             },
                         });
-
                     });
                 },
                 error: function() {
@@ -108,10 +104,9 @@ $(document).ready(function() {
         $("#page-title, #title-r").html("My Interviews");
         $("#menu-new-interview").removeClass("selected");
         $("#menu-interviews").addClass("selected");
-
     });
     $("#my-interviews-r").on("click", function() {
-        $('#main-content').load('templates/my-interviews.html', function() {
+        $('#main-content').load('../templates/my-interviews.html', function() {
             getInterviews(1, 5);
             setText();
             setPaginationButtons();
@@ -119,6 +114,7 @@ $(document).ready(function() {
         $("#my-interviews-r").addClass("selected-r");
         $("#new-interview-r").removeClass("selected-r");
     });
+
     $("#menu-interviews").trigger("click");
     /* retrieving data from local storage and load user information */
     var data = {
@@ -126,9 +122,9 @@ $(document).ready(function() {
         lastName: localStorage.getItem("lastName"),
         photoUrl: localStorage.getItem("photoUrl")
     };
-    var userDataWrapper = '<div id="userData"><span id="v-align"><img src="{{photoUrl}}" id="user-icon">{{firstName}} {{lastName}}</span><i class="material-icons" id="logout">arrow_forward</i></div>';
+    var userDataWrapper = '<div id="userData"><span id="v-align"><img src="{{photoUrl}}" id="user-icon">{{firstName}} {{lastName}}</span><i class="material-icons basic-icon" id="logout">arrow_forward</i></div>';
     var html = Mustache.to_html(userDataWrapper, data);
-    var userDataWrapperResponsive = '<div id="userData-r"><img src="{{photoUrl}}" id="user-icon-r"><i class="material-icons" id="logout-r">arrow_forward</i></div>';
+    var userDataWrapperResponsive = '<div id="userData-r"><img src="{{photoUrl}}" id="user-icon-r"><i class="material-icons basic-icon" id="logout-r">arrow_forward</i></div>';
     var htmlResponsive = Mustache.to_html(userDataWrapperResponsive, data);
     $('#user-account-wrapper').html(html);
     $('#user-account-wrapper-r').html(htmlResponsive);
@@ -147,9 +143,7 @@ $(document).ready(function() {
             }
         });
     });
-
     /**NEW INTERVIEW FORM VALIDATION*/
-
     /*Function for Wrong input text*/
     function fieldWrongInput(inpfield, fieldMessage) {
         var input = $(inpfield);
@@ -159,10 +153,8 @@ $(document).ready(function() {
         }).insertAfter(input);
         if (fieldMessage == "Incorrect format") {
             $(".wrong-input").hide();
-        } else
-            $("inpfield + div.wrong-input").hide();
+        } else $("inpfield + div.wrong-input").hide();
     }
-
     /*Forbidden keys - firstName, lastName*/
     $(document).on('keyup', "#new-int-firstName, #new-int-lastName", function() {
         var firstName = $(this).val();
@@ -171,7 +163,6 @@ $(document).ready(function() {
             this.value = this.value.replace(regex, '');
         }
     });
-
     /*Input format validation - Phone number*/
     $(document).on('blur', "#new-int-phone", function() {
         var phone = $(this).val();
@@ -184,7 +175,6 @@ $(document).ready(function() {
             $('#new-int-phone + div.wrong-input').hide();
         }
     });
-
     /*Forbidden keys - phone*/
     $(document).on('keyup', "#new-int-phone", function() {
         var phone = $(this).val();
@@ -193,7 +183,6 @@ $(document).ready(function() {
             this.value = this.value.replace(regex, '');
         }
     });
-
     /*Input format validation - Email*/
     $(document).on('blur', "#new-int-email", function() {
         var email = $(this).val();
@@ -206,9 +195,7 @@ $(document).ready(function() {
             $('#new-int-email + div.wrong-input').hide();
         }
     });
-
     /*NEW INTERVIEW INPUTS VALIDATIONS END**/
-
     /**NEW INTERVIEW DATA*/
     function areInputsFill() {
         var notEmpty = 1;
@@ -258,24 +245,18 @@ $(document).ready(function() {
             fieldWrongInput("#new-int-room", "Please choose one option");
             $('#new-int-room + div.wrong-input').show();
         }
-        if ($("#new-int-assperson option:selected").text() == "Choose person") {
-            notEmpty = 0;
-            fieldWrongInput("#new-int-assperson", "Please choose one option");
-            $('#new-int-assperson + div.wrong-input').show();
-        }
         if (notEmpty == 0) {
             return false;
         } else {
             return true;
         }
     }
-
     /*New interview save button*/
     $(document).on('click', '#btn-my-int-save', function(event) {
         event.preventDefault();
         if (areInputsFill()) {
             sendNewInterviewToServer();
-            $('#main-content').load('templates/my-interviews.html', function() {
+            $('#main-content').load('../templates/my-interviews.html', function() {
                 getInterviews(1, 5);
                 setText();
                 setPaginationButtons();
@@ -300,7 +281,7 @@ $(document).ready(function() {
             location: $("#new-int-location option:selected").text().toUpperCase(),
             room: $("#new-int-room option:selected").text().toUpperCase(),
             dateTime: time,
-            userId: $("#new-int-assperson option:selected").text(),
+            userId: 1,
         }
         console.log(JSON.stringify({
             "candidate": candidate,
@@ -530,7 +511,6 @@ $(document).ready(function() {
             mui.overlay('off');
         });
     }
-
     /*ERROR MODAL*/
     /*NEW INTERVIEW DATA**/
     /*MY INTERVIEWS*/
@@ -542,7 +522,7 @@ $(document).ready(function() {
             url: 'http://localhost:8081/api/interviews?limit=' + limit + '&start=' + start,
             type: 'GET',
             success: function(data) {
-                $('#main-content').load('templates/my-interviews.html', function() {
+                $('#main-content').load('../templates/my-interviews.html', function() {
                     generateInterviewRows(data);
                 });
             },
@@ -557,7 +537,7 @@ $(document).ready(function() {
             var tr = $('<tr />', {
                 "class": 'table-content'
             }).appendTo("tbody");
-            var td1 = $('<td />', {}).html('<i class="material-icons mui--no-user-select">&#xE7FF;</i>').appendTo(tr);
+            var td1 = $('<td />', {}).html('<i class="material-icons mui--no-user-select basic-icon">&#xE7FF;</i>').appendTo(tr);
             var td2 = $('<td />', {}).appendTo(tr);
             var div_name = $('<div />', {
                 "class": 'name-of-applicant'
@@ -570,7 +550,7 @@ $(document).ready(function() {
             var td3 = $('<td />', {}).text(interviews[i].candidate.phone).appendTo(tr);
             var td4 = $('<td />', {}).text(interviews[i].candidate.email).appendTo(tr);
             var td5 = $('<td />', {}).text(interviews[i].interview.status).appendTo(tr);
-            var td6 = $('<td />', {}).html('<i class="material-icons delete-icon">&#xE872;</i><i class="material-icons edit-icon">&#xE150;</i>').appendTo(tr);
+            var td6 = $('<td />', {}).html('<i class="material-icons delete-icon basic-icon">&#xE872;</i><i class="material-icons edit-icon basic-icon">&#xE150;</i>').appendTo(tr);
         }
     }
     /*END MY INTERVIEWS*/
@@ -590,25 +570,23 @@ $(document).ready(function() {
             error: function() {
                 activateErrorModal();
                 return null;
-            },
+            }
         });
     }
 
     function setPaginationButtons() {
-        var btnNext = $('#next-page');
-        var btnPrev = $('#prev-page');
         if (getNumberOfInterviews() - startingInterview >= 5 && startingInterview == 1) {
-            btnNext.prop('disabled', false);
-            btnPrev.prop('disabled', true);
+            $('#next-page').prop('disabled', false);
+            $('#prev-page').prop('disabled', true);
         } else if (getNumberOfInterviews() - startingInterview >= 5 && startingInterview != 1) {
-            btnNext.prop('disabled', false);
-            btnPrev.prop('disabled', false);
+            $('#next-page').prop('disabled', false);
+            $('#prev-page').prop('disabled', false);
         } else if (getNumberOfInterviews() - startingInterview <= 5 && startingInterview >= 6) {
-            btnNext.prop('disabled', true);
-            btnPrev.prop('disabled', false);
+            $('#next-page').prop('disabled', true);
+            $('#prev-page').prop('disabled', false);
         } else {
-            btnNext.prop('disabled', true);
-            btnPrev.prop('disabled', true);
+            $('#next-page').prop('disabled', true);
+            $('#prev-page').prop('disabled', true);
         }
     }
 
@@ -639,4 +617,3 @@ $(document).ready(function() {
     });
     /* END PAGINATION */
 });
-
