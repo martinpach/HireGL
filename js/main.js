@@ -373,7 +373,8 @@ $(document).ready(function () {
     var interviewNotes = "";
     var idRow;
     $(".content").on('click', 'tr', function () {
-        idRow = ($(this).index()) + 1;
+        if (startingInterview > 1) idRow = startingInterview + ($(this).index());
+        else idRow = ($(this).index()) + 1;
         $.ajax({
             url: 'http://localhost:8081/api/interviews/' + idRow
             , type: 'GET'
@@ -570,6 +571,7 @@ $(document).ready(function () {
     /*MY INTERVIEWS*/
     function updateMyInterviews() {
         $('#main-content').load('templates/my-interviews.html', function () {
+            startingInterview = 1;
             getNumberOfInterviews();
             getInterviews(1, 5);
             setText();
