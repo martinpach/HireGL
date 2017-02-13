@@ -312,6 +312,19 @@ td {
     cursor: pointer;
     opacity: 0.7;
 }
+
+//pagination
+#showed-pages{
+    display: inline-block;
+    padding-bottom: 6px;
+}
+
+#pagination i{
+    width: 34px;
+    padding: 5px;
+    background-color: #e7e7e7;
+}
+
 /*
     My interviews END
 */
