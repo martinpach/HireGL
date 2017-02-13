@@ -243,9 +243,10 @@ $(document).ready(function() {
             fieldWrongInput("#new-int-room", "Please choose one option");
             $('#new-int-room + div.wrong-input').show();
         }
-        if (notEmpty == 0) {
+        else if (notEmpty == 0) {
             return false;
-        } else {
+        }
+        else {
             return true;
         }
     }
@@ -304,7 +305,7 @@ $(document).ready(function() {
     }
 
     /*Edit interview save button*/
-    $(document).on('click', '#btn-my-int-save', function(event) {
+    $(document).on('click', '#btn-my-int-edit', function(event) {
         event.preventDefault();
         if (areInputsFill()) {
             sendEditInterviewToServer();
