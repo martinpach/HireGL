@@ -2,9 +2,8 @@ $(document).ready(function() {
     var token = localStorage.getItem("token");
     var startingInterview = 1;
     /* loading templates */
-    $('#main-content').load('templates/my-interviews.html', function() {
-        getInterviews(1, 5);
-    });
+
+
     /*on click to new interview*/
     $('#menu-new-interview , #new-interview-r').on('click', function() {
         /*changing main content to new interview form and getting from server positons, locations and rooms*/
@@ -103,6 +102,8 @@ $(document).ready(function() {
     $('#menu-interviews, #my-interviews-r').on('click', function() {
         $('#main-content').load('templates/my-interviews.html', function() {
             getInterviews(1, 5);
+            setText();
+            setPaginationButtons();
         });
         $("#page-title, #title-r").html("My Interviews");
         $("#menu-new-interview").removeClass("selected");
@@ -112,6 +113,8 @@ $(document).ready(function() {
     $("#my-interviews-r").on("click", function() {
         $('#main-content').load('templates/my-interviews.html', function() {
             getInterviews(1, 5);
+            setText();
+            setPaginationButtons();
         });
         $("#my-interviews-r").addClass("selected-r");
         $("#new-interview-r").removeClass("selected-r");
@@ -274,6 +277,8 @@ $(document).ready(function() {
             sendNewInterviewToServer();
             $('#main-content').load('templates/my-interviews.html', function() {
                 getInterviews(1, 5);
+                setText();
+                setPaginationButtons();
                 $("#page-title, #title-r").html("My Interviews");
                 $("#menu-new-interview").removeClass("selected");
                 $("#menu-interviews").addClass("selected");
@@ -599,8 +604,8 @@ $(document).ready(function() {
             btnNext.prop('disabled', false);
             btnPrev.prop('disabled', false);
         } else if (getNumberOfInterviews() - startingInterview <= 5 && startingInterview >= 6) {
-            btnNext.prop('disabled', false);
-            btnPrev.prop('disabled', true);
+            btnNext.prop('disabled', true);
+            btnPrev.prop('disabled', false);
         } else {
             btnNext.prop('disabled', true);
             btnPrev.prop('disabled', true);
@@ -619,9 +624,6 @@ $(document).ready(function() {
         $('#showed-pages').html(html);
     }
 
-    setText();
-    setPaginationButtons();
-
     $('#main-content').on('click', '#prev-page', function() {
         startingInterview -= 5;
         getInterviews(startingInterview, 5);
@@ -637,3 +639,4 @@ $(document).ready(function() {
     });
     /* END PAGINATION */
 });
+
