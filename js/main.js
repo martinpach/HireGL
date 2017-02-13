@@ -1,6 +1,7 @@
 $(document).ready(function() {
     var token = localStorage.getItem("token");
     var startingInterview = 1;
+    var countInterviews;
     /*on click to new interview*/
     $('#menu-new-interview , #new-interview-r').on('click', function() {
         /*changing main content to new interview form and getting from server positons, locations and rooms*/
@@ -96,23 +97,10 @@ $(document).ready(function() {
         $("#my-interviews-r").removeClass("selected-r");
     });
     $('#menu-interviews, #my-interviews-r').on('click', function() {
-        $('#main-content').load('templates/my-interviews.html', function() {
-            getInterviews(1, 5);
-            setText();
-            setPaginationButtons();
-        });
+        updateMyInterviews();
         $("#page-title, #title-r").html("My Interviews");
         $("#menu-new-interview").removeClass("selected");
         $("#menu-interviews").addClass("selected");
-    });
-    $("#my-interviews-r").on("click", function() {
-        $('#main-content').load('../templates/my-interviews.html', function() {
-            getInterviews(1, 5);
-            setText();
-            setPaginationButtons();
-        });
-        $("#my-interviews-r").addClass("selected-r");
-        $("#new-interview-r").removeClass("selected-r");
     });
 
     $("#menu-interviews").trigger("click");
@@ -256,14 +244,6 @@ $(document).ready(function() {
         event.preventDefault();
         if (areInputsFill()) {
             sendNewInterviewToServer();
-            $('#main-content').load('../templates/my-interviews.html', function() {
-                getInterviews(1, 5);
-                setText();
-                setPaginationButtons();
-                $("#page-title, #title-r").html("My Interviews");
-                $("#menu-new-interview").removeClass("selected");
-                $("#menu-interviews").addClass("selected");
-            });
         }
     });
 
@@ -299,7 +279,7 @@ $(document).ready(function() {
                 "interview": interview
             }),
             success: function() {
-                $('#main-content').load('templates/my-interviews.html');
+                updateMyInterviews();
             }
         });
     }
@@ -514,6 +494,18 @@ $(document).ready(function() {
     /*ERROR MODAL*/
     /*NEW INTERVIEW DATA**/
     /*MY INTERVIEWS*/
+    function updateMyInterviews() {
+        $('#main-content').load('templates/my-interviews.html', function() {
+            getNumberOfInterviews();
+            getInterviews(1, 5);
+            setText();
+            setPaginationButtons();
+            $("#page-title, #title-r").html("My Interviews");
+            $("#menu-new-interview").removeClass("selected");
+            $("#menu-interviews").addClass("selected");
+        });
+    }
+
     function getInterviews(start, limit) {
         $.ajax({
             beforeSend: function(xhr) {
@@ -522,8 +514,10 @@ $(document).ready(function() {
             url: 'http://localhost:8081/api/interviews?limit=' + limit + '&start=' + start,
             type: 'GET',
             success: function(data) {
-                $('#main-content').load('../templates/my-interviews.html', function() {
+                $('#main-content').load('templates/my-interviews.html', function() {
                     generateInterviewRows(data);
+                    setText();
+                    setPaginationButtons();
                 });
             },
             error: function() {
@@ -565,7 +559,7 @@ $(document).ready(function() {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
             },
             success: function(data) {
-                return data.count;
+                countInterviews = data.count;
             },
             error: function() {
                 activateErrorModal();
@@ -575,13 +569,13 @@ $(document).ready(function() {
     }
 
     function setPaginationButtons() {
-        if (getNumberOfInterviews() - startingInterview >= 5 && startingInterview == 1) {
+        if (countInterviews - startingInterview >= 5 && startingInterview == 1) {
             $('#next-page').prop('disabled', false);
             $('#prev-page').prop('disabled', true);
-        } else if (getNumberOfInterviews() - startingInterview >= 5 && startingInterview != 1) {
+        } else if (countInterviews - startingInterview >= 5 && startingInterview != 1) {
             $('#next-page').prop('disabled', false);
             $('#prev-page').prop('disabled', false);
-        } else if (getNumberOfInterviews() - startingInterview <= 5 && startingInterview >= 6) {
+        } else if (countInterviews - startingInterview <= 5 && startingInterview >= 6) {
             $('#next-page').prop('disabled', true);
             $('#prev-page').prop('disabled', false);
         } else {
@@ -591,11 +585,12 @@ $(document).ready(function() {
     }
 
     function setText() {
-        var to = (startingInterview + 4 > getNumberOfInterviews()) ? getNumberOfInterviews() : startingInterview + 4;
+        console.log(countInterviews);
+        var to = (startingInterview + 4 > countInterviews) ? countInterviews : startingInterview + 4;
         var data = {
             from: startingInterview,
             to: to,
-            total: getNumberOfInterviews()
+            total: countInterviews
         }
         var text = 'SHOWING {{from}} - {{to}} FROM {{total}}';
         var html = Mustache.to_html(text, data);
