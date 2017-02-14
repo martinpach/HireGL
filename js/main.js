@@ -175,6 +175,29 @@ $(document).ready(function () {
             $('#new-int-email + div.wrong-input').show();
         }
     });
+    /*inputs on change - add/remove class*/
+    $(document).on('change', "#new-int-date", function(){
+        $("#new-int-date").addClass('selected-option');
+    });
+
+    $(document).on('change', "#new-int-time", function(){
+        $("#new-int-time").addClass('selected-option');
+    });
+
+    $(document).on('blur', "select", function(){
+        if ($("#new-int-room :selected").text() != "Choose Room") {
+            $("#new-int-room").addClass('selected-option');
+        } else $("#new-int-room").removeClass('selected-option');
+        if ($("#new-int-location :selected").text() != "Enter Location") {
+            $("#new-int-location").addClass('selected-option');
+        } else $("#new-int-location").removeClass('selected-option');
+        if ($("#new-int-position :selected").text() != "Choose position") {
+            $("#new-int-position").addClass('selected-option');
+        } else $("#new-int-position").removeClass('selected-option');
+        if ($("#new-int-assperson :selected").text() != "Choose person") {
+            $("#new-int-assperson").addClass('selected-option');
+        } else $("#new-int-assperson").removeClass('selected-option');
+    });
     /*NEW INTERVIEW INPUTS VALIDATIONS END**/
     /**NEW INTERVIEW DATA*/
     function areInputsFill() {

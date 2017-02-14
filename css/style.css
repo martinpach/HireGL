@@ -1,4 +1,4 @@
-/*general layout*/
+general layout*/
 
 body {
     font-family: "Roboto", "Helvetica Neue", Helvetica, Arial;
@@ -280,19 +280,27 @@ body {
 
 /*New interview*/
 
-.mui-table>thead>tr>th {
-    border-bottom: 2px solid rgb(227, 227, 227);
-}
 
-input:invalid {
-    border-bottom: 3px solid rgb(227, 227, 227) !important;
+
+input:invalid, textarea:invalid {
+    border-bottom: 2px solid rgb(227, 227, 227) !important;
 }
 
 input:focus,
-input:valid,
+input[type="text"]:valid,
+input[type="phone"]:valid,
 .mui-select:focus>select,
-textarea:focus {
-    border-bottom: 3px solid #afb42b !important;
+textarea:focus,
+textarea:valid {
+    border-bottom: 2px solid #afb42b !important;
+}
+
+.mui-table>thead>tr>th {
+    border-bottom: 2px solid rgb(227, 227, 227) !important;
+}
+
+.selected-option {
+    border-bottom: 2px solid #afb42b !important;
 }
 
 .wrong-input {
@@ -302,6 +310,7 @@ textarea:focus {
     position: absolute;
     text-align: right;
 }
+
 
 legend {
     color: #757575 !important;
@@ -332,14 +341,14 @@ option:first-child {
     font-weight: bold;
     font-size:90%;
     text-align:center;
+    position:relative;
    /* margin: 22px 10px;*/
 }
 
 .form_btn_cancel,
 .form_btn_save {
     float: right;
-    position:relative;
-    width: 30%;
+    width: 110px;
     margin:10px;
     box-sizing: border-box;
 }
@@ -436,4 +445,3 @@ table {
 >>>>>>> accb1aea093e8815645bb46a6dd979339768b794
 /*
     My interviews END
-*/
