@@ -356,7 +356,16 @@ td {
     border: none !important;
 }
 
-.table-content {
+table {
+    border-spacing: 0 !important;
+}
+
+.tr-content:hover {
+    background-color: rgba(0, 0, 0, .06);
+    cursor: pointer;
+}
+
+.td-my-interviews {
     border-bottom: 1px solid rgb(227, 227, 227) !important;
 }
 
@@ -381,11 +390,6 @@ td {
 .delete-icon:hover {
     cursor: pointer;
     opacity: 0.7;
-}
-
-.rowOnHover {
-    background-color: rgba(0, 0, 0, .06);
-    cursor: pointer;
 }
 
 

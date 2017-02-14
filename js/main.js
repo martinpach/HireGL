@@ -358,15 +358,7 @@ $(document).ready(function () {
             }
         });
     }
-    //Row change background on hover
-    $(".content").on('mouseover', 'tbody>tr', function () {
-        $(this).on('mouseenter', function () {
-            $(this).addClass("rowOnHover");
-        });
-        $(this).on('mouseleave', function () {
-            $(this).removeClass("rowOnHover");
-        });
-    });
+
     /*MODAL*/
     var picture = "pictures/default-user.png";
     var candicateName = "";
@@ -613,11 +605,13 @@ $(document).ready(function () {
     function generateInterviewRows(interviews) {
         for (var i = 0; i < interviews.length; i++) {
             var tr = $('<tr />', {
-                "class": 'table-content'
-                , 'data-id': interviews[i].id
+                'class': 'tr-content',
+                'data-id': interviews[i].id
             }).appendTo("tbody");
             var td1 = $('<td />', {}).html('<i class="material-icons mui--no-user-select basic-icon">&#xE7FF;</i>').appendTo(tr);
-            var td2 = $('<td />', {}).appendTo(tr);
+            var td2 = $('<td />', {
+                'class': 'td-my-interviews'
+            }).appendTo(tr);
             var div_name = $('<div />', {
                 "class": 'name-of-applicant'
             }).text(interviews[i].candidate.firstName + " " + interviews[i].candidate.lastName).appendTo(td2);
@@ -626,10 +620,18 @@ $(document).ready(function () {
             }).text(interviews[i].candidate.position).appendTo(td2);
             div_name.appendTo(td2);
             div_position.appendTo(td2);
-            var td3 = $('<td />', {}).text(interviews[i].candidate.phone).appendTo(tr);
-            var td4 = $('<td />', {}).text(interviews[i].candidate.email).appendTo(tr);
-            var td5 = $('<td />', {}).text(interviews[i].interview.status).appendTo(tr);
-            var td6 = $('<td />', {}).html('<i class="material-icons delete-icon basic-icon">&#xE872;</i><i class="material-icons edit-icon basic-icon">&#xE150;</i>').appendTo(tr);
+            var td3 = $('<td />', {
+                'class': 'td-my-interviews'
+            }).text(interviews[i].candidate.phone).appendTo(tr);
+            var td4 = $('<td />', {
+                'class': 'td-my-interviews'
+            }).text(interviews[i].candidate.email).appendTo(tr);
+            var td5 = $('<td />', {
+                'class': 'td-my-interviews'
+            }).text(interviews[i].interview.status).appendTo(tr);
+            var td6 = $('<td />', {
+                'class': 'td-my-interviews'
+            }).html('<i class="material-icons delete-icon basic-icon">&#xE872;</i><i class="material-icons edit-icon basic-icon">&#xE150;</i>').appendTo(tr);
         }
     }
     /*END MY INTERVIEWS*/
