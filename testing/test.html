@@ -20,6 +20,7 @@
     <script>
         $(document).ready(function () {
             var countOfInterviews;
+            var counter = 0;
             var token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE0ODE2MzU2ODksInN1YiI6InVzZXIxIn0.urh7CmQmz4c03dVq5qoFyFwXypTqW_95x9uBtvoKrVY9IVDeMXBjK2nCp_R9hXgPKuR_ggdqUhZPMu7uSZlUeA";
             $.ajax({
                 url: 'http://localhost:8081/api/interviews/count'
@@ -31,33 +32,34 @@
                     countOfInterviews = (data.count);
                     $("#Interviews").text("count of interviews: " + countOfInterviews);
                     //............................
-                    for (var i = 1; i < countOfInterviews + 1; i++) {
-                        $.ajax({
-                            url: 'http://localhost:8081/api/interviews/' + i + ''
-                            , type: 'GET'
-                            , beforeSend: function (xhr) {
-                                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-                            }
-                            , success: function (data) {
+                    counter++;
+                    $.ajax({
+                        url: 'http://localhost:8081/api/interviews?limit=' + countOfInterviews + '&start=1'
+                        , type: 'GET'
+                        , beforeSend: function (xhr) {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                        }
+                        , success: function (data) {
+                            for (var i = 0; i < countOfInterviews; i++) {
                                 $('<div />').text(".................................. ").appendTo("#int");
-                                $('<div />').text("ID: " + data.id).appendTo("#int");
-                                $('<div />').text("First name: " + data.candidate.firstName).appendTo("#int");
-                                $('<div />').text("Last name: " + data.candidate.lastName).appendTo("#int");
-                                $('<div />').text("Phone: " + data.candidate.phone).appendTo("#int");
-                                $('<div />').text("Email: " + data.candidate.email).appendTo("#int");
-                                $('<div />').text("Skype: " + data.candidate.skype).appendTo("#int");
-                                $('<div />').text("Position: " + data.candidate.position).appendTo("#int");
-                                $('<div />').text("Date: " + data.interview.dateTime).appendTo("#int");
-                                $('<div />').text("Location: " + data.interview.location).appendTo("#int");
-                                $('<div />').text("Room: " + data.interview.room).appendTo("#int");
-                                $('<div />').text("Note: " + data.interview.note).appendTo("#int");
-                                $('<div />').text("Status: " + data.interview.status).appendTo("#int");
+                                $('<div />').text("ID: " + data[i].id).appendTo("#int");
+                                $('<div />').text("First name: " + data[i].candidate.firstName).appendTo("#int");
+                                $('<div />').text("Last name: " + data[i].candidate.lastName).appendTo("#int");
+                                $('<div />').text("Phone: " + data[i].candidate.phone).appendTo("#int");
+                                $('<div />').text("Email: " + data[i].candidate.email).appendTo("#int");
+                                $('<div />').text("Skype: " + data[i].candidate.skype).appendTo("#int");
+                                $('<div />').text("Position: " + data[i].candidate.position).appendTo("#int");
+                                $('<div />').text("Date: " + data[i].interview.dateTime).appendTo("#int");
+                                $('<div />').text("Location: " + data[i].interview.location).appendTo("#int");
+                                $('<div />').text("Room: " + data[i].interview.room).appendTo("#int");
+                                $('<div />').text("Note: " + data[i].interview.note).appendTo("#int");
+                                $('<div />').text("Status: " + data[i].interview.status).appendTo("#int");
                             }
-                            , error: function () {
-                                console.log(" Interviews information error");
-                            }
-                        , });
-                    }
+                        }
+                        , error: function () {
+                            console.log(" Interviews information error");
+                        }
+                    , });
                     //............................
                 }
                 , error: function () {
@@ -75,6 +77,7 @@
                     }
                     , success: function (data) {
                         console.log("row " + interviewId + " is deleted");
+                        counter--;
                         location.reload();
                     }
                     , error: function () {
@@ -82,9 +85,7 @@
                     }
                 , });
             });
-            var counter = 0;
             $("#add").on('click', function () {
-                counter++;
                 var candidate = {
                     firstName: "FirstName" + counter
                     , lastName: "LastName" + counter
@@ -112,6 +113,7 @@
                     })
                     , success: function () {
                         console.log("interview added");
+                        counter++;
                         location.reload();
                     }
                 });
