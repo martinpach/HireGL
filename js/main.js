@@ -605,7 +605,8 @@ $(document).ready(function () {
     function generateInterviewRows(interviews) {
         for (var i = 0; i < interviews.length; i++) {
             var tr = $('<tr />', {
-                "class": 'table-content'
+                "class": 'table-content',
+                'data-id': interviews[i].id
             }).appendTo("tbody");
             var td1 = $('<td />', {}).html('<i class="material-icons mui--no-user-select basic-icon">&#xE7FF;</i>').appendTo(tr);
             var td2 = $('<td />', {}).appendTo(tr);
@@ -686,4 +687,24 @@ $(document).ready(function () {
         setPaginationButtons();
     });
     /* END PAGINATION */
+
+    /** DELETE 1 INTERVIEW*/
+    $('#main-content').on('click', '.delete-icon', function () {
+        var interviewID = ($(this).parent().parent().attr('data-id'));
+        alert(interviewID);
+        $.ajax({
+            url: 'http://localhost:8081/api/interviews/' + interviewID
+            , type: 'DELETE'
+            , beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+            }
+            , success: function () {
+                updateMyInterviews();
+            }
+            , error: function () {
+                console.log("Error deleting interview!");
+            }
+        });
+    });
+    /** END DELETE 1 INTERVIEW*/
 });
