@@ -75,6 +75,7 @@
                     }
                     , success: function (data) {
                         console.log("row " + interviewId + " is deleted");
+                        location.reload();
                     }
                     , error: function () {
                         console.log("error with deleting row");
@@ -111,6 +112,7 @@
                     })
                     , success: function () {
                         console.log("interview added");
+                        location.reload();
                     }
                 });
             });
