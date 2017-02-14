@@ -358,6 +358,15 @@ $(document).ready(function () {
             }
         });
     }
+    //Row change background on hover
+    $(".content").on('mouseover', 'tbody>tr', function () {
+        $(this).on('mouseenter', function () {
+            $(this).addClass("rowOnHover");
+        });
+        $(this).on('mouseleave', function () {
+            $(this).removeClass("rowOnHover");
+        });
+    });
     /*MODAL*/
     var picture = "pictures/default-user.png";
     var candicateName = "";
@@ -373,8 +382,7 @@ $(document).ready(function () {
     var interviewNotes = "";
     var idRow;
     $(".content").on('click', 'tr', function () {
-        if (startingInterview > 1) idRow = startingInterview + ($(this).index());
-        else idRow = ($(this).index()) + 1;
+        idRow = $(this).attr('data-id');
         $.ajax({
             url: 'http://localhost:8081/api/interviews/' + idRow
             , type: 'GET'
@@ -605,8 +613,8 @@ $(document).ready(function () {
     function generateInterviewRows(interviews) {
         for (var i = 0; i < interviews.length; i++) {
             var tr = $('<tr />', {
-                "class": 'table-content',
-                'data-id': interviews[i].id
+                "class": 'table-content'
+                , 'data-id': interviews[i].id
             }).appendTo("tbody");
             var td1 = $('<td />', {}).html('<i class="material-icons mui--no-user-select basic-icon">&#xE7FF;</i>').appendTo(tr);
             var td2 = $('<td />', {}).appendTo(tr);
@@ -687,7 +695,6 @@ $(document).ready(function () {
         setPaginationButtons();
     });
     /* END PAGINATION */
-
     /** DELETE 1 INTERVIEW*/
     $('#main-content').on('click', '.delete-icon', function () {
         var interviewID = ($(this).parent().parent().attr('data-id'));
