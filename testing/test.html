@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.muicss.com/mui-0.9.9-rc2/css/mui.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/loginStyle.css">
+    <script src="https://cdn.muicss.com/mui-0.9.9-rc2/js/mui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/janl/mustache.js/master/mustache.min.js"></script>
+    <script src="js/login.js"></script>
+    <title>login</title>
+    <style>
+        p {
+            margin-top: 50px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            var countOfInterviews;
+            var token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE0ODE2MzU2ODksInN1YiI6InVzZXIxIn0.urh7CmQmz4c03dVq5qoFyFwXypTqW_95x9uBtvoKrVY9IVDeMXBjK2nCp_R9hXgPKuR_ggdqUhZPMu7uSZlUeA";
+            $.ajax({
+                url: 'http://localhost:8081/api/interviews/count'
+                , type: 'GET'
+                , beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                }
+                , success: function (data) {
+                    countOfInterviews = (data.count);
+                    $("#Interviews").text("count of interviews: " + countOfInterviews);
+                    //............................
+                    for (var i = 1; i < countOfInterviews + 1; i++) {
+                        $.ajax({
+                            url: 'http://localhost:8081/api/interviews/' + i + ''
+                            , type: 'GET'
+                            , beforeSend: function (xhr) {
+                                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                            }
+                            , success: function (data) {
+                                $('<div />').text(".................................. ").appendTo("#int");
+                                $('<div />').text("ID: " + data.id).appendTo("#int");
+                                $('<div />').text("First name: " + data.candidate.firstName).appendTo("#int");
+                                $('<div />').text("Last name: " + data.candidate.lastName).appendTo("#int");
+                                $('<div />').text("Phone: " + data.candidate.phone).appendTo("#int");
+                                $('<div />').text("Email: " + data.candidate.email).appendTo("#int");
+                                $('<div />').text("Skype: " + data.candidate.skype).appendTo("#int");
+                                $('<div />').text("Position: " + data.candidate.position).appendTo("#int");
+                                $('<div />').text("Date: " + data.interview.dateTime).appendTo("#int");
+                                $('<div />').text("Location: " + data.interview.location).appendTo("#int");
+                                $('<div />').text("Room: " + data.interview.room).appendTo("#int");
+                                $('<div />').text("Note: " + data.interview.note).appendTo("#int");
+                                $('<div />').text("Status: " + data.interview.status).appendTo("#int");
+                            }
+                            , error: function () {
+                                console.log(" Interviews information error");
+                            }
+                        , });
+                    }
+                    //............................
+                }
+                , error: function () {
+                    console.log("count of interviews: error");
+                }
+            , });
+            $("#delete").on('click', function () {
+                var interviewId = $("#number").val();
+                console.log(interviewId);
+                $.ajax({
+                    url: 'http://localhost:8081/api/interviews/' + interviewId
+                    , type: 'DELETE'
+                    , beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                    }
+                    , success: function (data) {
+                        console.log("row " + interviewId + " is deleted");
+                    }
+                    , error: function () {
+                        console.log("error with deleting row");
+                    }
+                , });
+            });
+            var counter = 0;
+            $("#add").on('click', function () {
+                counter++;
+                var candidate = {
+                    firstName: "FirstName" + counter
+                    , lastName: "LastName" + counter
+                    , phone: "123456789 " + counter
+                    , skype: "Skype" + counter
+                    , email: "Email" + counter + "@email.com"
+                    , position: "ARCHITECT"
+                , };
+                var interview = {
+                    location: "KOSICE"
+                    , room: "MATRIX"
+                    , dateTime: "2016-12-13T09:34Z"
+                    , userId: 1
+                , }
+                $.ajax({
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                    }
+                    , url: 'http://localhost:8081/api/interviews'
+                    , type: 'POST'
+                    , contentType: 'application/json'
+                    , data: JSON.stringify({
+                        "candidate": candidate
+                        , "interview": interview
+                    })
+                    , success: function () {
+                        console.log("interview added");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="mui-col-md-6">
+        <h3 id="Interviews"></h3>
+        <h1>Interviews</h1 >
+        <div id="int"></div>
+    </div>
+    <div id="second" class="mui-col-md-6">
+        <h3>Delete interviews</h3>
+        <p>set ID of interview</p>
+        <input type="number" id="number">
+        <button  id="delete" >DELETE</button>
+        <p>Add interviews</p>
+        <button  id="add" >ADD</button>
+    </div>
+</body>
+
+</html>
