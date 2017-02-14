@@ -691,7 +691,6 @@ $(document).ready(function () {
     /** DELETE 1 INTERVIEW*/
     $('#main-content').on('click', '.delete-icon', function () {
         var interviewID = ($(this).parent().parent().attr('data-id'));
-        alert(interviewID);
         $.ajax({
             url: 'http://localhost:8081/api/interviews/' + interviewID
             , type: 'DELETE'
