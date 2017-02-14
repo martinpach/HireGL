@@ -2,7 +2,9 @@
 
 body {
     font-family: "Roboto", "Helvetica Neue", Helvetica, Arial;
-    position: relative;
+    width:100%;
+    height:100%;
+    position:relative;
 }
 
 .upper {
@@ -13,6 +15,16 @@ body {
     padding: 0%;
 }
 
+#main-content{
+    padding-right:0;
+    min-height:80vh;
+}
+
+.inner-shadow{
+    -webkit-box-shadow: inset 24px 1px 26px -22px rgba(153,145,153,1);
+    -moz-box-shadow: inset 24px 1px 26px -22px rgba(153,145,153,1);
+     box-shadow: inset 24px 1px 26px -22px rgba(153,145,153,1);
+}
 
 /*sidebar*/
 
@@ -90,10 +102,10 @@ body {
     position: relative;
     z-index: 9999;
 }
-
-.sidebar,
+,
 .content {
-    height: 100vh;
+    min-height: 100vh;
+    margin-right:0;
 }
 
 .menu-container {
@@ -211,10 +223,23 @@ body {
 }
 
 .footer-responsive {
-    background-color: lightgrey;
-    display: none;
+    background-color:rgb(236, 239, 241);
+    display:none;
+    padding:20px;
+    padding-left:60px;
+    margin: 0;
+    margin-top:20%;
+    margin-bottom:0;
+    margin-right:15px;
+    position:absolute;
+    width:100%;
+    position:relative;    
 }
 
+.btn-responsive{
+    float:right;
+
+} 
 @media screen and (max-width: 768px) {
     #menu {
         display: none;
@@ -237,11 +262,18 @@ body {
     .mini-header {
         display: block;
     }
-    .footer {
+    .btn_footer {
         display: none;
     }
     .footer-responsive {
         display: block;
+    }
+
+    .content{
+        height:50%;
+        width:100vw;
+        margin-right:0;
+        padding-right:0;
     }
 }
 
@@ -298,14 +330,18 @@ option:first-child {
 .form_btn_save,
 .form_btn_close {
     font-weight: bold;
-    height: 36px;
-    margin: 22px 10px;
+    font-size:90%;
+    text-align:center;
+   /* margin: 22px 10px;*/
 }
 
 .form_btn_cancel,
 .form_btn_save {
     float: right;
-    width: 120px;
+    position:relative;
+    width: 30%;
+    margin:10px;
+    box-sizing: border-box;
 }
 
 .form_btn_close {
@@ -320,10 +356,12 @@ option:first-child {
 }
 
 .btn_footer {
+    position:relative;
     background-color: rgb(236, 239, 241);
-    padding: 0 !important;
-    position: absolute;
-    bottom: 0;
+    padding:20px;
+    margin-bottom: 0;
+    margin-top:20%;
+    float:left;
 }
 
 .new_int_table {
@@ -392,7 +430,10 @@ table {
     opacity: 0.7;
 }
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> accb1aea093e8815645bb46a6dd979339768b794
 /*
     My interviews END
 */
