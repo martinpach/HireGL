@@ -459,11 +459,6 @@ function getRoom () {
             }
         });
     }
-    /*CLICK on EDIT pic in my int*/
-    $(document).on('click', '.edit-icon', function (event) {
-        event.preventDefault();
-        showEditInterviewTab();
-    });
 
     var candicateName = "";
     var candidateFirstName = "";
@@ -511,6 +506,13 @@ function getRoom () {
         , });
     }
 
+    /*CLICK on EDIT pic in my int*/
+    $(document).on('click', '.edit-icon', function (event) {
+        event.preventDefault();
+        var idRow = $(this).parent().parent().attr('data-id');
+        showEditInterviewTab();
+    });
+
     function upperCaseFirstLetter( str ) {
         var pieces = str.split(" ");
         for ( var i = 0; i < pieces.length; i++ ) {
@@ -549,6 +551,39 @@ function getRoom () {
             $("#new-int-position").addClass('selected-option');
         });
     }
+
+    /*$(document).on('change', '#new-int-location', function () {
+        while ($('#new-int-room option:last').text() != "Choose Room") {
+            $('#new-int-room option:last').remove();
+        }
+        var option = $("#new-int-location option:selected").text().toUpperCase();
+        //getting from server rooms which are in selected location
+        $.ajax({
+            url: 'http://localhost:8081/api/locations/' + option + '/rooms'
+            , type: 'GET'
+            , async: false
+            , beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+            }
+            , success: function (data) {
+                var to = ($("#new-int-room").children().length) - 1;
+                for (var g = 1; g <= to; g++) {
+                    $("#new-int-room").children().eq(1).remove();
+                }
+                for (var j = 0; j < data.length; j++) {
+                    var text = data[j].toLowerCase().replace(/\b[a-z]/g, function (letter) {
+                        return letter.toUpperCase();
+                    });
+                    $('<option />', {
+                        "value": 'room_' + data[j].toLowerCase().replace(/ /g, "_")
+                    }).text(text).appendTo("#new-int-room");
+                }
+            }
+            , error: function () {
+                activateErrorModal();
+            }
+        , });
+    });*/
 
     /*Save Edited Interview*/
     $(document).on('click', '#btn-edit-int-save', function (event) {
