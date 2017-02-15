@@ -130,6 +130,86 @@ $(document).ready(function () {
             }
         });
     });
+function getPositions() {
+    $.ajax({
+        url: 'http://localhost:8081/api/positions'
+        , type: 'GET'
+        , async: false
+        , beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+        }
+        , success: function (data) {
+            /*creating new positon options*/
+            for (var i = 0; i < data.length; i++) {
+                var text = data[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
+                    return letter.toUpperCase();
+                });
+                $('<option />').text(text).appendTo("#new-int-position").val(text.toLowerCase().slice(0, 4));
+            }
+        }
+        , error: function () {
+            activateErrorModal();
+        }
+    , });
+}
+function getLocations () {
+    $.ajax({
+        url: 'http://localhost:8081/api/locations'
+        , type: 'GET'
+        , async: false
+        , beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+        }
+        , success: function (data) {
+            /*changing format of data form server and creating new options to select tag in locations*/
+            for (var i = 0; i < data.length; i++) {
+                var text = data[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
+                    return letter.toUpperCase();
+                });
+                $('<option />', {
+                    "class": 'locations'
+                    , "value": 'loc_' + data[i].toLowerCase().replace(/ /g, "_")
+                }).text(text).appendTo("#new-int-location").val(text.toLowerCase().slice(0, 4));
+            }
+        }
+        , error: function () {
+            activateErrorModal();
+        }
+    , });
+}
+function getRoom () {
+    var option = $("#new-int-location option:selected").text().toUpperCase();
+    //getting from server rooms which are in selected location
+    $.ajax({
+        url: 'http://localhost:8081/api/locations/' + option + '/rooms'
+        , type: 'GET'
+        , async: false
+        , beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+        }
+        , success: function (data) {
+            /*cleaning room options*/
+            var to = ($("#new-int-room").children().length) - 1;
+            for (var g = 1; g <= to; g++) {
+                $("#new-int-room").children().eq(1).remove();
+            }
+            /*cleaning room options*/
+            for (var j = 0; j < data.length; j++) {
+                var text = data[j].toLowerCase().replace(/\b[a-z]/g, function (letter) {
+                    return letter.toUpperCase();
+                });
+                /*creating new room options and changing text format*/
+                $('<option />', {
+                    "value": 'room_' + data[j].toLowerCase().replace(/ /g, "_")
+                }).text(text).appendTo("#new-int-room").val(text.toLowerCase().slice(0, 3));
+                /*creating new room options and changing text format END*/
+            }
+        }
+        , error: function () {
+            activateErrorModal();
+        }
+    , });
+}
     /**NEW INTERVIEW FORM VALIDATION*/
     /*Function for Wrong input text*/
     function fieldWrongInput(inpfield, fieldMessage) {
@@ -284,7 +364,7 @@ $(document).ready(function () {
             sendNewInterviewToServer();
         }
     });
-
+    /*POST NEW interview*/
     function sendNewInterviewToServer() {
         var dateVal = $("#new-int-date").val();
         var timeVal = $("#new-int-time").val();
@@ -325,24 +405,11 @@ $(document).ready(function () {
             }
         });
     }
-    /*Lead Edit-interview tab*/
-    function showEditInterviewTab() {
-        $('#main-content').load('templates/edit-interview.html', function () {
-            $("#page-title, #title-r").html("Edit Interviews");
-            $("#menu-new-interview").removeClass("selected");
-            $("#menu-interviews").removeClass("selected");
-        });
-    }
-    /*Edit interview save button*/
-/*    $(document).on('click', '#btn-edit-int-save', function (event) {
-        event.preventDefault();
-        if (areInputsFill()) {
-            sendEditInterviewToServer();
-        }
-    });*/
-/*
+    /*PUT UPDATE interview*/
     function sendEditInterviewToServer() {
-        var time = "2016-12-13T09:34Z";
+        var dateVal = $("#new-int-date").val();
+        var timeVal = $("#new-int-time").val();
+        var time = dateVal+"T"+timeVal+"Z";
         var candidate = {
             firstName: $("#new-int-firstName").val()
             , lastName: $("#new-int-lastName").val()
@@ -356,7 +423,7 @@ $(document).ready(function () {
             , room: $("#new-int-room option:selected").text().toUpperCase()
             , dateTime: time
             , userId: 1
-            , note: $("#new-int-note").text()
+            //, note: $("#new-int-note").val()
         , }
         console.log(JSON.stringify({
             "candidate": candidate
@@ -377,13 +444,8 @@ $(document).ready(function () {
                 updateMyInterviews();
             }
         });
-    }*/
-    /*Edit interview close button*/
-/*    $(document).on('click', '#btn-my-int-save', function (event) {
-        event.preventDefault();
-        sendEditInterviewToServer();
-    });*/
-/*
+    }
+    /*PUT CLOSE interview*/
     function closeInterview() {
         $.ajax({
             beforeSend: function (xhr) {
@@ -396,11 +458,16 @@ $(document).ready(function () {
                 updateMyInterviews();
             }
         });
-    }*/
+    }
+    /*CLICK on EDIT pic in my int*/
+    $(document).on('click', '.edit-icon', function (event) {
+        event.preventDefault();
+        showEditInterviewTab();
+    });
 
-    /*MODAL*/
-    var picture = "pictures/default-user.png";
     var candicateName = "";
+    var candidateFirstName = "";
+    var candidateLastName = "";
     var workPosition = "";
     var candicateTelephone = "";
     var candicateEmail = "";
@@ -412,8 +479,8 @@ $(document).ready(function () {
     var interviewAssignedPerson = "";
     var interviewNotes = "";
     var idRow;
-    $(".content").on('click', 'tr', function () {
-        idRow = $(this).attr('data-id');
+
+    function getIntervievDataById (actModal) {
         $.ajax({
             url: 'http://localhost:8081/api/interviews/' + idRow
             , type: 'GET'
@@ -423,6 +490,8 @@ $(document).ready(function () {
             , success: function (data) {
                 console.log(data);
                 candicateName = (data.candidate.firstName) + " " + (data.candidate.lastName);
+                candidateFirstName = data.candidate.firstName;
+                candidateLastName = data.candidate.lastName;
                 workPosition = data.candidate.position;
                 candicateTelephone = data.candidate.phone;
                 candicateEmail = data.candidate.email;
@@ -432,12 +501,83 @@ $(document).ready(function () {
                 interviewLocation = data.interview.location;
                 interviewRoom = data.interview.room;
                 interviewNotes = data.interview.note;
-                activateModal();
+                if (actModal) {
+                    activateModal();
+                }
             }
             , error: function () {
                 console.log("error");
             }
         , });
+    }
+
+    function upperCaseFirstLetter( str ) {
+        var pieces = str.split(" ");
+        for ( var i = 0; i < pieces.length; i++ ) {
+            var j = pieces[i].charAt(0).toUpperCase();
+            pieces[i] = j + pieces[i].substr(1);
+        }
+        return pieces.join(" ");
+    }
+
+    /**EDIT-INTERVIEW*/
+    /*Lead Edit-interview tab*/
+    function showEditInterviewTab() {
+        $('#main-content').load('templates/edit-interview.html', function () {
+            $("#page-title, #title-r").html("Edit Interviews");
+            $("#menu-new-interview").removeClass("selected");
+            $("#menu-interviews").removeClass("selected");
+            getIntervievDataById(false);
+            $('#new-int-firstName').val(candidateFirstName);
+            $('#new-int-lastName').val(candidateFirstName);
+            $('#new-int-phone').val(candicateTelephone);
+            $('#new-int-email').val(candicateEmail);
+            $('#new-int-skype').val(candicateSkype);
+            $('#new-int-date').val(interviewDate);
+            $('#new-int-time').val(interviewTime);
+            $('#new-int-note').val(interviewNotes);
+            getPositions();
+            $('#new-int-position').val(workPosition.toLowerCase().slice(0, 4));
+            getLocations();
+            $('#new-int-location').val(interviewLocation.toLowerCase().slice(0, 4));
+            getRoom ();
+            $('#new-int-room').val(interviewRoom.toLowerCase().slice(0, 3));
+            $("#new-int-date").addClass('selected-option');
+            $("#new-int-time").addClass('selected-option');
+            $("#new-int-room").addClass('selected-option');
+            $("#new-int-location").addClass('selected-option');
+            $("#new-int-position").addClass('selected-option');
+        });
+    }
+
+    /*Save Edited Interview*/
+    $(document).on('click', '#btn-edit-int-save', function (event) {
+        event.preventDefault();
+        if (areInputsFill()) {
+            sendEditInterviewToServer()
+        }
+    });
+
+    /*Close Interview*/
+    $(document).on('click', '#btn-edit-int-close', function (event) {
+        event.preventDefault();
+        closeInterview();
+    });
+
+    /*Cancel Edit Interview*/
+    $(document).on('click', '#btn-edit-int-cancel, btn-my-int-cancel', function (event) {
+        event.preventDefault();
+        updateMyInterviews();
+    });
+
+
+    /*EDIT-INTERVIEW**/
+
+    /*MODAL*/
+    var picture = "pictures/default-user.png";
+    $(".content").on('click', 'tr', function () {
+        idRow = $(this).attr('data-id');
+        getIntervievDataById(true);
     });
 
     function activateModal() {
@@ -580,6 +720,7 @@ $(document).ready(function () {
         $("#icoDisableLeft").on('click', function () {
             mui.overlay('off');
         });
+        /*CLICK on EDIT pic in modal*/
         $(document).on('click', '#edit', function (event) {
             event.preventDefault();
             mui.overlay('off');
