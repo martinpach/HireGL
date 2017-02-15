@@ -1,4 +1,3 @@
-general layout*/
 
 body {
     font-family: "Roboto", "Helvetica Neue", Helvetica, Arial;
@@ -102,7 +101,7 @@ body {
     position: relative;
     z-index: 9999;
 }
-,
+
 .content {
     min-height: 100vh;
     margin-right:0;
@@ -439,9 +438,6 @@ table {
     opacity: 0.7;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> accb1aea093e8815645bb46a6dd979339768b794
 /*
     My interviews END
+*/
