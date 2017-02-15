@@ -44,7 +44,7 @@ legend{
 	font-weight: bold !important;
 }
 
-#error-field{
+.error-field{
 	display: inline-block;
 	color: #da2121;
 }
