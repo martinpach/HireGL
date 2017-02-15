@@ -142,8 +142,9 @@ $(document).ready(function () {
     /*Forbidden keys - firstName, lastName*/
     $(document).on('keypress', "#new-int-firstName, #new-int-lastName", function (event) {
         var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-        var regex = /[^a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð']+$/;
-        if (regex.test(key)) {
+        var regex = /^[^\x00-\x7F]+$/;
+        var regexx = /^[a-z]+$/i;
+        if (!regex.test(key) && !regexx.test(key)) {
             event.preventDefault();
         }
     });
@@ -160,8 +161,8 @@ $(document).ready(function () {
     /*Forbidden keys - phone*/
     $(document).on('keypress', "#new-int-phone", function (event) {
         var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-        var regex = /[^0-9\s()+-]+$/;
-        if (regex.test(key)) {
+        var regex = /^[0-9\s()+-]$/;
+        if (!regex.test(key)) {
             event.preventDefault();
         }
     });
