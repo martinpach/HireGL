@@ -294,10 +294,6 @@ textarea:valid {
     border-bottom: 2px solid #afb42b !important;
 }
 
-.mui-table>thead>tr>th {
-    border-bottom: 2px solid rgb(227, 227, 227) !important;
-}
-
 .selected-option {
     border-bottom: 2px solid #afb42b !important;
 }
@@ -309,7 +305,6 @@ textarea:valid {
     position: absolute;
     text-align: right;
 }
-
 
 legend {
     color: #757575 !important;
@@ -396,6 +391,11 @@ th {
     font-size: 14px !important;
     border: none !important;
 }
+
+th {
+    border: none !important;
+}
+
 
 td {
     padding: 10px 10px 10px 0 !important;
