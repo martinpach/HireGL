@@ -884,6 +884,7 @@ $(document).ready(function () {
         $.ajax({
             url: 'http://localhost:8081/api/interviews/count'
             , type: 'GET'
+            , async: false
             , beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
             }
