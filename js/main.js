@@ -1,41 +1,41 @@
-$(document).ready(function() {
+$(document).ready(function () {
     var token = localStorage.getItem("token");
     var startingInterview = 1;
     var countInterviews;
     /*on click to new interview*/
-    $('#menu-new-interview , #new-interview-r').on('click', function() {
+    $('#menu-new-interview , #new-interview-r').on('click', function () {
         /*changing main content to new interview form and getting from server positons, locations and rooms*/
-        $('#main-content').load('templates/new-interview.html', function() {
+        $('#main-content').load('templates/new-interview.html', function () {
             /*call server to receive locations*/
             $.ajax({
-                url: 'http://localhost:8081/api/locations',
-                type: 'GET',
-                beforeSend: function(xhr) {
+                url: 'http://localhost:8081/api/locations'
+                , type: 'GET'
+                , beforeSend: function (xhr) {
                     xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-                },
-                success: function(data) {
+                }
+                , success: function (data) {
                     /*changing format of data form server and creating new options to select tag in locations*/
                     for (var i = 0; i < data.length; i++) {
-                        var text = data[i].toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                        var text = data[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
                             return letter.toUpperCase();
                         });
                         $('<option />', {
-                            "class": 'locations',
-                            "value": 'loc_' + data[i].toLowerCase().replace(/ /g, "_")
+                            "class": 'locations'
+                            , "value": 'loc_' + data[i].toLowerCase().replace(/ /g, "_")
                         }).text(text).appendTo("#new-int-location");
                     }
                     /*changing format of data form server and creating new options to select tag in locations END*/
                     //if is location choosen/changed
-                    $("#new-int-location").on('change', function() {
+                    $("#new-int-location").on('change', function () {
                         var option = $("#new-int-location option:selected").text().toUpperCase();
                         //getting from server rooms which are in selected location
                         $.ajax({
-                            url: 'http://localhost:8081/api/locations/' + option + '/rooms',
-                            type: 'GET',
-                            beforeSend: function(xhr) {
+                            url: 'http://localhost:8081/api/locations/' + option + '/rooms'
+                            , type: 'GET'
+                            , beforeSend: function (xhr) {
                                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-                            },
-                            success: function(data) {
+                            }
+                            , success: function (data) {
                                 /*cleaning room options*/
                                 var to = ($("#new-int-room").children().length) - 1;
                                 for (var g = 1; g <= to; g++) {
@@ -43,7 +43,7 @@ $(document).ready(function() {
                                 }
                                 /*cleaning room options*/
                                 for (var j = 0; j < data.length; j++) {
-                                    var text = data[j].toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                                    var text = data[j].toLowerCase().replace(/\b[a-z]/g, function (letter) {
                                         return letter.toUpperCase();
                                     });
                                     /*creating new room options and changing text format*/
@@ -52,51 +52,79 @@ $(document).ready(function() {
                                     }).text(text).appendTo("#new-int-room");
                                     /*creating new room options and changing text format END*/
                                 }
-                            },
-                            error: function() {
+                            }
+                            , error: function () {
                                 activateErrorModal();
-                            },
-                        });
+                            }
+                        , });
                     });
-                },
-                error: function() {
+                }
+                , error: function () {
                     activateErrorModal();
-                },
-            });
+                }
+            , });
             /*call server and receive locations END*/
             /*call server and receive positions*/
             $.ajax({
-                url: 'http://localhost:8081/api/positions',
-                type: 'GET',
-                beforeSend: function(xhr) {
+                url: 'http://localhost:8081/api/positions'
+                , type: 'GET'
+                , beforeSend: function (xhr) {
                     xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-                },
-                success: function(data) {
+                }
+                , success: function (data) {
                     /*creating new positon options*/
                     for (var i = 0; i < data.length; i++) {
-                        var text = data[i].toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                        var text = data[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
                             return letter.toUpperCase();
                         });
                         $('<option />').text(text).appendTo("#new-int-position");
                     }
                     /*creating new positon options END*/
-                },
-                error: function() {
+                }
+                , error: function () {
                     activateErrorModal();
-                },
-            });
+                }
+            , });
             /*call server and receive positions END*/
+            /*call server and receive users*/
+            $.ajax({
+                url: 'http://localhost:8081/api/users'
+                , type: 'GET'
+                , beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                }
+                , success: function (data) {
+                    /*creating new positon options*/
+                    for (var i in data) {
+                        var firstName = data[i].firstName.toLowerCase().replace(/\b[a-z]/g, function (letter) {
+                            return letter.toUpperCase();
+                        });
+                        var lastName = data[i].lastName.toLowerCase().replace(/\b[a-z]/g, function (letter) {
+                            return letter.toUpperCase();
+                        });
+                        var text = firstName + " " + lastName;
+                        $('<option />', {
+                            "id": (Number(i) + 1)
+                        }).text(text).appendTo("#new-int-assperson");
+                    }
+                    /*creating new assigned person options END*/
+                }
+                , error: function () {
+                    activateErrorModal();
+                }
+            , });
+            /*call server and receive users END*/
         });
         $("#page-title, #title-r").html("New Interview");
         $("#menu-interviews").removeClass("selected");
         $("#menu-new-interview").addClass("selected");
     });
     /*on click to new interview*/
-    $("#new-interview-r").on("click", function() {
+    $("#new-interview-r").on("click", function () {
         $("#new-interview-r").addClass("selected-r");
         $("#my-interviews-r").removeClass("selected-r");
     });
-    $('#menu-interviews, #my-interviews-r').on('click', function() {
+    $('#menu-interviews, #my-interviews-r').on('click', function () {
         updateMyInterviews();
         $("#page-title, #title-r").html("My Interviews");
         $("#menu-new-interview").removeClass("selected");
@@ -105,9 +133,9 @@ $(document).ready(function() {
     $("#menu-interviews").trigger("click");
     /* retrieving data from local storage and load user information */
     var data = {
-        firstName: localStorage.getItem("firstName"),
-        lastName: localStorage.getItem("lastName"),
-        photoUrl: localStorage.getItem("photoUrl")
+        firstName: localStorage.getItem("firstName")
+        , lastName: localStorage.getItem("lastName")
+        , photoUrl: localStorage.getItem("photoUrl")
     };
     var userDataWrapper = '<div id="userData"><span id="v-align"><img src="{{photoUrl}}" id="user-icon">{{firstName}} {{lastName}}</span><i class="material-icons basic-icon" id="logout">arrow_forward</i></div>';
     var html = Mustache.to_html(userDataWrapper, data);
@@ -118,14 +146,14 @@ $(document).ready(function() {
     /* END of retrieving data from local storage and load user information */
     /* event handlers */
     /* logout after clicking arrow button */
-    $('#user-account-wrapper, #user-account-wrapper-r').on('click', 'i', function() {
+    $('#user-account-wrapper, #user-account-wrapper-r').on('click', 'i', function () {
         $.ajax({
-            beforeSend: function(xhr) {
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-            },
-            url: 'http://localhost:8081/api/auth/logout',
-            type: 'POST',
-            success: function() {
+            }
+            , url: 'http://localhost:8081/api/auth/logout'
+            , type: 'POST'
+            , success: function () {
                 window.location.href = 'index.html';
             }
         });
@@ -133,64 +161,64 @@ $(document).ready(function() {
 
     function getPositions() {
         $.ajax({
-            url: 'http://localhost:8081/api/positions',
-            type: 'GET',
-            async: false,
-            beforeSend: function(xhr) {
+            url: 'http://localhost:8081/api/positions'
+            , type: 'GET'
+            , async: false
+            , beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-            },
-            success: function(data) {
+            }
+            , success: function (data) {
                 /*creating new positon options*/
                 for (var i = 0; i < data.length; i++) {
-                    var text = data[i].toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                    var text = data[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
                         return letter.toUpperCase();
                     });
                     $('<option />').text(text).appendTo("#new-int-position").val(text.toLowerCase().slice(0, 4));
                 }
-            },
-            error: function() {
+            }
+            , error: function () {
                 activateErrorModal();
-            },
-        });
+            }
+        , });
     }
 
     function getLocations() {
         $.ajax({
-            url: 'http://localhost:8081/api/locations',
-            type: 'GET',
-            async: false,
-            beforeSend: function(xhr) {
+            url: 'http://localhost:8081/api/locations'
+            , type: 'GET'
+            , async: false
+            , beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-            },
-            success: function(data) {
+            }
+            , success: function (data) {
                 /*changing format of data form server and creating new options to select tag in locations*/
                 for (var i = 0; i < data.length; i++) {
-                    var text = data[i].toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                    var text = data[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
                         return letter.toUpperCase();
                     });
                     $('<option />', {
-                        "class": 'locations',
-                        "value": 'loc_' + data[i].toLowerCase().replace(/ /g, "_")
+                        "class": 'locations'
+                        , "value": 'loc_' + data[i].toLowerCase().replace(/ /g, "_")
                     }).text(text).appendTo("#new-int-location").val(text.toLowerCase().slice(0, 4));
                 }
-            },
-            error: function() {
+            }
+            , error: function () {
                 activateErrorModal();
-            },
-        });
+            }
+        , });
     }
 
     function getRoom() {
         var option = $("#new-int-location option:selected").text().toUpperCase();
         //getting from server rooms which are in selected location
         $.ajax({
-            url: 'http://localhost:8081/api/locations/' + option + '/rooms',
-            type: 'GET',
-            async: false,
-            beforeSend: function(xhr) {
+            url: 'http://localhost:8081/api/locations/' + option + '/rooms'
+            , type: 'GET'
+            , async: false
+            , beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-            },
-            success: function(data) {
+            }
+            , success: function (data) {
                 /*cleaning room options*/
                 var to = ($("#new-int-room").children().length) - 1;
                 for (var g = 1; g <= to; g++) {
@@ -198,7 +226,7 @@ $(document).ready(function() {
                 }
                 /*cleaning room options*/
                 for (var j = 0; j < data.length; j++) {
-                    var text = data[j].toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                    var text = data[j].toLowerCase().replace(/\b[a-z]/g, function (letter) {
                         return letter.toUpperCase();
                     });
                     /*creating new room options and changing text format*/
@@ -207,11 +235,11 @@ $(document).ready(function() {
                     }).text(text).appendTo("#new-int-room").val(text.toLowerCase().slice(0, 3));
                     /*creating new room options and changing text format END*/
                 }
-            },
-            error: function() {
+            }
+            , error: function () {
                 activateErrorModal();
-            },
-        });
+            }
+        , });
     }
     /**NEW INTERVIEW FORM VALIDATION*/
     /*Function for Wrong input text*/
@@ -219,11 +247,11 @@ $(document).ready(function() {
         var input = $(inpfield);
         var pos = input.position();
         $('<div class="wrong-input" />').html(fieldMessage).css({
-            top: pos.top + input.height() + 5,
-        }).insertAfter(input);
+            top: pos.top + input.height() + 5
+        , }).insertAfter(input);
     }
     /*Forbidden keys - firstName, lastName*/
-    $(document).on('keypress', "#new-int-firstName, #new-int-lastName", function(event) {
+    $(document).on('keypress', "#new-int-firstName, #new-int-lastName", function (event) {
         var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
         var regex = /^[^\x00-\x7F]+$/;
         var regexx = /^[a-z]+$/i;
@@ -232,7 +260,7 @@ $(document).ready(function() {
         }
     });
     /*Input format validation - Phone number*/
-    $(document).on('blur', "#new-int-phone", function() {
+    $(document).on('blur', "#new-int-phone", function () {
         var phone = $(this).val();
         var regex = /^[\s()+-]*([0-9][\s)]*){6,20}$/;
         $('#new-int-phone + div.wrong-input').remove();
@@ -242,7 +270,7 @@ $(document).ready(function() {
         }
     });
     /*Forbidden keys - phone*/
-    $(document).on('keypress', "#new-int-phone", function(event) {
+    $(document).on('keypress', "#new-int-phone", function (event) {
         var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
         var regex = /^[0-9\s()+-]$/;
         if (!regex.test(key)) {
@@ -250,7 +278,7 @@ $(document).ready(function() {
         }
     });
     /*Input format validation - Email*/
-    $(document).on('blur', "#new-int-email", function() {
+    $(document).on('blur', "#new-int-email", function () {
         var email = $(this).val();
         var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         $('#new-int-email + div.wrong-input').remove();
@@ -260,27 +288,29 @@ $(document).ready(function() {
         }
     });
     /*inputs on change - add/remove class*/
-    $(document).on('change', "#new-int-date", function() {
+    $(document).on('change', "#new-int-date", function () {
         $("#new-int-date").addClass('selected-option');
     });
-
-    $(document).on('change', "#new-int-time", function() {
+    $(document).on('change', "#new-int-time", function () {
         $("#new-int-time").addClass('selected-option');
     });
-
-    $(document).on('blur', "select", function() {
+    $(document).on('blur', "select", function () {
         if ($("#new-int-room :selected").text() != "Choose Room") {
             $("#new-int-room").addClass('selected-option');
-        } else $("#new-int-room").removeClass('selected-option');
+        }
+        else $("#new-int-room").removeClass('selected-option');
         if ($("#new-int-location :selected").text() != "Enter Location") {
             $("#new-int-location").addClass('selected-option');
-        } else $("#new-int-location").removeClass('selected-option');
+        }
+        else $("#new-int-location").removeClass('selected-option');
         if ($("#new-int-position :selected").text() != "Choose position") {
             $("#new-int-position").addClass('selected-option');
-        } else $("#new-int-position").removeClass('selected-option');
+        }
+        else $("#new-int-position").removeClass('selected-option');
         if ($("#new-int-assperson :selected").text() != "Choose person") {
             $("#new-int-assperson").addClass('selected-option');
-        } else $("#new-int-assperson").removeClass('selected-option');
+        }
+        else $("#new-int-assperson").removeClass('selected-option');
     });
     /*NEW INTERVIEW INPUTS VALIDATIONS END**/
     /**NEW INTERVIEW DATA*/
@@ -288,79 +318,84 @@ $(document).ready(function() {
         var notEmpty = 1;
         //FIRSTNAME
         if ($('#new-int-firstName').val().length == 0) {
-            if (!$('#new-int-firstName + div.wrong-input').length)
-                fieldWrongInput("#new-int-firstName", "Name cannot be empty");
+            if (!$('#new-int-firstName + div.wrong-input').length) fieldWrongInput("#new-int-firstName", "Name cannot be empty");
             notEmpty = 0;
             $('#new-int-firstName + div.wrong-input').show();
-        } else $('#new-int-firstName + div.wrong-input').hide();
+        }
+        else $('#new-int-firstName + div.wrong-input').hide();
         //LASTNAME
         if ($('#new-int-lastName').val().length == 0) {
-            if (!$('#new-int-lastName + div.wrong-input').length)
-                fieldWrongInput("#new-int-lastName", "Surname cannot be empty");
+            if (!$('#new-int-lastName + div.wrong-input').length) fieldWrongInput("#new-int-lastName", "Surname cannot be empty");
             notEmpty = 0;
             $('#new-int-lastName + div.wrong-input').show();
-        } else $('#new-int-lastName + div.wrong-input').hide();
+        }
+        else $('#new-int-lastName + div.wrong-input').hide();
         //PHONE
         if (!$('#new-int-phone + div.wrong-input').length) {
             if ($('#new-int-phone').val().length == 0) {
                 fieldWrongInput("#new-int-phone", "Phone cannot be empty");
                 notEmpty = 0;
-            } else {
+            }
+            else {
                 $('#new-int-phone + div.wrong-input').remove();
             }
-        } else notEmpty = 0;
+        }
+        else notEmpty = 0;
         //EMAIL
         if (!$('#new-int-email + div.wrong-input').length) {
             if ($('#new-int-email').val().length == 0) {
                 fieldWrongInput("#new-int-email", "Email cannot be empty");
                 notEmpty = 0;
-            } else {
+            }
+            else {
                 $('#new-int-email + div.wrong-input').remove();
             }
-        } else notEmpty = 0;
+        }
+        else notEmpty = 0;
         //DATE
         if ($('#new-int-date').val().length == 0) {
-            if (!$('#new-int-date + div.wrong-input').length)
-                fieldWrongInput("#new-int-date", "Date must be set");
+            if (!$('#new-int-date + div.wrong-input').length) fieldWrongInput("#new-int-date", "Date must be set");
             notEmpty = 0;
             $('#new-int-date + div.wrong-input').show();
-        } else $('#new-int-date + div.wrong-input').hide();
+        }
+        else $('#new-int-date + div.wrong-input').hide();
         //TIME
         if ($('#new-int-time').val().length == 0) {
-            if (!$('#new-int-time + div.wrong-input').length)
-                fieldWrongInput("#new-int-time", "Time must be set");
+            if (!$('#new-int-time + div.wrong-input').length) fieldWrongInput("#new-int-time", "Time must be set");
             notEmpty = 0;
             $('#new-int-time + div.wrong-input').show();
-        } else $('#new-int-time + div.wrong-input').hide();
+        }
+        else $('#new-int-time + div.wrong-input').hide();
         //POSITION
         if ($("#new-int-position option:selected").text() == "Choose position") {
-            if (!$('#new-int-position + div.wrong-input').length)
-                fieldWrongInput("#new-int-position", "Please choose one option");
+            if (!$('#new-int-position + div.wrong-input').length) fieldWrongInput("#new-int-position", "Please choose one option");
             notEmpty = 0;
             $('#new-int-position + div.wrong-input').show();
-        } else $('#new-int-position + div.wrong-input').hide();
+        }
+        else $('#new-int-position + div.wrong-input').hide();
         //LOCATION
         if ($("#new-int-location option:selected").text() == "Enter Location") {
-            if (!$('#new-int-location + div.wrong-input').length)
-                fieldWrongInput("#new-int-location", "Please choose one option");
+            if (!$('#new-int-location + div.wrong-input').length) fieldWrongInput("#new-int-location", "Please choose one option");
             notEmpty = 0;
             $('#new-int-location + div.wrong-input').show();
-        } else $('#new-int-location + div.wrong-input').hide();
+        }
+        else $('#new-int-location + div.wrong-input').hide();
         //ROOM
         if ($("#new-int-room option:selected").text() == "Choose Room") {
-            if (!$('#new-int-room + div.wrong-input').length)
-                fieldWrongInput("#new-int-room", "Please choose one option");
+            if (!$('#new-int-room + div.wrong-input').length) fieldWrongInput("#new-int-room", "Please choose one option");
             notEmpty = 0;
             $('#new-int-room + div.wrong-input').show();
-        } else $('#new-int-room + div.wrong-input').hide();
+        }
+        else $('#new-int-room + div.wrong-input').hide();
         if (notEmpty == 0) {
             return false;
-        } else {
+        }
+        else {
             return true;
         }
     }
     /*New interview save button*/
-    $(document).on('click', '#btn-my-int-save', function(event) {
+    $(document).on('click', '#btn-my-int-save', function (event) {
         event.preventDefault();
         if (areInputsFill()) {
             sendNewInterviewToServer();
@@ -372,37 +407,36 @@ $(document).ready(function() {
         var timeVal = $("#new-int-time").val();
         /*expected date format: "2016-12-13T09:34Z"*/
         var time = dateVal + "T" + timeVal + "Z";
-
         var candidate = {
-            firstName: $("#new-int-firstName").val(),
-            lastName: $("#new-int-lastName").val(),
-            phone: $("#new-int-phone").val(),
-            skype: $("#new-int-skype").val(),
-            email: $("#new-int-email").val(),
-            position: $("#new-int-position option:selected").text().toUpperCase(),
-        };
+            firstName: $("#new-int-firstName").val()
+            , lastName: $("#new-int-lastName").val()
+            , phone: $("#new-int-phone").val()
+            , skype: $("#new-int-skype").val()
+            , email: $("#new-int-email").val()
+            , position: $("#new-int-position option:selected").text().toUpperCase()
+        , };
         var interview = {
-            location: $("#new-int-location option:selected").text().toUpperCase(),
-            room: $("#new-int-room option:selected").text().toUpperCase(),
-            dateTime: time,
-            userId: 1,
-        }
+            location: $("#new-int-location option:selected").text().toUpperCase()
+            , room: $("#new-int-room option:selected").text().toUpperCase()
+            , dateTime: time
+            , userId: 1
+        , }
         console.log(JSON.stringify({
-            "candidate": candidate,
-            "interview": interview
+            "candidate": candidate
+            , "interview": interview
         }));
         $.ajax({
-            beforeSend: function(xhr) {
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-            },
-            url: 'http://localhost:8081/api/interviews',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                "candidate": candidate,
-                "interview": interview
-            }),
-            success: function() {
+            }
+            , url: 'http://localhost:8081/api/interviews'
+            , type: 'POST'
+            , contentType: 'application/json'
+            , data: JSON.stringify({
+                "candidate": candidate
+                , "interview": interview
+            })
+            , success: function () {
                 updateMyInterviews();
             }
         });
@@ -413,37 +447,37 @@ $(document).ready(function() {
         var timeVal = $("#new-int-time").val();
         var time = dateVal + "T" + timeVal + "Z";
         var candidate = {
-            firstName: $("#new-int-firstName").val(),
-            lastName: $("#new-int-lastName").val(),
-            phone: $("#new-int-phone").val(),
-            skype: $("#new-int-skype").val(),
-            email: $("#new-int-email").val(),
-            position: $("#new-int-position option:selected").text().toUpperCase(),
-        };
+            firstName: $("#new-int-firstName").val()
+            , lastName: $("#new-int-lastName").val()
+            , phone: $("#new-int-phone").val()
+            , skype: $("#new-int-skype").val()
+            , email: $("#new-int-email").val()
+            , position: $("#new-int-position option:selected").text().toUpperCase()
+        , };
         var interview = {
-            location: $("#new-int-location option:selected").text().toUpperCase(),
-            room: $("#new-int-room option:selected").text().toUpperCase(),
-            dateTime: time,
-            userId: 1
+            location: $("#new-int-location option:selected").text().toUpperCase()
+            , room: $("#new-int-room option:selected").text().toUpperCase()
+            , dateTime: time
+            , userId: 1
                 //, note: $("#new-int-note").val()
-                ,
-        }
+                
+        , }
         console.log(JSON.stringify({
-            "candidate": candidate,
-            "interview": interview
+            "candidate": candidate
+            , "interview": interview
         }));
         $.ajax({
-            beforeSend: function(xhr) {
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-            },
-            url: 'http://localhost:8081/api/interviews/' + idRow,
-            type: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                "candidate": candidate,
-                "interview": interview
-            }),
-            success: function() {
+            }
+            , url: 'http://localhost:8081/api/interviews/' + idRow
+            , type: 'PUT'
+            , contentType: 'application/json'
+            , data: JSON.stringify({
+                "candidate": candidate
+                , "interview": interview
+            })
+            , success: function () {
                 updateMyInterviews();
             }
         });
@@ -451,18 +485,17 @@ $(document).ready(function() {
     /*PUT CLOSE interview*/
     function closeInterview() {
         $.ajax({
-            beforeSend: function(xhr) {
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-            },
-            url: 'http://localhost:8081/api/interviews/' + idRow + '/closed',
-            type: 'PUT',
-            contentType: 'application/json',
-            success: function() {
+            }
+            , url: 'http://localhost:8081/api/interviews/' + idRow + '/closed'
+            , type: 'PUT'
+            , contentType: 'application/json'
+            , success: function () {
                 updateMyInterviews();
             }
         });
     }
-
     var candicateName = "";
     var candidateFirstName = "";
     var candidateLastName = "";
@@ -480,12 +513,12 @@ $(document).ready(function() {
 
     function getIntervievDataById(actModal) {
         $.ajax({
-            url: 'http://localhost:8081/api/interviews/' + idRow,
-            type: 'GET',
-            beforeSend: function(xhr) {
+            url: 'http://localhost:8081/api/interviews/' + idRow
+            , type: 'GET'
+            , beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-            },
-            success: function(data) {
+            }
+            , success: function (data) {
                 console.log(data);
                 candicateName = (data.candidate.firstName) + " " + (data.candidate.lastName);
                 candidateFirstName = data.candidate.firstName;
@@ -502,15 +535,14 @@ $(document).ready(function() {
                 if (actModal) {
                     activateModal();
                 }
-            },
-            error: function() {
+            }
+            , error: function () {
                 console.log("error");
-            },
-        });
+            }
+        , });
     }
-
     /*CLICK on EDIT pic in my int*/
-    $(document).on('click', '.edit-icon', function(event) {
+    $(document).on('click', '.edit-icon', function (event) {
         event.preventDefault();
         var idRow = $(this).parent().parent().attr('data-id');
         showEditInterviewTab();
@@ -524,11 +556,10 @@ $(document).ready(function() {
         }
         return pieces.join(" ");
     }
-
     /**EDIT-INTERVIEW*/
     /*Lead Edit-interview tab*/
     function showEditInterviewTab() {
-        $('#main-content').load('templates/edit-interview.html', function() {
+        $('#main-content').load('templates/edit-interview.html', function () {
             $("#page-title, #title-r").html("Edit Interviews");
             $("#menu-new-interview").removeClass("selected");
             $("#menu-interviews").removeClass("selected");
@@ -554,7 +585,6 @@ $(document).ready(function() {
             $("#new-int-position").addClass('selected-option');
         });
     }
-
     /*$(document).on('change', '#new-int-location', function () {
         while ($('#new-int-room option:last').text() != "Choose Room") {
             $('#new-int-room option:last').remove();
@@ -587,33 +617,27 @@ $(document).ready(function() {
             }
         , });
     });*/
-
     /*Save Edited Interview*/
-    $(document).on('click', '#btn-edit-int-save', function(event) {
+    $(document).on('click', '#btn-edit-int-save', function (event) {
         event.preventDefault();
         if (areInputsFill()) {
             sendEditInterviewToServer()
         }
     });
-
     /*Close Interview*/
-    $(document).on('click', '#btn-edit-int-close', function(event) {
+    $(document).on('click', '#btn-edit-int-close', function (event) {
         event.preventDefault();
         closeInterview();
     });
-
     /*Cancel Edit Interview*/
-    $(document).on('click', '#btn-edit-int-cancel, btn-my-int-cancel', function(event) {
+    $(document).on('click', '#btn-edit-int-cancel, btn-my-int-cancel', function (event) {
         event.preventDefault();
         updateMyInterviews();
     });
-
-
     /*EDIT-INTERVIEW**/
-
     /*MODAL*/
     var picture = "pictures/default-user.png";
-    $(".content").on('click', 'tr', function() {
+    $(".content").on('click', 'tr', function () {
         idRow = $(this).attr('data-id');
         getIntervievDataById(true);
     });
@@ -629,22 +653,22 @@ $(document).ready(function() {
             "class": 'left mui-col-md-6'
         }).appendTo(".center");
         $('<i />', {
-            "class": 'material-icons icoDisable',
-            "id": 'icoDisableLeft'
+            "class": 'material-icons icoDisable'
+            , "id": 'icoDisableLeft'
         }).text("clear").appendTo(".left");
         $('<h1 />', {
-            "class": 'heading',
-            "id": 'hCandidate'
+            "class": 'heading'
+            , "id": 'hCandidate'
         }).appendTo(".left");
         $("#hCandidate").text("Candidate");
         //adding candicate image
         $('<div />', {
-            "class": 'flex',
-            "id": 'cMain'
+            "class": 'flex'
+            , "id": 'cMain'
         }).appendTo(".left");
         $('<img />', {
-            "class": 'candidateImage',
-            "src": picture
+            "class": 'candidateImage'
+            , "src": picture
         }).appendTo("#cMain");
         //candidate name
         $('<div />', {
@@ -661,8 +685,8 @@ $(document).ready(function() {
         $(".workPosition").text(workPosition);
         //telephone
         $('<div />', {
-            "class": 'flex',
-            "id": 'cTelephone'
+            "class": 'flex'
+            , "id": 'cTelephone'
         }).appendTo(".left");
         $('<i />', {
             "class": 'material-icons candidateInfoLeft'
@@ -672,8 +696,8 @@ $(document).ready(function() {
         }).text(candicateTelephone).appendTo("#cTelephone");
         //email
         $('<div />', {
-            "class": 'flex',
-            "id": 'cEmail'
+            "class": 'flex'
+            , "id": 'cEmail'
         }).appendTo(".left");
         $('<i />', {
             "class": 'material-icons candidateInfoLeft'
@@ -683,8 +707,8 @@ $(document).ready(function() {
         }).text(candicateEmail).appendTo("#cEmail");
         //skype
         $('<div />', {
-            "class": 'flex',
-            "id": 'cSkype'
+            "class": 'flex'
+            , "id": 'cSkype'
         }).appendTo(".left");
         $('<i />', {
             "class": 'zmdi zmdi-skype zmdi-hc-2x candidateInfoLeft'
@@ -697,12 +721,12 @@ $(document).ready(function() {
             "class": 'right mui-col-md-6'
         }).appendTo(".center");
         $('<i />', {
-            "class": 'material-icons icoDisable',
-            "id": 'icoDisableRight'
+            "class": 'material-icons icoDisable'
+            , "id": 'icoDisableRight'
         }).text("clear").appendTo(".right");
         $('<h1 />', {
-            "class": 'heading',
-            "id": 'hInterview'
+            "class": 'heading'
+            , "id": 'hInterview'
         }).appendTo(".right");
         $("#hInterview").text("Interview");
         $('<label />', {
@@ -745,21 +769,21 @@ $(document).ready(function() {
             "id": 'editInterview'
         }).appendTo(".right");
         $('<i />', {
-            "class": 'material-icons',
-            "id": 'edit'
+            "class": 'material-icons'
+            , "id": 'edit'
         }).text("create").appendTo("#editInterview");
         $('<i />', {
-            "class": 'material-icons',
-            "id": 'delete'
+            "class": 'material-icons'
+            , "id": 'delete'
         }).text("delete").appendTo("#editInterview");
-        $("#icoDisableRight").on('click', function() {
+        $("#icoDisableRight").on('click', function () {
             mui.overlay('off');
         });
-        $("#icoDisableLeft").on('click', function() {
+        $("#icoDisableLeft").on('click', function () {
             mui.overlay('off');
         });
         /*CLICK on EDIT pic in modal*/
-        $(document).on('click', '#edit', function(event) {
+        $(document).on('click', '#edit', function (event) {
             event.preventDefault();
             mui.overlay('off');
             showEditInterviewTab();
@@ -774,13 +798,13 @@ $(document).ready(function() {
         modalEl.style.margin = '100px auto';
         mui.overlay('on', modalEl);
         $('<i />', {
-            "class": 'material-icons icoDisable',
-            "id": 'icoDisableRight'
+            "class": 'material-icons icoDisable'
+            , "id": 'icoDisableRight'
         }).text("clear").appendTo(".center");
         $('<h1 />', {
             "class": 'mui--text-danger mui--text-center textCenter'
         }).text("Application error has occurred.").appendTo(".center");
-        $("#icoDisableRight").on('click', function() {
+        $("#icoDisableRight").on('click', function () {
             mui.overlay('off');
         });
     }
@@ -788,7 +812,7 @@ $(document).ready(function() {
     /*NEW INTERVIEW DATA**/
     /*MY INTERVIEWS*/
     function updateMyInterviews() {
-        $('#main-content').load('templates/my-interviews.html', function() {
+        $('#main-content').load('templates/my-interviews.html', function () {
             startingInterview = 1;
             getNumberOfInterviews();
             if (countInterviews > 0) {
@@ -804,19 +828,19 @@ $(document).ready(function() {
 
     function getInterviews(start, limit) {
         $.ajax({
-            beforeSend: function(xhr) {
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-            },
-            url: 'http://localhost:8081/api/interviews?limit=' + limit + '&start=' + start,
-            type: 'GET',
-            success: function(data) {
-                $('#main-content').load('templates/my-interviews.html', function() {
+            }
+            , url: 'http://localhost:8081/api/interviews?limit=' + limit + '&start=' + start
+            , type: 'GET'
+            , success: function (data) {
+                $('#main-content').load('templates/my-interviews.html', function () {
                     generateInterviewRows(data);
                     setText();
                     setPaginationButtons();
                 });
-            },
-            error: function() {
+            }
+            , error: function () {
                 console.log("Error pulling interviews!");
             }
         });
@@ -825,8 +849,8 @@ $(document).ready(function() {
     function generateInterviewRows(interviews) {
         for (var i = 0; i < interviews.length; i++) {
             var tr = $('<tr />', {
-                'class': 'tr-content',
-                'data-id': interviews[i].id
+                'class': 'tr-content'
+                , 'data-id': interviews[i].id
             }).appendTo("tbody");
             var td1 = $('<td />', {}).html('<i class="material-icons mui--no-user-select basic-icon">&#xE7FF;</i>').appendTo(tr);
             var td2 = $('<td />', {
@@ -858,15 +882,15 @@ $(document).ready(function() {
     /* PAGINATION */
     function getNumberOfInterviews() {
         $.ajax({
-            url: 'http://localhost:8081/api/interviews/count',
-            type: 'GET',
-            beforeSend: function(xhr) {
+            url: 'http://localhost:8081/api/interviews/count'
+            , type: 'GET'
+            , beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-            },
-            success: function(data) {
+            }
+            , success: function (data) {
                 countInterviews = data.count;
-            },
-            error: function() {
+            }
+            , error: function () {
                 activateErrorModal();
                 return null;
             }
@@ -877,13 +901,16 @@ $(document).ready(function() {
         if (countInterviews - startingInterview >= 5 && startingInterview == 1) {
             $('#next-page').prop('disabled', false);
             $('#prev-page').prop('disabled', true);
-        } else if (countInterviews - startingInterview >= 5 && startingInterview != 1) {
+        }
+        else if (countInterviews - startingInterview >= 5 && startingInterview != 1) {
             $('#next-page').prop('disabled', false);
             $('#prev-page').prop('disabled', false);
-        } else if (countInterviews - startingInterview <= 5 && startingInterview >= 6) {
+        }
+        else if (countInterviews - startingInterview <= 5 && startingInterview >= 6) {
             $('#next-page').prop('disabled', true);
             $('#prev-page').prop('disabled', false);
-        } else {
+        }
+        else {
             $('#next-page').prop('disabled', true);
             $('#prev-page').prop('disabled', true);
         }
@@ -892,12 +919,13 @@ $(document).ready(function() {
     function setText() {
         if (countInterviews < 1) {
             $('#showed-pages').hide();
-        } else {
+        }
+        else {
             var to = (startingInterview + 4 > countInterviews) ? countInterviews : startingInterview + 4;
             var data = {
-                from: startingInterview,
-                to: to,
-                total: countInterviews
+                from: startingInterview
+                , to: to
+                , total: countInterviews
             }
             var text = 'SHOWING {{from}} - {{to}} FROM {{total}}';
             var html = Mustache.to_html(text, data);
@@ -905,13 +933,13 @@ $(document).ready(function() {
             $('#showed-pages').show();
         }
     }
-    $('#main-content').on('click', '#prev-page', function() {
+    $('#main-content').on('click', '#prev-page', function () {
         startingInterview -= 5;
         getInterviews(startingInterview, 5);
         setText();
         setPaginationButtons();
     });
-    $('#main-content').on('click', '#next-page', function() {
+    $('#main-content').on('click', '#next-page', function () {
         startingInterview += 5;
         getInterviews(startingInterview, 5);
         setText();
@@ -919,18 +947,18 @@ $(document).ready(function() {
     });
     /* END PAGINATION */
     /** DELETE 1 INTERVIEW*/
-    $('#main-content').on('click', '.delete-icon', function() {
+    $('#main-content').on('click', '.delete-icon', function () {
         var interviewID = ($(this).parent().parent().attr('data-id'));
         $.ajax({
-            url: 'http://localhost:8081/api/interviews/' + interviewID,
-            type: 'DELETE',
-            beforeSend: function(xhr) {
+            url: 'http://localhost:8081/api/interviews/' + interviewID
+            , type: 'DELETE'
+            , beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-            },
-            success: function() {
+            }
+            , success: function () {
                 updateMyInterviews();
-            },
-            error: function() {
+            }
+            , error: function () {
                 console.log("Error deleting interview!");
             }
         });
