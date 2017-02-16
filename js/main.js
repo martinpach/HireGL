@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var token = localStorage.getItem("token");
+    var token = 'Bearer ' + localStorage.getItem("token");
     var startingInterview = 1;
     var countInterviews;
     var ajaxData;
@@ -414,7 +414,7 @@ $(document).ready(function () {
 
     }
     /*CLICK on EDIT pic in my int*/
-    $(document).on('click', '.edit-icon', function (event) {
+    $('#main-content').on('click', '.edit-icon', function (event) {
         event.preventDefault();
         var idRow = $(this).parent().parent().attr('data-id');
         showEditInterviewTab();
@@ -660,6 +660,10 @@ $(document).ready(function () {
             mui.overlay('off');
             showEditInterviewTab();
         });
+        $(document).on('click', '#delete', function (event) {
+            if (ajaxRequest('/api/interviews/' + idRow, 'DELETE')) updateMyInterviews();
+            mui.overlay('off');
+        });
     }
     /*MODAL END*/
     /*ERROR MODAL*/
@@ -805,7 +809,7 @@ $(document).ready(function () {
 
         $.ajax({
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                xhr.setRequestHeader('Authorization', token);
             },
             async: false,
             url: 'http://localhost:8081' + ajaxUrl,
