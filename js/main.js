@@ -618,19 +618,19 @@ $(document).ready(function () {
         , });
     });*/
     /*Save Edited Interview*/
-    $(document).on('click', '#btn-edit-int-save', function (event) {
+    $(document).on('click', '#btn-edit-int-save,#btn-edit-int-save-r', function (event) {
         event.preventDefault();
         if (areInputsFill()) {
             sendEditInterviewToServer()
         }
     });
     /*Close Interview*/
-    $(document).on('click', '#btn-edit-int-close', function (event) {
+    $(document).on('click', '#btn-edit-int-close,#btn-edit-int-close-r', function (event) {
         event.preventDefault();
         closeInterview();
     });
     /*Cancel Edit Interview*/
-    $(document).on('click', '#btn-edit-int-cancel, btn-my-int-cancel', function (event) {
+    $(document).on('click', '#btn-edit-int-cancel,#btn-my-int-cancel,#btn-edit-int-cancel-r', function (event) {
         event.preventDefault();
         updateMyInterviews();
     });
