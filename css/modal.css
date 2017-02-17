@@ -141,10 +141,28 @@
     position: relative;
     background-color: white;
     min-height: 300px;
+    margin: 0 auto;
+    border-radius: 10px;
 }
 
 .delete-btn-cont {
-    margin: 0 auto;
+    text-align: center;
+    height: 150px;
+}
+
+.delete-btn-cont-cont {
+    margin: 0;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+.delete-header-h2 {
+    margin: 30px;
+    text-align: center;
+    font-weight: bold;
 }
 
 /* END DELETE CONFIRMATION */

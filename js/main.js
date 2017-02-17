@@ -815,19 +815,24 @@ $(document).ready(function () {
         modalDelete.style.margin = '100px auto';
         mui.overlay('on', modalDelete);
         $('<h2 />', {
-            "class": 'mui--text-danger mui--text-center textCenter'
-        }).text("Are you sure you want to delete this interview?").appendTo(".delete-int-box");
+            "class": 'delete-header-h2'
+        }).text("Delete this interview?").appendTo(".delete-int-box");
         $('<div />',{
             "class": 'delete-btn-cont'
         }).appendTo('.delete-int-box');
+
+        $('<div />',{
+            "class": 'delete-btn-cont-cont'
+        }).appendTo('.delete-btn-cont');
+
         $('<button />', {
-            "class": 'mui-btn mui-btn--small mui-btn--raised',
+            "class": 'mui-btn mui-btn--danger mui-btn--raised',
             "id": 'delete-confirmation-ok'
-        }).text(' DELETE ').appendTo('.delete-btn-cont');
+        }).text(' DELETE ').appendTo('.delete-btn-cont-cont');
         $('<button />', {
-            "class": 'mui-btn mui-btn--small mui-btn--raised',
+            "class": 'mui-btn mui-btn--primary mui-btn--raised',
             "id": 'delete-confirmation-cancel'
-        }).text(' CANCEL ').appendTo('.delete-btn-cont');
+        }).text(' CANCEL ').appendTo('.delete-btn-cont-cont');
 
         $("#delete-confirmation-cancel").on('click', function () {
             mui.overlay('off');
