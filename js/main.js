@@ -509,8 +509,8 @@ $(document).ready(function () {
     /*EDIT-INTERVIEW**/
     /*MODAL*/
     var picture = "pictures/default-user.png";
-    $(".content").on('click', 'tr', function () {
-        idRow = $(this).attr('data-id');
+    $(".content").on('click', '.td-display-modal', function () {
+        idRow = $(this).parent().attr('data-id');
         getIntervievDataById(true);
     });
 
@@ -686,6 +686,8 @@ $(document).ready(function () {
     }
     /*ERROR MODAL*/
     /*NEW INTERVIEW DATA**/
+
+
     /*MY INTERVIEWS*/
     function updateMyInterviews() {
         $('#main-content').load('templates/my-interviews.html', function () {
@@ -719,9 +721,11 @@ $(document).ready(function () {
                 'class': 'tr-content',
                 'data-id': interviews[i].id
             }).appendTo("tbody");
-            var td1 = $('<td />', {}).html('<i class="material-icons mui--no-user-select basic-icon">&#xE7FF;</i>').appendTo(tr);
+            var td1 = $('<td />', {
+                'class': 'td-display-modal'
+            }).html('<i class="material-icons mui--no-user-select basic-icon">&#xE7FF;</i>').appendTo(tr);
             var td2 = $('<td />', {
-                'class': 'td-my-interviews'
+                'class': 'td-my-interviews td-display-modal'
             }).appendTo(tr);
             var div_name = $('<div />', {
                 "class": 'name-of-applicant'
@@ -732,13 +736,13 @@ $(document).ready(function () {
             div_name.appendTo(td2);
             div_position.appendTo(td2);
             var td3 = $('<td />', {
-                'class': 'td-my-interviews'
+                'class': 'td-my-interviews td-display-modal'
             }).text(interviews[i].candidate.phone).appendTo(tr);
             var td4 = $('<td />', {
-                'class': 'td-my-interviews'
+                'class': 'td-my-interviews td-display-modal'
             }).text(interviews[i].candidate.email).appendTo(tr);
             var td5 = $('<td />', {
-                'class': 'td-my-interviews'
+                'class': 'td-my-interviews td-display-modal'
             }).text(interviews[i].interview.status).appendTo(tr);
             var td6 = $('<td />', {
                 'class': 'td-my-interviews'
@@ -746,6 +750,8 @@ $(document).ready(function () {
         }
     }
     /*END MY INTERVIEWS*/
+
+
     /* PAGINATION */
     function getNumberOfInterviews() {
         if (ajaxRequest('/api/interviews/count', 'GET')) countInterviews = ajaxData.count;
@@ -800,8 +806,40 @@ $(document).ready(function () {
     /** DELETE 1 INTERVIEW*/
     $('#main-content').on('click', '.delete-icon', function () {
         var interviewID = ($(this).parent().parent().attr('data-id'));
-        if (ajaxRequest('/api/interviews/' + interviewID, 'DELETE')) updateMyInterviews();
+        deleteModalPopUp(interviewID);
     });
+
+    function deleteModalPopUp(id) {
+        var modalDelete = document.createElement('div');
+        modalDelete.className = "mui-col-md-6 mui-col-sm-12 mui--z5 delete-int-box ";
+        modalDelete.style.margin = '100px auto';
+        mui.overlay('on', modalDelete);
+        $('<h2 />', {
+            "class": 'mui--text-danger mui--text-center textCenter'
+        }).text("Are you sure you want to delete this interview?").appendTo(".delete-int-box");
+        $('<div />',{
+            "class": 'delete-btn-cont'
+        }).appendTo('.delete-int-box');
+        $('<button />', {
+            "class": 'mui-btn mui-btn--small mui-btn--raised',
+            "id": 'delete-confirmation-ok'
+        }).text(' DELETE ').appendTo('.delete-btn-cont');
+        $('<button />', {
+            "class": 'mui-btn mui-btn--small mui-btn--raised',
+            "id": 'delete-confirmation-cancel'
+        }).text(' CANCEL ').appendTo('.delete-btn-cont');
+
+        $("#delete-confirmation-cancel").on('click', function () {
+            mui.overlay('off');
+        });
+        $("#delete-confirmation-ok").on('click', function () {
+            mui.overlay('off');
+            if (ajaxRequest('/api/interviews/' + id, 'DELETE')){
+                updateMyInterviews();
+            }
+        });
+    }
+
     /** END DELETE 1 INTERVIEW*/
     /*AJAX REQUEST*/
     function ajaxRequest(ajaxUrl, typeOfRequest, dataToSend) {

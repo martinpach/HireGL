@@ -128,3 +128,23 @@
         display: none;
     }
 }
+
+/* DELETE CONFIRMATION */
+.delete-int-box {
+    overflow: auto;
+    float: none;
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+    vertical-align: middle;
+    overflow: hidden;
+    position: relative;
+    background-color: white;
+    min-height: 300px;
+}
+
+.delete-btn-cont {
+    margin: 0 auto;
+}
+
+/* END DELETE CONFIRMATION */
