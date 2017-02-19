@@ -161,8 +161,19 @@
 
 .delete-header-h2 {
     margin: 30px;
+    margin-top: 110px;
     text-align: center;
     font-weight: bold;
+}
+
+#delete-confirmation-cancel {
+    background-color: #D4E157;
+}
+
+#delete-confirmation-ok, #delete-confirmation-cancel {
+    font-weight: bold;
+    width: 110px;
+    margin:10px;
 }
 
 /* END DELETE CONFIRMATION */

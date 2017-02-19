@@ -169,6 +169,24 @@ $(document).ready(function () {
         }
 
     }
+    function getAssPerson () {
+        if (ajaxRequest('/api/users', 'GET')) {
+            /*creating new positon options*/
+            for (var i in ajaxData) {
+                var firstName = ajaxData[i].firstName.toLowerCase().replace(/\b[a-z]/g, function (letter) {
+                    return letter.toUpperCase();
+                });
+                var lastName = ajaxData[i].lastName.toLowerCase().replace(/\b[a-z]/g, function (letter) {
+                    return letter.toUpperCase();
+                });
+                var text = firstName + " " + lastName;
+                $('<option />', {
+                    "id": (Number(i) + 1)
+                }).text(text).appendTo("#new-int-assperson").val(i);
+            }
+            /*creating new assigned person options END*/
+        }
+    }
     /**NEW INTERVIEW FORM VALIDATION*/
     /*Function for Wrong input text*/
     function fieldWrongInput(inpfield, fieldMessage) {
@@ -178,15 +196,15 @@ $(document).ready(function () {
             top: pos.top + input.height() + 5,
         }).insertAfter(input);
     }
-    /*Forbidden keys - firstName, lastName*/
-    $(document).on('keypress', "#new-int-firstName, #new-int-lastName", function (event) {
-        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-        var regex = /^[^\x00-\x7F]+$/;
-        var regexx = /^[a-z]+$/i;
-        if (!regex.test(key) && !regexx.test(key)) {
-            event.preventDefault();
-        }
-    });
+    // /*Forbidden keys - firstName, lastName*/
+    // $(document).on('keypress', "#new-int-firstName, #new-int-lastName", function (event) {
+    //     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+    //     var regex = /^[^\x00-\x7F]+$/;
+    //     var regexx = /^[a-z]+$/i;
+    //     if (!regex.test(key) && !regexx.test(key)) {
+    //         event.preventDefault();
+    //     }
+    // });
     /*Input format validation - Phone number*/
     $(document).on('blur', "#new-int-phone", function () {
         var phone = $(this).val();
@@ -306,6 +324,28 @@ $(document).ready(function () {
             return true;
         }
     }
+    /*Assigned Person - string to number*/
+    function getNumberOfAssignedPerson () {
+        var assPerson = $("#new-int-assperson option:selected").text().toLowerCase();
+        switch (assPerson) {
+            case "first user":
+                return 1;
+                break;
+            case "second user":
+                return 2;
+                break;
+            case "third user":
+                return 3;
+                break;
+            case "fourth user":
+                return 4;
+                break;
+            default:
+                return 0;
+                break;
+        }
+    }
+
     /*New interview save button*/
     $(document).on('click', '#btn-my-int-save', function (event) {
         event.preventDefault();
@@ -319,6 +359,8 @@ $(document).ready(function () {
         var timeVal = $("#new-int-time").val();
         /*expected date format: "2016-12-13T09:34Z"*/
         var time = dateVal + "T" + timeVal + "Z";
+        var assPersonId = getNumberOfAssignedPerson ();
+
         var candidate = {
             firstName: $("#new-int-firstName").val(),
             lastName: $("#new-int-lastName").val(),
@@ -331,12 +373,13 @@ $(document).ready(function () {
             location: $("#new-int-location option:selected").text().toUpperCase(),
             room: $("#new-int-room option:selected").text().toUpperCase(),
             dateTime: time,
-            userId: 1,
+            userId: assPersonId,
         }
         var jData = JSON.stringify({
             "candidate": candidate,
             "interview": interview
         });
+        console.log(jData);
         if (ajaxRequest('/api/interviews', 'POST', jData)) updateMyInterviews();
 
     }
@@ -357,10 +400,8 @@ $(document).ready(function () {
             location: $("#new-int-location option:selected").text().toUpperCase(),
             room: $("#new-int-room option:selected").text().toUpperCase(),
             dateTime: time,
-            userId: 1
-                //, note: $("#new-int-note").val()
-
-            ,
+            userId: 1,
+            //note: $("#new-int-note").val(),
         }
         var jData = JSON.stringify({
             "candidate": candidate,
@@ -389,6 +430,7 @@ $(document).ready(function () {
     var interviewLocation = "";
     var interviewRoom = "";
     var interviewAssignedPerson = "";
+    var interviewAssignedPersonID = "";
     var interviewNotes = "";
     var idRow;
 
@@ -406,6 +448,8 @@ $(document).ready(function () {
             interviewTime = (ajaxData.interview.dateTime).slice((ajaxData.interview.dateTime).indexOf('T') + 1);
             interviewLocation = ajaxData.interview.location;
             interviewRoom = ajaxData.interview.room;
+            interviewAssignedPerson = (ajaxData.interview.user.firstName)+" "+(ajaxData.interview.user.lastName);
+            interviewAssignedPersonID = ajaxData.interview.user.id;
             interviewNotes = ajaxData.interview.note;
             if (actModal) {
                 activateModal();
@@ -450,11 +494,13 @@ $(document).ready(function () {
             $('#new-int-location').val(interviewLocation.toLowerCase().slice(0, 4));
             getRoom();
             $('#new-int-room').val(interviewRoom.toLowerCase().slice(0, 3));
+            getAssPerson();
+            $('#new-int-assperson').val(--interviewAssignedPersonID);
             $("#new-int-date").addClass('selected-option');
             $("#new-int-time").addClass('selected-option');
             $("#new-int-room").addClass('selected-option');
             $("#new-int-location").addClass('selected-option');
-            $("#new-int-position").addClass('selected-option');
+            $("#new-int-assperson").addClass('selected-option');
         });
     }
     /*$(document).on('change', '#new-int-location', function () {
@@ -661,8 +707,9 @@ $(document).ready(function () {
             showEditInterviewTab();
         });
         $(document).on('click', '#delete', function (event) {
-            if (ajaxRequest('/api/interviews/' + idRow, 'DELETE')) updateMyInterviews();
-            mui.overlay('off');
+            // if (ajaxRequest('/api/interviews/' + idRow, 'DELETE')) updateMyInterviews();
+            // mui.overlay('off');
+            deleteModalPopUp(idRow);
         });
     }
     /*MODAL END*/
@@ -816,7 +863,7 @@ $(document).ready(function () {
         mui.overlay('on', modalDelete);
         $('<h2 />', {
             "class": 'delete-header-h2'
-        }).text("Delete this interview?").appendTo(".delete-int-box");
+        }).text("Are you sure you want to delete this interview?").appendTo(".delete-int-box");
         $('<div />',{
             "class": 'delete-btn-cont'
         }).appendTo('.delete-int-box');
@@ -826,11 +873,11 @@ $(document).ready(function () {
         }).appendTo('.delete-btn-cont');
 
         $('<button />', {
-            "class": 'mui-btn mui-btn--danger mui-btn--raised',
+            "class": 'mui-btn mui-btn--raised',
             "id": 'delete-confirmation-ok'
         }).text(' DELETE ').appendTo('.delete-btn-cont-cont');
         $('<button />', {
-            "class": 'mui-btn mui-btn--primary mui-btn--raised',
+            "class": 'mui-btn mui-btn--raised',
             "id": 'delete-confirmation-cancel'
         }).text(' CANCEL ').appendTo('.delete-btn-cont-cont');
 
