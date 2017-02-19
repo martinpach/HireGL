@@ -188,15 +188,26 @@ $(document).ready(function () {
             top: pos.top + input.height() + 5
         , }).insertAfter(input);
     }
-    // /*Forbidden keys - firstName, lastName*/
-    // $(document).on('keypress', "#new-int-firstName, #new-int-lastName", function (event) {
-    //     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-    //     var regex = /^[^\x00-\x7F]+$/;
-    //     var regexx = /^[a-z]+$/i;
-    //     if (!regex.test(key) && !regexx.test(key)) {
-    //         event.preventDefault();
-    //     }
-    // });
+
+    $(document).on('keypress', "#new-int-firstName", function (event) {
+        $('#new-int-firstName + div.wrong-input').hide();
+    });
+    $(document).on('keypress', "#new-int-lastName", function (event) {
+        $('#new-int-lastName + div.wrong-input').hide();
+    });
+    $(document).on('keypress', "#new-int-phone", function (event) {
+        $('#new-int-phone + div.wrong-input').hide();
+    });
+    $(document).on('keypress', "#new-int-email", function (event) {
+        $('#new-int-email + div.wrong-input').hide();
+    });
+    $(document).on('change', "#new-int-date", function (event) {
+        $('#new-int-date + div.wrong-input').hide();
+    });
+    $(document).on('change', "#new-int-time", function (event) {
+        $('#new-int-time + div.wrong-input').hide();
+    });
+
     /*Input format validation - Phone number*/
     $(document).on('blur', "#new-int-phone", function () {
         var phone = $(this).val();
@@ -235,14 +246,17 @@ $(document).ready(function () {
     $(document).on('blur', "select", function () {
         if ($("#new-int-room :selected").text() != "Choose Room") {
             $("#new-int-room").addClass('selected-option');
+            $('#new-int-room + div.wrong-input').hide();
         }
         else $("#new-int-room").removeClass('selected-option');
         if ($("#new-int-location :selected").text() != "Enter Location") {
             $("#new-int-location").addClass('selected-option');
+            $('#new-int-location + div.wrong-input').hide();
         }
         else $("#new-int-location").removeClass('selected-option');
         if ($("#new-int-position :selected").text() != "Choose position") {
             $("#new-int-position").addClass('selected-option');
+            $('#new-int-position + div.wrong-input').hide();
         }
         else $("#new-int-position").removeClass('selected-option');
         if ($("#new-int-assperson :selected").text() != "Choose person") {
