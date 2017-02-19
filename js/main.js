@@ -403,7 +403,7 @@ $(document).ready(function () {
         if (ajaxRequest('/api/interviews', 'POST', jData)) updateMyInterviews();
     }
     /*PUT UPDATE interview*/
-    function sendEditInterviewToServer() {
+    function sendEditInterviewToServer(showMyInt) {
         var dateVal = $("#new-int-date").val();
         var timeVal = $("#new-int-time").val();
         var time = dateVal + "T" + timeVal + "Z";
@@ -419,13 +419,14 @@ $(document).ready(function () {
             location: $("#new-int-location option:selected").text().toUpperCase()
             , room: $("#new-int-room option:selected").text().toUpperCase()
             , dateTime: time
-            , userId: 1, //note: $("#new-int-note").val(),
+            , userId: 1 
+            , note: $("#new-int-note").val()
         }
         var jData = JSON.stringify({
             "candidate": candidate
             , "interview": interview
         });
-        if (ajaxRequest('/api/interviews/' + idRow, 'PUT', jData)) updateMyInterviews();
+        if (ajaxRequest('/api/interviews/' + idRow, 'PUT', jData) && showMyInt==true) updateMyInterviews();
     }
     /*PUT CLOSE interview*/
     function closeInterview() {
@@ -523,7 +524,7 @@ $(document).ready(function () {
     $(document).on('click', '#btn-edit-int-save,#btn-edit-int-save-r', function (event) {
         event.preventDefault();
         if (areInputsFill()) {
-            sendEditInterviewToServer()
+            sendEditInterviewToServer(true)
         }
     });
     /*Close Interview*/
@@ -537,6 +538,7 @@ $(document).ready(function () {
         }
         else $('#new-int-note + div.wrong-input').hide();
         if (noteState == 1) {
+            sendEditInterviewToServer(false)
             closeInterview();
         }
     });
