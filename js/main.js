@@ -306,21 +306,21 @@ $(document).ready(function () {
         else $('#new-int-time + div.wrong-input').hide();
         //POSITION
         if ($("#new-int-position option:selected").text() == "Choose position") {
-            if (!$('#new-int-position + div.wrong-input').length) fieldWrongInput("#new-int-position", "Please choose one option");
+            if (!$('#new-int-position + div.wrong-input').length) fieldWrongInput("#new-int-position", "Please choose position");
             notEmpty = 0;
             $('#new-int-position + div.wrong-input').show();
         }
         else $('#new-int-position + div.wrong-input').hide();
         //LOCATION
         if ($("#new-int-location option:selected").text() == "Enter Location") {
-            if (!$('#new-int-location + div.wrong-input').length) fieldWrongInput("#new-int-location", "Please choose one option");
+            if (!$('#new-int-location + div.wrong-input').length) fieldWrongInput("#new-int-location", "Please choose location");
             notEmpty = 0;
             $('#new-int-location + div.wrong-input').show();
         }
         else $('#new-int-location + div.wrong-input').hide();
         //ROOM
         if ($("#new-int-room option:selected").text() == "Choose Room") {
-            if (!$('#new-int-room + div.wrong-input').length) fieldWrongInput("#new-int-room", "Please choose one option");
+            if (!$('#new-int-room + div.wrong-input').length) fieldWrongInput("#new-int-room", "Please choose room");
             notEmpty = 0;
             $('#new-int-room + div.wrong-input').show();
         }
@@ -505,38 +505,6 @@ $(document).ready(function () {
             $("#new-int-assperson").addClass('selected-option');
         });
     }
-    /*$(document).on('change', '#new-int-location', function () {
-        while ($('#new-int-room option:last').text() != "Choose Room") {
-            $('#new-int-room option:last').remove();
-        }
-        var option = $("#new-int-location option:selected").text().toUpperCase();
-        //getting from server rooms which are in selected location
-        $.ajax({
-            url: 'http://localhost:8081/api/locations/' + option + '/rooms'
-            , type: 'GET'
-            , async: false
-            , beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-            }
-            , success: function (data) {
-                var to = ($("#new-int-room").children().length) - 1;
-                for (var g = 1; g <= to; g++) {
-                    $("#new-int-room").children().eq(1).remove();
-                }
-                for (var j = 0; j < data.length; j++) {
-                    var text = data[j].toLowerCase().replace(/\b[a-z]/g, function (letter) {
-                        return letter.toUpperCase();
-                    });
-                    $('<option />', {
-                        "value": 'room_' + data[j].toLowerCase().replace(/ /g, "_")
-                    }).text(text).appendTo("#new-int-room");
-                }
-            }
-            , error: function () {
-                activateErrorModal();
-            }
-        , });
-    });*/
     /*Save Edited Interview*/
     $(document).on('click', '#btn-edit-int-save,#btn-edit-int-save-r', function (event) {
         event.preventDefault();
@@ -547,7 +515,16 @@ $(document).ready(function () {
     /*Close Interview*/
     $(document).on('click', '#btn-edit-int-close,#btn-edit-int-close-r', function (event) {
         event.preventDefault();
-        closeInterview();
+        var noteState = 1;
+        if ($("#new-int-note").val().length == 0) {
+             if (!$('#new-int-note + div.wrong-input').length) fieldWrongInput("#new-int-note", "Note field cannot be empty");
+            noteState = 0;
+            $('#new-int-note + div.wrong-input').show();
+        }
+        else $('#new-int-note + div.wrong-input').hide();
+        if (noteState == 1) {
+            closeInterview();
+        }
     });
     /*Cancel Edit Interview*/
     $(document).on('click', '#btn-edit-int-cancel,#btn-my-int-cancel,#btn-edit-int-cancel-r', function (event) {
