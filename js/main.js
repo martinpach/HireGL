@@ -515,6 +515,7 @@ $(document).ready(function () {
             $('#new-int-assperson').val(--interviewAssignedPersonID);
             $("#new-int-date").addClass('selected-option');
             $("#new-int-time").addClass('selected-option');
+            $("#new-int-position").addClass('selected-option');
             $("#new-int-room").addClass('selected-option');
             $("#new-int-location").addClass('selected-option');
             $("#new-int-assperson").addClass('selected-option');
