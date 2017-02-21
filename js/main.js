@@ -751,12 +751,13 @@ $(document).ready(function () {
     function updateMyInterviews() {
         $('#main-content').load('templates/my-interviews.html', function () {
             startingInterview = 1;
-            getNumberOfInterviews();
-            if (countInterviews > 0) {
-                getInterviews(1, 5);
-            }
-            setText();
-            setPaginationButtons();
+            getNumberOfInterviews().done(function () {
+	            if (countInterviews > 0) {
+	                getInterviews(1, 5);
+	            }
+	            setText();
+	            setPaginationButtons();         	
+            });
             $("#page-title, #title-r").html("My Interviews");
             $("#menu-new-interview").removeClass("selected");
             $("#menu-interviews").addClass("selected");
@@ -812,9 +813,13 @@ $(document).ready(function () {
     /*END MY INTERVIEWS*/
     /* PAGINATION */
     function getNumberOfInterviews() {
+    	var dfd = $.Deferred();
         ajaxRequest('/api/interviews/count', 'GET').done(function () {
+        	console.log('getNumber');
             countInterviews = ajaxData.count;
+            dfd.resolve();
         });
+        return dfd.promise();
     }
 
     function setPaginationButtons() {
@@ -834,6 +839,7 @@ $(document).ready(function () {
     }
 
     function setText() {
+    	console.log('set text');
         if (countInterviews < 1) {
             $('#showed-pages').hide();
         } else {
