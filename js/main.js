@@ -116,7 +116,11 @@ $(document).ready(function () {
 
     function getPositions() {
         ajaxRequest('/api/positions', 'GET').done(function () {
-
+            /*cleaning position options*/
+            var to = ($("#new-int-position").children().length) - 1;
+            for (var g = 1; g <= to; g++) {
+                $("#new-int-position").children().eq(1).remove();
+            }
             /*creating new positon options*/
             for (var i = 0; i < ajaxData.length; i++) {
                 var text = ajaxData[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
@@ -130,7 +134,11 @@ $(document).ready(function () {
 
     function getLocations() {
         ajaxRequest('/api/locations/', 'GET').done(function () {
-
+            /*cleaning location options*/
+            var to = ($("#new-int-location").children().length) - 1;
+            for (var g = 1; g <= to; g++) {
+                $("#new-int-location").children().eq(1).remove();
+            }
             /*changing format of data form server and creating new options to select tag in locations*/
             for (var i = 0; i < ajaxData.length; i++) {
                 var text = ajaxData[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
@@ -172,7 +180,11 @@ $(document).ready(function () {
 
     function getAssPerson() {
         ajaxRequest('/api/users', 'GET').done(function () {
-
+            /*cleaning position options*/
+            var to = ($("#new-int-assperson").children().length) - 1;
+            for (var g = 1; g <= to; g++) {
+                $("#new-int-assperson").children().eq(1).remove();
+            }
             /*creating new positon options*/
             for (var i in ajaxData) {
                 var firstName = ajaxData[i].firstName.toLowerCase().replace(/\b[a-z]/g, function (letter) {
@@ -895,13 +907,13 @@ $(document).ready(function () {
 
     function ajaxRequest(ajaxUrl, typeOfRequest, dataToSend) {
         var dfd = $.Deferred();
-        // var ajaxSuccess = false;
+
         $.ajax({
             beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Authorization', token);
-                }
-                // , async: false
-                ,
+                xhr.setRequestHeader('Authorization', token);
+            }
+
+            ,
             url: 'http://localhost:8081' + ajaxUrl,
             type: typeOfRequest,
             data: dataToSend,
@@ -909,7 +921,7 @@ $(document).ready(function () {
             success: function (data) {
                 if (data != null) ajaxData = data;
                 dfd.resolve();
-                // ajaxSuccess = true
+
             },
             error: function () {
                 dfd.reject();
@@ -917,7 +929,7 @@ $(document).ready(function () {
             }
         });
         return dfd.promise();
-        // return ajaxSuccess;
+
     }
     /*END AJAX REQUEST*/
 });
