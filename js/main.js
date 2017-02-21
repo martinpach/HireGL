@@ -877,33 +877,41 @@ $(document).ready(function () {
         });
         $("#delete-confirmation-ok").on('click', function () {
             mui.overlay('off');
-            if (ajaxRequest('/api/interviews/' + id, 'DELETE')) {
+            // if (ajaxRequest('/api/interviews/' + id, 'DELETE')) {
+            ajaxRequest('/api/interviews/' + id, 'DELETE').done(function () {
                 updateMyInterviews();
-            }
+            });
+                // updateMyInterviews();
+            // }
         });
     }
     /** END DELETE 1 INTERVIEW*/
     /*AJAX REQUEST*/
+
     function ajaxRequest(ajaxUrl, typeOfRequest, dataToSend) {
-        var ajaxSuccess = false;
+        var dfd = $.Deferred();
+        // var ajaxSuccess = false;
         $.ajax({
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', token);
             }
-            , async: false
+            // , async: false
             , url: 'http://localhost:8081' + ajaxUrl
             , type: typeOfRequest
             , data: dataToSend
             , contentType: 'application/json'
             , success: function (data) {
                 if (data != null) ajaxData = data;
-                ajaxSuccess = true
+                dfd.resolve();
+                // ajaxSuccess = true
             }
             , error: function () {
+                dfd.reject();
                 console.log("Error");
             }
         });
-        return ajaxSuccess;
+        return dfd.promise();
+        // return ajaxSuccess;
     }
     /*END AJAX REQUEST*/
 });
