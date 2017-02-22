@@ -439,9 +439,22 @@ table {
     padding-right: 7px;
 }
 
-.edit-icon,
 .delete-icon {
+    padding: 0px 3px 6px 3px;
+}
+
+.edit-icon {
     padding: 3px;
+}
+
+.myint-edit{
+    border: none;
+    background-color: transparent;
+    padding-top: 6px;
+}
+
+.myint-edit:focus {
+    outline: 0;
 }
 
 .edit-icon:hover,

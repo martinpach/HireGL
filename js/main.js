@@ -464,22 +464,22 @@ $(document).ready(function () {
         ajaxRequest('/api/interviews/' + idRow + '/closed', 'PUT').done(function () {
             updateMyInterviews();
         });
-        var candicateName = "";
-        var candidateFirstName = "";
-        var candidateLastName = "";
-        var workPosition = "";
-        var candicateTelephone = "";
-        var candicateEmail = "";
-        var candicateSkype = "";
-        var interviewDate = "";
-        var interviewTime = "";
-        var interviewLocation = "";
-        var interviewRoom = "";
-        var interviewAssignedPerson = "";
-        var interviewAssignedPersonID = "";
-        var interviewNotes = "";
-        var idRow;
     }
+    var candicateName = "";
+    var candidateFirstName = "";
+    var candidateLastName = "";
+    var workPosition = "";
+    var candicateTelephone = "";
+    var candicateEmail = "";
+    var candicateSkype = "";
+    var interviewDate = "";
+    var interviewTime = "";
+    var interviewLocation = "";
+    var interviewRoom = "";
+    var interviewAssignedPerson = "";
+    var interviewAssignedPersonID = "";
+    var interviewNotes = "";
+    var idRow;
 
     function getIntervievDataById(actModal) {
         ajaxRequest('/api/interviews/' + idRow, 'GET').done(function () {
@@ -509,7 +509,7 @@ $(document).ready(function () {
         });
     }
     /*CLICK on EDIT pic in my int*/
-    $('#main-content').on('click', '.edit-icon', function (event) {
+    $('#main-content').on('click', '.myint-edit', function (event) {
         event.preventDefault();
         var idRow = $(this).parent().parent().attr('data-id');
         showEditInterviewTab();
@@ -826,9 +826,16 @@ $(document).ready(function () {
             var td5 = $('<td />', {
                 'class': 'td-my-interviews td-display-modal'
             }).text(interviews[i].interview.status).appendTo(tr);
-            var td6 = $('<td />', {
-                'class': 'td-my-interviews'
-            }).html('<i class="material-icons delete-icon basic-icon">&#xE872;</i><i class="material-icons edit-icon basic-icon">&#xE150;</i>').appendTo(tr);
+            if (interviews[i].interview.status == "CREATED") {
+                var td6 = $('<td />', {
+                    'class': 'td-my-interviews'
+                }).html('<i class="material-icons delete-icon basic-icon">&#xE872;</i><button class="myint-edit"><i class="material-icons edit-icon basic-icon">&#xE150;</i></button>').appendTo(tr);
+            }
+            else {
+                var td6 = $('<td />', {
+                    'class': 'td-my-interviews'
+                }).html('<i class="material-icons delete-icon basic-icon">&#xE872;</i><button class="myint-edit" disabled><i class="material-icons edit-icon basic-icon">&#xE150;</i></button>').appendTo(tr);
+            }
         }
     }
     /*END MY INTERVIEWS*/
