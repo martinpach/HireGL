@@ -452,6 +452,9 @@ table {
     background-color: transparent;
     padding-top: 6px;
 }
+.myint-edit:hover {
+    cursor: pointer;
+}
 
 .myint-edit:focus {
     outline: 0;
