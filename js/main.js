@@ -482,6 +482,7 @@ $(document).ready(function () {
     var idRow;
 
     function getIntervievDataById(actModal) {
+        var dfd = $.Deferred();
         ajaxRequest('/api/interviews/' + idRow, 'GET').done(function () {
             candicateName = (ajaxData.candidate.firstName) + " " + (ajaxData.candidate.lastName);
             candidateFirstName = ajaxData.candidate.firstName;
@@ -507,14 +508,17 @@ $(document).ready(function () {
             if (actModal) {
                 activateModal();
             }
+            dfd.resolve();
         });
+        return dfd.promise();
     }
     /*CLICK on EDIT pic in my int*/
     $('#main-content').on('click', '.myint-edit', function (event) {
         event.preventDefault();
         idRow = $(this).parent().parent().attr('data-id');
-        getIntervievDataById();
-        showEditInterviewTab();
+        getIntervievDataById().done(function () {;
+            showEditInterviewTab();
+        });
     });
 
     function upperCaseFirstLetter(str) {
