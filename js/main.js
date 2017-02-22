@@ -513,7 +513,7 @@ $(document).ready(function () {
         return dfd.promise();
     }
     /*CLICK on EDIT pic in my int*/
-    $('#main-content').on('click', '.myint-edit', function (event) {
+    $('#main-content').on('click', '.edit-icon', function (event) {
         event.preventDefault();
         idRow = $(this).parent().parent().attr('data-id');
         getIntervievDataById().done(function () {;
@@ -744,8 +744,7 @@ $(document).ready(function () {
             mui.overlay('off');
         });
         if (interviewStatus == "CLOSED") {
-            $("#edit").removeClass('edit-modal');
-            $("#edit").addClass('disabled-edit-btn');
+            $("#edit").remove('.edit-modal');
         }
         /*CLICK on EDIT pic in modal*/
         $(document).on('click', '.edit-modal', function (event) {
@@ -839,12 +838,12 @@ $(document).ready(function () {
             if (interviews[i].interview.status == "CREATED") {
                 var td6 = $('<td />', {
                     'class': 'td-my-interviews'
-                }).html('<i class="material-icons delete-icon basic-icon">&#xE872;</i><button class="myint-edit"><i class="material-icons edit-icon basic-icon">&#xE150;</i></button>').appendTo(tr);
+                }).html('<i class="material-icons delete-icon basic-icon">&#xE872;</i><i class="material-icons edit-icon basic-icon">&#xE150;</i>').appendTo(tr);
             }
             else {
                 var td6 = $('<td />', {
                     'class': 'td-my-interviews'
-                }).html('<i class="material-icons delete-icon basic-icon">&#xE872;</i><button class="myint-edit" disabled><i class="material-icons edit-icon basic-icon">&#xE150;</i></button>').appendTo(tr);
+                }).html('<i class="material-icons delete-icon basic-icon">&#xE872;</i>').appendTo(tr);
             }
         }
     }
