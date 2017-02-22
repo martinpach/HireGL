@@ -494,8 +494,14 @@ $(document).ready(function () {
             interviewTime = (ajaxData.interview.dateTime).slice((ajaxData.interview.dateTime).indexOf('T') + 1);
             interviewLocation = ajaxData.interview.location;
             interviewRoom = ajaxData.interview.room;
-            interviewAssignedPerson = (ajaxData.interview.user.firstName) + " " + (ajaxData.interview.user.lastName);
-            interviewAssignedPersonID = ajaxData.interview.user.id;
+            if ('user' in ajaxData.interview) {
+                interviewAssignedPerson = (ajaxData.interview.user.firstName) + " " + (ajaxData.interview.user.lastName);
+                interviewAssignedPersonID = ajaxData.interview.user.id
+            }
+            else {
+                interviewAssignedPerson = "";
+                interviewAssignedPersonID = "";
+            };
             interviewNotes = ajaxData.interview.note;
             if (actModal) {
                 activateModal();
@@ -830,7 +836,6 @@ $(document).ready(function () {
     function getNumberOfInterviews() {
         var dfd = $.Deferred();
         ajaxRequest('/api/interviews/count', 'GET').done(function () {
-            console.log('getNumber');
             countInterviews = ajaxData.count;
             dfd.resolve();
         });
@@ -857,7 +862,6 @@ $(document).ready(function () {
     }
 
     function setText() {
-        console.log('set text');
         if (countInterviews < 1) {
             $('#showed-pages').hide();
         }
