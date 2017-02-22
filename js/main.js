@@ -534,7 +534,7 @@ $(document).ready(function () {
             $("#menu-interviews").removeClass("selected");
             getIntervievDataById(false);
             $('#new-int-firstName').val(candidateFirstName);
-            $('#new-int-lastName').val(candidateFirstName);
+            $('#new-int-lastName').val(candidateLastName);
             $('#new-int-phone').val(candicateTelephone);
             $('#new-int-email').val(candicateEmail);
             $('#new-int-skype').val(candicateSkype);
