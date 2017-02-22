@@ -725,12 +725,10 @@ $(document).ready(function () {
         $('<div />', {
             "id": 'editInterview'
         }).appendTo(".right");
-
         $('<i />', {
             "class": 'material-icons edit-modal'
             , "id": 'edit'
         }).text("create").appendTo("#editInterview");
-
         $('<i />', {
             "class": 'material-icons'
             , "id": 'delete'
@@ -743,6 +741,7 @@ $(document).ready(function () {
         });
         if (interviewStatus == "CLOSED") {
             $("#edit").removeClass('edit-modal');
+            $("#edit").addClass('disabled-edit-btn');
         }
         /*CLICK on EDIT pic in modal*/
         $(document).on('click', '.edit-modal', function (event) {

@@ -120,6 +120,11 @@
     position: relative;
 }
 
+.disabled-edit-btn:hover {
+    cursor: default !important;
+    opacity: 1 !important;
+}
+
 @media (max-width: 767px) {
     #icoDisableLeft {
         display: block;
