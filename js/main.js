@@ -426,7 +426,6 @@ $(document).ready(function () {
             "candidate": candidate
             , "interview": interview
         });
-        console.log(jData);
         ajaxRequest('/api/interviews', 'POST', jData).done(function () {
             updateMyInterviews();
         });
@@ -513,7 +512,8 @@ $(document).ready(function () {
     /*CLICK on EDIT pic in my int*/
     $('#main-content').on('click', '.myint-edit', function (event) {
         event.preventDefault();
-        var idRow = $(this).parent().parent().attr('data-id');
+        idRow = $(this).parent().parent().attr('data-id');
+        getIntervievDataById();
         showEditInterviewTab();
     });
 
