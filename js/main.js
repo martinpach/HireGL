@@ -479,6 +479,7 @@ $(document).ready(function () {
     var interviewAssignedPerson = "";
     var interviewAssignedPersonID = "";
     var interviewNotes = "";
+    var interviewStatus = "";
     var idRow;
 
     function getIntervievDataById(actModal) {
@@ -494,6 +495,7 @@ $(document).ready(function () {
             interviewTime = (ajaxData.interview.dateTime).slice((ajaxData.interview.dateTime).indexOf('T') + 1);
             interviewLocation = ajaxData.interview.location;
             interviewRoom = ajaxData.interview.room;
+            interviewStatus = ajaxData.interview.status;
             if ('user' in ajaxData.interview) {
                 interviewAssignedPerson = (ajaxData.interview.user.firstName) + " " + (ajaxData.interview.user.lastName);
                 interviewAssignedPersonID = ajaxData.interview.user.id
@@ -723,10 +725,12 @@ $(document).ready(function () {
         $('<div />', {
             "id": 'editInterview'
         }).appendTo(".right");
+
         $('<i />', {
-            "class": 'material-icons'
+            "class": 'material-icons edit-modal'
             , "id": 'edit'
         }).text("create").appendTo("#editInterview");
+
         $('<i />', {
             "class": 'material-icons'
             , "id": 'delete'
@@ -737,8 +741,11 @@ $(document).ready(function () {
         $("#icoDisableLeft").on('click', function () {
             mui.overlay('off');
         });
+        if (interviewStatus == "CLOSED") {
+            $("#edit").removeClass('edit-modal');
+        }
         /*CLICK on EDIT pic in modal*/
-        $(document).on('click', '#edit', function (event) {
+        $(document).on('click', '.edit-modal', function (event) {
             event.preventDefault();
             mui.overlay('off');
             showEditInterviewTab();
