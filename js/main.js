@@ -294,18 +294,18 @@ $(document).ready(function () {
     /*NEW INTERVIEW INPUTS VALIDATIONS END**/
     /**NEW INTERVIEW DATA*/
     function areInputsFill() {
-        var notEmpty = 1;
+        var emptyInput = false;
         //FIRSTNAME
         if ($('#new-int-firstName').val().length == 0) {
             if (!$('#new-int-firstName + div.wrong-input').length) fieldWrongInput("#new-int-firstName", "Name cannot be empty");
-            notEmpty = 0;
+            emptyInput = true;
             $('#new-int-firstName + div.wrong-input').show();
         }
         else $('#new-int-firstName + div.wrong-input').hide();
         //LASTNAME
         if ($('#new-int-lastName').val().length == 0) {
             if (!$('#new-int-lastName + div.wrong-input').length) fieldWrongInput("#new-int-lastName", "Surname cannot be empty");
-            notEmpty = 0;
+            emptyInput = true;
             $('#new-int-lastName + div.wrong-input').show();
         }
         else $('#new-int-lastName + div.wrong-input').hide();
@@ -313,65 +313,63 @@ $(document).ready(function () {
         if (!$('#new-int-phone + div.wrong-input').length) {
             if ($('#new-int-phone').val().length == 0) {
                 fieldWrongInput("#new-int-phone", "Phone cannot be empty");
-                notEmpty = 0;
+                emptyInput = true;
             }
             else {
                 $('#new-int-phone + div.wrong-input').remove();
             }
         }
-        else notEmpty = 0;
+        else emptyInput = true;
         //EMAIL
         if (!$('#new-int-email + div.wrong-input').length) {
             if ($('#new-int-email').val().length == 0) {
                 fieldWrongInput("#new-int-email", "Email cannot be empty");
-                notEmpty = 0;
+                emptyInput = true;
             }
             else {
                 $('#new-int-email + div.wrong-input').remove();
             }
         }
-        else notEmpty = 0;
+        else emptyInput = true;
         //DATE
         if ($('#new-int-date').val().length == 0) {
             if (!$('#new-int-date + div.wrong-input').length) fieldWrongInput("#new-int-date", "Date must be set");
-            notEmpty = 0;
+            emptyInput = true;
             $('#new-int-date + div.wrong-input').show();
         }
         else $('#new-int-date + div.wrong-input').hide();
         //TIME
         if ($('#new-int-time').val().length == 0) {
             if (!$('#new-int-time + div.wrong-input').length) fieldWrongInput("#new-int-time", "Time must be set");
-            notEmpty = 0;
+            emptyInput = true;
             $('#new-int-time + div.wrong-input').show();
         }
         else $('#new-int-time + div.wrong-input').hide();
         //POSITION
         if ($("#new-int-position option:selected").text() == "Choose position") {
             if (!$('#new-int-position + div.wrong-input').length) fieldWrongInput("#new-int-position", "Please choose position");
-            notEmpty = 0;
+            emptyInput = true;
             $('#new-int-position + div.wrong-input').show();
         }
         else $('#new-int-position + div.wrong-input').hide();
         //LOCATION
         if ($("#new-int-location option:selected").text() == "Enter Location") {
             if (!$('#new-int-location + div.wrong-input').length) fieldWrongInput("#new-int-location", "Please choose location");
-            notEmpty = 0;
+            emptyInput = true;
             $('#new-int-location + div.wrong-input').show();
         }
         else $('#new-int-location + div.wrong-input').hide();
         //ROOM
         if ($("#new-int-room option:selected").text() == "Choose Room") {
             if (!$('#new-int-room + div.wrong-input').length) fieldWrongInput("#new-int-room", "Please choose room");
-            notEmpty = 0;
+            emptyInput = true;
             $('#new-int-room + div.wrong-input').show();
         }
         else $('#new-int-room + div.wrong-input').hide();
-        if (notEmpty == 0) {
+        if (emptyInput == true)
             return false;
-        }
-        else {
+        else
             return true;
-        }
     }
     /*Assigned Person - string to number*/
     function getNumberOfAssignedPerson() {
@@ -578,14 +576,14 @@ $(document).ready(function () {
     /*Close Interview*/
     $(document).on('click', '#btn-edit-int-close,#btn-edit-int-close-r', function (event) {
         event.preventDefault();
-        var noteState = 1;
+        var emptyNote = false;
         if ($("#new-int-note").val().length == 0) {
             if (!$('#new-int-note + div.wrong-input').length) fieldWrongInput("#new-int-note", "Note field cannot be empty");
-            noteState = 0;
+            emptyNote = true;
             $('#new-int-note + div.wrong-input').show();
         }
         else $('#new-int-note + div.wrong-input').hide();
-        if (noteState == 1) {
+        if (emptyNote == false) {
             sendEditInterviewToServer(false)
             closeInterview();
         }
