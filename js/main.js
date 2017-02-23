@@ -65,9 +65,7 @@ $(document).ready(function () {
                         return letter.toUpperCase();
                     });
                     var text = firstName + " " + lastName;
-                    $('<option />', {
-                        "data-positions": (Number(i) + 1)
-                    }).text(text).appendTo("#new-int-assperson");
+                    $('<option />').text(text).appendTo("#new-int-assperson").val(++i);;
                 }
                 /*creating new assigned person options END*/
             });
@@ -193,7 +191,7 @@ $(document).ready(function () {
                     return letter.toUpperCase();
                 });
                 var text = firstName + " " + lastName;
-                $('<option />').text(text).appendTo("#new-int-assperson").val(i);
+                $('<option />').text(text).appendTo("#new-int-assperson").val(++i);
             }
             /*creating new assigned person options END*/
             dfd.resolve();
@@ -416,7 +414,7 @@ $(document).ready(function () {
             location: $("#new-int-location option:selected").text().toUpperCase()
             , room: $("#new-int-room option:selected").text().toUpperCase()
             , dateTime: time
-            , userId: 1
+            , userId: $("#new-int-assperson option:selected").val()
             , note: $("#new-int-note").val()
         }
         var jData = JSON.stringify({
@@ -527,7 +525,7 @@ $(document).ready(function () {
                 getRoom();
             });
             getAssPerson().done(function () {
-                $('#new-int-assperson').val(--interviewAssignedPersonID);
+                $('#new-int-assperson').val(interviewAssignedPersonID);
             });
             $("#new-int-date").addClass('selected-option');
             $("#new-int-time").addClass('selected-option');
