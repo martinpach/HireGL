@@ -7,6 +7,10 @@ $(document).ready(function () {
     $('#menu-new-interview , #new-interview-r').on('click', function () {
         /*changing main content to new interview form and getting from server positons, locations and rooms*/
         $('#main-content').load('templates/new-interview.html', function () {
+            $("#new-int-time").timepicker();
+            $("#new-int-date").datepicker({
+                format: "yyyy-mm-dd"
+            });
             /*call server to receive locations*/
             ajaxRequest('/api/locations', 'GET').done(function () {
                 getLocations().done(function () {
@@ -38,9 +42,9 @@ $(document).ready(function () {
     $("#menu-interviews").trigger("click");
     /* retrieving data from local storage and load user information */
     var data = {
-        firstName: localStorage.getItem("firstName")
-        , lastName: localStorage.getItem("lastName")
-        , photoUrl: localStorage.getItem("photoUrl")
+        firstName: localStorage.getItem("firstName"),
+        lastName: localStorage.getItem("lastName"),
+        photoUrl: localStorage.getItem("photoUrl")
     };
     var userDataWrapper = '<div id="userData"><span id="v-align"><img src="{{photoUrl}}" id="user-icon">{{firstName}} {{lastName}}</span><i class="material-icons basic-icon" id="logout">arrow_forward</i></div>';
     var html = Mustache.to_html(userDataWrapper, data);
@@ -153,8 +157,8 @@ $(document).ready(function () {
         var input = $(inpfield);
         var pos = input.position();
         $('<div class="wrong-input" />').html(fieldMessage).css({
-            top: pos.top + input.height() + 5
-        , }).insertAfter(input);
+            top: pos.top + input.height() + 5,
+        }).insertAfter(input);
     }
     $(document).on('keypress', "#new-int-firstName", function (event) {
         $('#new-int-firstName + div.wrong-input').hide();
@@ -213,22 +217,18 @@ $(document).ready(function () {
         if ($("#new-int-room :selected").text() != "Choose Room") {
             $("#new-int-room").addClass('selected-option');
             $('#new-int-room + div.wrong-input').hide();
-        }
-        else $("#new-int-room").removeClass('selected-option');
+        } else $("#new-int-room").removeClass('selected-option');
         if ($("#new-int-location :selected").text() != "Enter Location") {
             $("#new-int-location").addClass('selected-option');
             $('#new-int-location + div.wrong-input').hide();
-        }
-        else $("#new-int-location").removeClass('selected-option');
+        } else $("#new-int-location").removeClass('selected-option');
         if ($("#new-int-position :selected").text() != "Choose position") {
             $("#new-int-position").addClass('selected-option');
             $('#new-int-position + div.wrong-input').hide();
-        }
-        else $("#new-int-position").removeClass('selected-option');
+        } else $("#new-int-position").removeClass('selected-option');
         if ($("#new-int-assperson :selected").text() != "Choose person") {
             $("#new-int-assperson").addClass('selected-option');
-        }
-        else $("#new-int-assperson").removeClass('selected-option');
+        } else $("#new-int-assperson").removeClass('selected-option');
     });
     /*NEW INTERVIEW INPUTS VALIDATIONS END**/
     /**NEW INTERVIEW DATA*/
@@ -239,72 +239,61 @@ $(document).ready(function () {
             if (!$('#new-int-firstName + div.wrong-input').length) fieldWrongInput("#new-int-firstName", "Name cannot be empty");
             emptyInput = true;
             $('#new-int-firstName + div.wrong-input').show();
-        }
-        else $('#new-int-firstName + div.wrong-input').hide();
+        } else $('#new-int-firstName + div.wrong-input').hide();
         //LASTNAME
         if ($('#new-int-lastName').val().length == 0) {
             if (!$('#new-int-lastName + div.wrong-input').length) fieldWrongInput("#new-int-lastName", "Surname cannot be empty");
             emptyInput = true;
             $('#new-int-lastName + div.wrong-input').show();
-        }
-        else $('#new-int-lastName + div.wrong-input').hide();
+        } else $('#new-int-lastName + div.wrong-input').hide();
         //PHONE
         if (!$('#new-int-phone + div.wrong-input').length) {
             if ($('#new-int-phone').val().length == 0) {
                 fieldWrongInput("#new-int-phone", "Phone cannot be empty");
                 emptyInput = true;
-            }
-            else {
+            } else {
                 $('#new-int-phone + div.wrong-input').remove();
             }
-        }
-        else emptyInput = true;
+        } else emptyInput = true;
         //EMAIL
         if (!$('#new-int-email + div.wrong-input').length) {
             if ($('#new-int-email').val().length == 0) {
                 fieldWrongInput("#new-int-email", "Email cannot be empty");
                 emptyInput = true;
-            }
-            else {
+            } else {
                 $('#new-int-email + div.wrong-input').remove();
             }
-        }
-        else emptyInput = true;
+        } else emptyInput = true;
         //DATE
         if ($('#new-int-date').val().length == 0) {
             if (!$('#new-int-date + div.wrong-input').length) fieldWrongInput("#new-int-date", "Date must be set");
             emptyInput = true;
             $('#new-int-date + div.wrong-input').show();
-        }
-        else $('#new-int-date + div.wrong-input').hide();
+        } else $('#new-int-date + div.wrong-input').hide();
         //TIME
         if ($('#new-int-time').val().length == 0) {
             if (!$('#new-int-time + div.wrong-input').length) fieldWrongInput("#new-int-time", "Time must be set");
             emptyInput = true;
             $('#new-int-time + div.wrong-input').show();
-        }
-        else $('#new-int-time + div.wrong-input').hide();
+        } else $('#new-int-time + div.wrong-input').hide();
         //POSITION
         if ($("#new-int-position option:selected").text() == "Choose position") {
             if (!$('#new-int-position + div.wrong-input').length) fieldWrongInput("#new-int-position", "Please choose position");
             emptyInput = true;
             $('#new-int-position + div.wrong-input').show();
-        }
-        else $('#new-int-position + div.wrong-input').hide();
+        } else $('#new-int-position + div.wrong-input').hide();
         //LOCATION
         if ($("#new-int-location option:selected").text() == "Enter Location") {
             if (!$('#new-int-location + div.wrong-input').length) fieldWrongInput("#new-int-location", "Please choose location");
             emptyInput = true;
             $('#new-int-location + div.wrong-input').show();
-        }
-        else $('#new-int-location + div.wrong-input').hide();
+        } else $('#new-int-location + div.wrong-input').hide();
         //ROOM
         if ($("#new-int-room option:selected").text() == "Choose Room") {
             if (!$('#new-int-room + div.wrong-input').length) fieldWrongInput("#new-int-room", "Please choose room");
             emptyInput = true;
             $('#new-int-room + div.wrong-input').show();
-        }
-        else $('#new-int-room + div.wrong-input').hide();
+        } else $('#new-int-room + div.wrong-input').hide();
         if (emptyInput == true) return false;
         else return true;
     }
@@ -320,22 +309,22 @@ $(document).ready(function () {
         var time = convertDatetimeToISOFormat();
         var assPersonId = $("#new-int-assperson option:selected").val();
         var candidate = {
-            firstName: $("#new-int-firstName").val()
-            , lastName: $("#new-int-lastName").val()
-            , phone: $("#new-int-phone").val()
-            , skype: $("#new-int-skype").val()
-            , email: $("#new-int-email").val()
-            , position: $("#new-int-position option:selected").text().toUpperCase()
-        , };
+            firstName: $("#new-int-firstName").val(),
+            lastName: $("#new-int-lastName").val(),
+            phone: $("#new-int-phone").val(),
+            skype: $("#new-int-skype").val(),
+            email: $("#new-int-email").val(),
+            position: $("#new-int-position option:selected").text().toUpperCase(),
+        };
         var interview = {
-            location: $("#new-int-location option:selected").text().toUpperCase()
-            , room: $("#new-int-room option:selected").text().toUpperCase()
-            , dateTime: time
-            , userId: assPersonId
-        , }
+            location: $("#new-int-location option:selected").text().toUpperCase(),
+            room: $("#new-int-room option:selected").text().toUpperCase(),
+            dateTime: time,
+            userId: assPersonId,
+        }
         var jData = JSON.stringify({
-            "candidate": candidate
-            , "interview": interview
+            "candidate": candidate,
+            "interview": interview
         });
         ajaxRequest('/api/interviews', 'POST', jData).done(function () {
             updateMyInterviews();
@@ -345,23 +334,23 @@ $(document).ready(function () {
     function sendEditInterviewToServer(showMyInt) {
         var time = convertDatetimeToISOFormat();
         var candidate = {
-            firstName: $("#new-int-firstName").val()
-            , lastName: $("#new-int-lastName").val()
-            , phone: $("#new-int-phone").val()
-            , skype: $("#new-int-skype").val()
-            , email: $("#new-int-email").val()
-            , position: $("#new-int-position option:selected").text().toUpperCase()
-        , };
+            firstName: $("#new-int-firstName").val(),
+            lastName: $("#new-int-lastName").val(),
+            phone: $("#new-int-phone").val(),
+            skype: $("#new-int-skype").val(),
+            email: $("#new-int-email").val(),
+            position: $("#new-int-position option:selected").text().toUpperCase(),
+        };
         var interview = {
-            location: $("#new-int-location option:selected").text().toUpperCase()
-            , room: $("#new-int-room option:selected").text().toUpperCase()
-            , dateTime: time
-            , userId: $("#new-int-assperson option:selected").val()
-            , note: $("#new-int-note").val()
+            location: $("#new-int-location option:selected").text().toUpperCase(),
+            room: $("#new-int-room option:selected").text().toUpperCase(),
+            dateTime: time,
+            userId: $("#new-int-assperson option:selected").val(),
+            note: $("#new-int-note").val()
         }
         var jData = JSON.stringify({
-            "candidate": candidate
-            , "interview": interview
+            "candidate": candidate,
+            "interview": interview
         });
         ajaxRequest('/api/interviews/' + idRow, 'PUT', jData).done(function () {
             if (showMyInt == true) updateMyInterviews();
@@ -408,8 +397,7 @@ $(document).ready(function () {
             if ('user' in ajaxData.interview) {
                 interviewAssignedPerson = (ajaxData.interview.user.firstName) + " " + (ajaxData.interview.user.lastName);
                 interviewAssignedPersonID = ajaxData.interview.user.id
-            }
-            else {
+            } else {
                 interviewAssignedPerson = "";
                 interviewAssignedPersonID = "";
             };
@@ -442,6 +430,10 @@ $(document).ready(function () {
     /*Lead Edit-interview tab*/
     function showEditInterviewTab() {
         $('#main-content').load('templates/edit-interview.html', function () {
+            $("#new-int-time").timepicker();
+            $("#new-int-date").datepicker({
+                format: "yyyy-mm-dd"
+            });
             $("#page-title, #title-r").html("Edit Interviews");
             $("#menu-new-interview").removeClass("selected");
             $("#menu-interviews").removeClass("selected");
@@ -492,8 +484,7 @@ $(document).ready(function () {
             if (!$('#new-int-note + div.wrong-input').length) fieldWrongInput("#new-int-note", "Note field cannot be empty");
             emptyNote = true;
             $('#new-int-note + div.wrong-input').show();
-        }
-        else $('#new-int-note + div.wrong-input').hide();
+        } else $('#new-int-note + div.wrong-input').hide();
         if (emptyNote == false) {
             sendEditInterviewToServer(false)
             closeInterview();
@@ -523,22 +514,22 @@ $(document).ready(function () {
             "class": 'left mui-col-md-6'
         }).appendTo(".center");
         $('<i />', {
-            "class": 'material-icons icoDisable'
-            , "id": 'icoDisableLeft'
+            "class": 'material-icons icoDisable',
+            "id": 'icoDisableLeft'
         }).text("clear").appendTo(".left");
         $('<h1 />', {
-            "class": 'heading'
-            , "id": 'hCandidate'
+            "class": 'heading',
+            "id": 'hCandidate'
         }).appendTo(".left");
         $("#hCandidate").text("Candidate");
         //adding candicate image
         $('<div />', {
-            "class": 'flex'
-            , "id": 'cMain'
+            "class": 'flex',
+            "id": 'cMain'
         }).appendTo(".left");
         $('<img />', {
-            "class": 'candidateImage'
-            , "src": picture
+            "class": 'candidateImage',
+            "src": picture
         }).appendTo("#cMain");
         //candidate name
         $('<div />', {
@@ -555,8 +546,8 @@ $(document).ready(function () {
         $(".workPosition").text(workPosition);
         //telephone
         $('<div />', {
-            "class": 'flex'
-            , "id": 'cTelephone'
+            "class": 'flex',
+            "id": 'cTelephone'
         }).appendTo(".left");
         $('<i />', {
             "class": 'material-icons candidateInfoLeft'
@@ -566,8 +557,8 @@ $(document).ready(function () {
         }).text(candicateTelephone).appendTo("#cTelephone");
         //email
         $('<div />', {
-            "class": 'flex'
-            , "id": 'cEmail'
+            "class": 'flex',
+            "id": 'cEmail'
         }).appendTo(".left");
         $('<i />', {
             "class": 'material-icons candidateInfoLeft'
@@ -577,8 +568,8 @@ $(document).ready(function () {
         }).text(candicateEmail).appendTo("#cEmail");
         //skype
         $('<div />', {
-            "class": 'flex'
-            , "id": 'cSkype'
+            "class": 'flex',
+            "id": 'cSkype'
         }).appendTo(".left");
         $('<i />', {
             "class": 'zmdi zmdi-skype zmdi-hc-2x candidateInfoLeft'
@@ -591,12 +582,12 @@ $(document).ready(function () {
             "class": 'right mui-col-md-6'
         }).appendTo(".center");
         $('<i />', {
-            "class": 'material-icons icoDisable'
-            , "id": 'icoDisableRight'
+            "class": 'material-icons icoDisable',
+            "id": 'icoDisableRight'
         }).text("clear").appendTo(".right");
         $('<h1 />', {
-            "class": 'heading'
-            , "id": 'hInterview'
+            "class": 'heading',
+            "id": 'hInterview'
         }).appendTo(".right");
         $("#hInterview").text("Interview");
         $('<label />', {
@@ -639,12 +630,12 @@ $(document).ready(function () {
             "id": 'editInterview'
         }).appendTo(".right");
         $('<i />', {
-            "class": 'material-icons edit-modal'
-            , "id": 'edit'
+            "class": 'material-icons edit-modal',
+            "id": 'edit'
         }).text("create").appendTo("#editInterview");
         $('<i />', {
-            "class": 'material-icons'
-            , "id": 'delete'
+            "class": 'material-icons',
+            "id": 'delete'
         }).text("delete").appendTo("#editInterview");
         $("#icoDisableRight").on('click', function () {
             mui.overlay('off');
@@ -676,8 +667,8 @@ $(document).ready(function () {
         modalEl.style.margin = '100px auto';
         mui.overlay('on', modalEl);
         $('<i />', {
-            "class": 'material-icons icoDisable'
-            , "id": 'icoDisableRight'
+            "class": 'material-icons icoDisable',
+            "id": 'icoDisableRight'
         }).text("clear").appendTo(".center");
         $('<h1 />', {
             "class": 'mui--text-danger mui--text-center textCenter'
@@ -718,8 +709,8 @@ $(document).ready(function () {
     function generateInterviewRows(interviews) {
         for (var i = 0; i < interviews.length; i++) {
             var tr = $('<tr />', {
-                'class': 'tr-content'
-                , 'data-id': interviews[i].id
+                'class': 'tr-content',
+                'data-id': interviews[i].id
             }).appendTo("tbody");
             var td1 = $('<td />', {
                 'class': 'td-display-modal'
@@ -748,8 +739,7 @@ $(document).ready(function () {
                 var td6 = $('<td />', {
                     'class': 'td-my-interviews'
                 }).html('<i class="material-icons delete-icon basic-icon">&#xE872;</i><i class="material-icons edit-icon basic-icon">&#xE150;</i>').appendTo(tr);
-            }
-            else {
+            } else {
                 var td6 = $('<td />', {
                     'class': 'td-my-interviews'
                 }).html('<i class="material-icons delete-icon basic-icon">&#xE872;</i>').appendTo(tr);
@@ -770,14 +760,12 @@ $(document).ready(function () {
     function setPaginationButtons() {
         if (countInterviews - startingInterview >= 5) {
             $('#next-page').prop('disabled', false);
-        }
-        else {
+        } else {
             $('#next-page').prop('disabled', true);
         }
         if (startingInterview >= 6) {
             $('#prev-page').prop('disabled', false);
-        }
-        else {
+        } else {
             $('#prev-page').prop('disabled', true);
         }
     }
@@ -785,13 +773,12 @@ $(document).ready(function () {
     function setPaginationText() {
         if (countInterviews < 1) {
             $('#showed-pages').hide();
-        }
-        else {
+        } else {
             var to = (startingInterview + 4 > countInterviews) ? countInterviews : startingInterview + 4;
             var data = {
-                from: startingInterview
-                , to: to
-                , total: countInterviews
+                from: startingInterview,
+                to: to,
+                total: countInterviews
             }
             var text = 'SHOWING {{from}} - {{to}} FROM {{total}}';
             var html = Mustache.to_html(text, data);
@@ -833,12 +820,12 @@ $(document).ready(function () {
             "class": 'delete-btn-cont-cont'
         }).appendTo('.delete-btn-cont');
         $('<button />', {
-            "class": 'mui-btn mui-btn--raised'
-            , "id": 'delete-confirmation-ok'
+            "class": 'mui-btn mui-btn--raised',
+            "id": 'delete-confirmation-ok'
         }).text(' DELETE ').appendTo('.delete-btn-cont-cont');
         $('<button />', {
-            "class": 'mui-btn mui-btn--raised'
-            , "id": 'delete-confirmation-cancel'
+            "class": 'mui-btn mui-btn--raised',
+            "id": 'delete-confirmation-cancel'
         }).text(' CANCEL ').appendTo('.delete-btn-cont-cont');
         $("#delete-confirmation-cancel").on('click', function () {
             mui.overlay('off');
@@ -857,16 +844,16 @@ $(document).ready(function () {
         $.ajax({
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', token);
-            }
-            , url: 'http://localhost:8081' + ajaxUrl
-            , type: typeOfRequest
-            , data: dataToSend
-            , contentType: 'application/json'
-            , success: function (data) {
+            },
+            url: 'http://localhost:8081' + ajaxUrl,
+            type: typeOfRequest,
+            data: dataToSend,
+            contentType: 'application/json',
+            success: function (data) {
                 if (data != null) ajaxData = data;
                 dfd.resolve();
-            }
-            , error: function () {
+            },
+            error: function () {
                 dfd.reject();
                 console.log("Error");
             }
