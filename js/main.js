@@ -193,9 +193,7 @@ $(document).ready(function () {
                     return letter.toUpperCase();
                 });
                 var text = firstName + " " + lastName;
-                $('<option />', {
-                    "data-positions": (Number(i) + 1)
-                }).text(text).appendTo("#new-int-assperson").val(i);
+                $('<option />').text(text).appendTo("#new-int-assperson").val(i);
             }
             /*creating new assigned person options END*/
             dfd.resolve();
@@ -363,27 +361,7 @@ $(document).ready(function () {
         if (emptyInput == true) return false;
         else return true;
     }
-    /*Assigned Person - string to number*/
-    function getNumberOfAssignedPerson() {
-        var assPerson = $("#new-int-assperson option:selected").text().toLowerCase();
-        switch (assPerson) {
-        case "first user":
-            return 1;
-            break;
-        case "second user":
-            return 2;
-            break;
-        case "third user":
-            return 3;
-            break;
-        case "fourth user":
-            return 4;
-            break;
-        default:
-            return 0;
-            break;
-        }
-    }
+
     /*New interview save button*/
     $(document).on('click', '#btn-my-int-save', function (event) {
         event.preventDefault();
@@ -397,7 +375,8 @@ $(document).ready(function () {
         var timeVal = $("#new-int-time").val();
         /*expected date format: "2016-12-13T09:34Z"*/
         var time = dateVal + "T" + timeVal + "Z";
-        var assPersonId = getNumberOfAssignedPerson();
+        
+        var assPersonId = $("#new-int-assperson option:selected").val();
         var candidate = {
             firstName: $("#new-int-firstName").val()
             , lastName: $("#new-int-lastName").val()
