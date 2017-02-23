@@ -16,7 +16,6 @@ $(document).ready(function () {
                     });
                     $('<option />', {
                         "class": 'locations'
-                        , "value": 'loc_' + ajaxData[i].toLowerCase().replace(/ /g, "_")
                     }).text(text).appendTo("#new-int-location");
                 }
                 /*changing format of data form server and creating new options to select tag in locations END*/
@@ -36,9 +35,7 @@ $(document).ready(function () {
                                 return letter.toUpperCase();
                             });
                             /*creating new room options and changing text format*/
-                            $('<option />', {
-                                "value": 'room_' + ajaxData[j].toLowerCase().replace(/ /g, "_")
-                            }).text(text).appendTo("#new-int-room");
+                            $('<option />').text(text).appendTo("#new-int-room");
                             /*creating new room options and changing text format END*/
                         }
                     });
@@ -69,7 +66,7 @@ $(document).ready(function () {
                     });
                     var text = firstName + " " + lastName;
                     $('<option />', {
-                        "id": (Number(i) + 1)
+                        "data-positions": (Number(i) + 1)
                     }).text(text).appendTo("#new-int-assperson");
                 }
                 /*creating new assigned person options END*/
@@ -148,7 +145,6 @@ $(document).ready(function () {
                 });
                 $('<option />', {
                     "class": 'locations'
-                    , "value": 'loc_' + ajaxData[i].toLowerCase().replace(/ /g, "_")
                 }).text(text).appendTo("#new-int-location").val(text.toLowerCase().slice(0, 4));
             }
             dfd.resolve();
@@ -172,9 +168,7 @@ $(document).ready(function () {
                     return letter.toUpperCase();
                 });
                 /*creating new room options and changing text format*/
-                $('<option />', {
-                    "value": 'room_' + ajaxData[j].toLowerCase().replace(/ /g, "_")
-                }).text(text).appendTo("#new-int-room").val(text.toLowerCase().slice(0, 3));
+                $('<option />').text(text).appendTo("#new-int-room").val(text.toLowerCase().slice(0, 3));
                 /*creating new room options and changing text format END*/
             }
             dfd.resolve();
@@ -200,7 +194,7 @@ $(document).ready(function () {
                 });
                 var text = firstName + " " + lastName;
                 $('<option />', {
-                    "id": (Number(i) + 1)
+                    "data-positions": (Number(i) + 1)
                 }).text(text).appendTo("#new-int-assperson").val(i);
             }
             /*creating new assigned person options END*/
@@ -366,10 +360,8 @@ $(document).ready(function () {
             $('#new-int-room + div.wrong-input').show();
         }
         else $('#new-int-room + div.wrong-input').hide();
-        if (emptyInput == true)
-            return false;
-        else
-            return true;
+        if (emptyInput == true) return false;
+        else return true;
     }
     /*Assigned Person - string to number*/
     function getNumberOfAssignedPerson() {
