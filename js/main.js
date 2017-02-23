@@ -369,10 +369,7 @@ $(document).ready(function () {
     });
     /*POST NEW interview*/
     function sendNewInterviewToServer() {
-        var dateVal = $("#new-int-date").val();
-        var timeVal = $("#new-int-time").val();
-        /*expected date format: "2016-12-13T09:34Z"*/
-        var time = dateVal + "T" + timeVal + "Z";
+        var time = convertDatetimeToISOFormat();
         
         var assPersonId = $("#new-int-assperson option:selected").val();
         var candidate = {
@@ -399,9 +396,8 @@ $(document).ready(function () {
     }
     /*PUT UPDATE interview*/
     function sendEditInterviewToServer(showMyInt) {
-        var dateVal = $("#new-int-date").val();
-        var timeVal = $("#new-int-time").val();
-        var time = dateVal + "T" + timeVal + "Z";
+        var time = convertDatetimeToISOFormat();
+
         var candidate = {
             firstName: $("#new-int-firstName").val()
             , lastName: $("#new-int-lastName").val()
@@ -458,8 +454,8 @@ $(document).ready(function () {
             candicateTelephone = ajaxData.candidate.phone;
             candicateEmail = ajaxData.candidate.email;
             candicateSkype = ajaxData.candidate.skype;
-            interviewDate = (ajaxData.interview.dateTime).slice(0, (ajaxData.interview.dateTime).indexOf('T'));
-            interviewTime = (ajaxData.interview.dateTime).slice((ajaxData.interview.dateTime).indexOf('T') + 1);
+            interviewDate = convertDateFromISO(ajaxData.interview.dateTime);
+            interviewTime = convertTimeFromISO(ajaxData.interview.dateTime);
             interviewLocation = ajaxData.interview.location;
             interviewRoom = ajaxData.interview.room;
             interviewStatus = ajaxData.interview.status;
@@ -932,4 +928,21 @@ $(document).ready(function () {
         return dfd.promise();
     }
     /*END AJAX REQUEST*/
+
+    /** Convert datetime TO ISO Format */
+    function convertDatetimeToISOFormat(){
+        var dateVal = $("#new-int-date").val();
+        var timeVal = $("#new-int-time").val();
+        return (dateVal + 'T' + timeVal + 'Z');
+    }
+
+    /** Convert datetime FROM ISO Format */
+    function convertTimeFromISO(dateTime){
+        return dateTime.slice(dateTime.indexOf('T') + 1);
+    }
+
+    function convertDateFromISO(dateTime){
+        return dateTime.slice(0, dateTime.indexOf('T'));
+    }
+    /** END Convert datetime TO/FROM ISO Format */
 });
