@@ -123,12 +123,16 @@ body {
     font-weight: bold;
     padding-top: 10px;
     height: 20%;
-    width: 20%;
     vertical-align: top;
+}
+
+#user-account-wrapper{
+    width:200px;
 }
 
 #user-account-wrapper-r {
     padding-top: 0px;
+    width:20%;
 }
 
 #user-icon {
