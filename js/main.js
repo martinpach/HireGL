@@ -9,67 +9,16 @@ $(document).ready(function () {
         $('#main-content').load('templates/new-interview.html', function () {
             /*call server to receive locations*/
             ajaxRequest('/api/locations', 'GET').done(function () {
-                /*changing format of data form server and creating new options to select tag in locations*/
-                for (var i = 0; i < ajaxData.length; i++) {
-                    var text = ajaxData[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
-                        return letter.toUpperCase();
-                    });
-                    $('<option />', {
-                        "class": 'locations'
-                    }).text(text).appendTo("#new-int-location");
-                }
-                /*changing format of data form server and creating new options to select tag in locations END*/
-                //if is location choosen/changed
-                $("#new-int-location").on('change', function () {
-                    var option = $("#new-int-location option:selected").text().toUpperCase();
-                    //getting from server rooms which are in selected location
-                    ajaxRequest('/api/locations/' + option + '/rooms', 'GET').done(function () {
-                        /*cleaning room options*/
-                        var to = ($("#new-int-room").children().length) - 1;
-                        for (var g = 1; g <= to; g++) {
-                            $("#new-int-room").children().eq(1).remove();
-                        }
-                        /*cleaning room options*/
-                        for (var j = 0; j < ajaxData.length; j++) {
-                            var text = ajaxData[j].toLowerCase().replace(/\b[a-z]/g, function (letter) {
-                                return letter.toUpperCase();
-                            });
-                            /*creating new room options and changing text format*/
-                            $('<option />').text(text).appendTo("#new-int-room");
-                            /*creating new room options and changing text format END*/
-                        }
+                getLocations().done(function () {
+                    /*changing format of data form server and creating new options to select tag in locations*/
+                    //if is location choosen/changed
+                    $("#new-int-location").on('change', function () {
+                        getRoom();
                     });
                 });
             });
-            /*call server and receive locations END*/
-            /*call server and receive positions*/
-            ajaxRequest('/api/positions', 'GET').done(function () {
-                /*creating new positon options*/
-                for (var i = 0; i < ajaxData.length; i++) {
-                    var text = ajaxData[i].toLowerCase().replace(/\b[a-z]/g, function (letter) {
-                        return letter.toUpperCase();
-                    });
-                    $('<option />').text(text).appendTo("#new-int-position");
-                }
-                /*creating new positon options END*/
-            });
-            /*call server and receive positions END*/
-            /*call server and receive users*/
-            ajaxRequest('/api/users', 'GET').done(function () {
-                /*creating new positon options*/
-                for (var i in ajaxData) {
-                    var firstName = ajaxData[i].firstName.toLowerCase().replace(/\b[a-z]/g, function (letter) {
-                        return letter.toUpperCase();
-                    });
-                    var lastName = ajaxData[i].lastName.toLowerCase().replace(/\b[a-z]/g, function (letter) {
-                        return letter.toUpperCase();
-                    });
-                    var text = firstName + " " + lastName;
-                    $('<option />').text(text).appendTo("#new-int-assperson").val(++i);;
-                }
-                /*creating new assigned person options END*/
-            });
-            /*call server and receive users END*/
+            getPositions();
+            getAssPerson();
         });
         $("#page-title, #title-r").html("New Interview");
         $("#menu-interviews").removeClass("selected");
@@ -359,7 +308,6 @@ $(document).ready(function () {
         if (emptyInput == true) return false;
         else return true;
     }
-
     /*New interview save button*/
     $(document).on('click', '#btn-my-int-save', function (event) {
         event.preventDefault();
@@ -370,7 +318,6 @@ $(document).ready(function () {
     /*POST NEW interview*/
     function sendNewInterviewToServer() {
         var time = convertDatetimeToISOFormat();
-        
         var assPersonId = $("#new-int-assperson option:selected").val();
         var candidate = {
             firstName: $("#new-int-firstName").val()
@@ -397,7 +344,6 @@ $(document).ready(function () {
     /*PUT UPDATE interview*/
     function sendEditInterviewToServer(showMyInt) {
         var time = convertDatetimeToISOFormat();
-
         var candidate = {
             firstName: $("#new-int-firstName").val()
             , lastName: $("#new-int-lastName").val()
@@ -928,20 +874,18 @@ $(document).ready(function () {
         return dfd.promise();
     }
     /*END AJAX REQUEST*/
-
     /** Convert datetime TO ISO Format */
-    function convertDatetimeToISOFormat(){
+    function convertDatetimeToISOFormat() {
         var dateVal = $("#new-int-date").val();
         var timeVal = $("#new-int-time").val();
         return (dateVal + 'T' + timeVal + 'Z');
     }
-
     /** Convert datetime FROM ISO Format */
-    function convertTimeFromISO(dateTime){
+    function convertTimeFromISO(dateTime) {
         return dateTime.slice(dateTime.indexOf('T') + 1);
     }
 
-    function convertDateFromISO(dateTime){
+    function convertDateFromISO(dateTime) {
         return dateTime.slice(0, dateTime.indexOf('T'));
     }
     /** END Convert datetime TO/FROM ISO Format */
