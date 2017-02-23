@@ -777,7 +777,7 @@ $(document).ready(function () {
                 if (countInterviews > 0) {
                     getInterviews(1, 5);
                 }
-                setText();
+                setPaginationText();
                 setPaginationButtons();
             });
             $("#page-title, #title-r").html("My Interviews");
@@ -790,7 +790,7 @@ $(document).ready(function () {
         ajaxRequest('/api/interviews?limit=' + limit + '&start=' + start, 'GET').done(function () {
             $('#main-content').load('templates/my-interviews.html', function () {
                 generateInterviewRows(ajaxData);
-                setText();
+                setPaginationText();
                 setPaginationButtons();
             });
         });
@@ -849,25 +849,21 @@ $(document).ready(function () {
     }
 
     function setPaginationButtons() {
-        if (countInterviews - startingInterview >= 5 && startingInterview == 1) {
+        if (countInterviews - startingInterview >= 5) {
             $('#next-page').prop('disabled', false);
-            $('#prev-page').prop('disabled', true);
-        }
-        else if (countInterviews - startingInterview >= 5 && startingInterview != 1) {
-            $('#next-page').prop('disabled', false);
-            $('#prev-page').prop('disabled', false);
-        }
-        else if (countInterviews - startingInterview <= 5 && startingInterview >= 6) {
-            $('#next-page').prop('disabled', true);
-            $('#prev-page').prop('disabled', false);
         }
         else {
             $('#next-page').prop('disabled', true);
+        }
+        if (startingInterview >= 6) {
+            $('#prev-page').prop('disabled', false);
+        }
+        else {
             $('#prev-page').prop('disabled', true);
         }
     }
 
-    function setText() {
+    function setPaginationText() {
         if (countInterviews < 1) {
             $('#showed-pages').hide();
         }
@@ -887,13 +883,13 @@ $(document).ready(function () {
     $('#main-content').on('click', '#prev-page', function () {
         startingInterview -= 5;
         getInterviews(startingInterview, 5);
-        setText();
+        setPaginationText();
         setPaginationButtons();
     });
     $('#main-content').on('click', '#next-page', function () {
         startingInterview += 5;
         getInterviews(startingInterview, 5);
-        setText();
+        setPaginationText();
         setPaginationButtons();
     });
     /* END PAGINATION */
