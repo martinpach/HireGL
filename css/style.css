@@ -452,6 +452,13 @@ table {
     opacity: 0.7;
 }
 
+* {
+    box-sizing: content-box;
+}
+
+select {
+    padding-right: 0px !important;
+}
 /*
     My interviews END
 */
