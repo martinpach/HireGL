@@ -301,13 +301,13 @@ input:invalid, textarea:invalid {
 }
 
 input:focus,
-input[type="text"]:valid,
-input[type="phone"]:valid,
+.input-txt:valid,
 .mui-select:focus>select,
 textarea:focus,
 textarea:valid {
     border-bottom: 2px solid #afb42b !important;
 }
+
 
 .selected-option {
     border-bottom: 2px solid #afb42b !important;
