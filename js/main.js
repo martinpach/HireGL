@@ -212,7 +212,7 @@ $(document).ready(function () {
         var regex = /^([0-2][1-9]):[0-5][0-9]$/;
         $('#new-int-time + div.wrong-input').remove();
         if ( !regex.test(time) && time.length!=0) {
-            fieldWrongInput("#new-int-time", "Incorrect date format");
+            fieldWrongInput("#new-int-time", "Incorrect time format");
             $('#new-int-time + div.wrong-input').show();
         }
     });
