@@ -206,6 +206,24 @@ $(document).ready(function () {
             $('#new-int-email + div.wrong-input').show();
         }
     });
+    /*Input validation - Time*/
+    $(document).on('blur', "#new-int-time", function () {
+        var time = $(this).val();
+        var regex = /^([0-2][1-9]):[0-5][0-9]$/;
+        $('#new-int-time + div.wrong-input').remove();
+        if ( !regex.test(time) && time.length!=0) {
+            fieldWrongInput("#new-int-time", "Incorrect date format");
+            $('#new-int-time + div.wrong-input').show();
+        }
+    });
+    /*Forbidden keys - phone*/
+    $(document).on('keypress', "#new-int-time", function (event) {
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+        var regex = /^[0-9:]$/;
+        if (!regex.test(key)) {
+            event.preventDefault();
+        }
+    });
     /*inputs on change - add/remove class*/
     $(document).on('change', "#new-int-date", function () {
         $("#new-int-date").addClass('selected-option');
@@ -271,11 +289,14 @@ $(document).ready(function () {
             $('#new-int-date + div.wrong-input').show();
         } else $('#new-int-date + div.wrong-input').hide();
         //TIME
-        if ($('#new-int-time').val().length == 0) {
-            if (!$('#new-int-time + div.wrong-input').length) fieldWrongInput("#new-int-time", "Time must be set");
-            emptyInput = true;
-            $('#new-int-time + div.wrong-input').show();
-        } else $('#new-int-time + div.wrong-input').hide();
+        if (!$('#new-int-time + div.wrong-input').length) {
+            if ($('#new-int-time').val().length == 0) {
+                fieldWrongInput("#new-int-time", "Time must be set");
+                emptyInput = true;
+            } else {
+                $('#new-int-time + div.wrong-input').remove();
+            }
+        } else emptyInput = true;
         //POSITION
         if ($("#new-int-position option:selected").text() == "Choose position") {
             if (!$('#new-int-position + div.wrong-input').length) fieldWrongInput("#new-int-position", "Please choose position");
