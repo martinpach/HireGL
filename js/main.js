@@ -216,7 +216,7 @@ $(document).ready(function () {
             $('#new-int-time + div.wrong-input').show();
         }
     });
-    /*Forbidden keys - phone*/
+    /*Forbidden keys - Time*/
     $(document).on('keypress', "#new-int-time", function (event) {
         var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
         var regex = /^[0-9:]$/;

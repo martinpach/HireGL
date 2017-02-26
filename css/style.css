@@ -393,6 +393,10 @@ option:first-child {
     padding: 0 30px;
 }
 
+.pagination-btn {
+    width: 34px;
+}
+
 
 /*
     My interviews
