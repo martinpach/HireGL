@@ -501,14 +501,16 @@ $(document).ready(function () {
     $(document).on('click', '#btn-edit-int-close,#btn-edit-int-close-r', function (event) {
         event.preventDefault();
         var emptyNote = false;
-        if ($("#new-int-note").val().length == 0) {
+        if ($.trim($("#new-int-note").val()).length == 0) {
             if (!$('#new-int-note + div.wrong-input').length) fieldWrongInput("#new-int-note", "Note field cannot be empty");
             emptyNote = true;
             $('#new-int-note + div.wrong-input').show();
         } else $('#new-int-note + div.wrong-input').hide();
         if (emptyNote == false) {
-            sendEditInterviewToServer(false)
-            closeInterview();
+            if (areInputsFill()) {
+                sendEditInterviewToServer(false)
+                closeInterview();
+            }
         }
     });
     /*Cancel Edit Interview*/
