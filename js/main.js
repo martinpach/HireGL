@@ -253,13 +253,13 @@ $(document).ready(function () {
     function areInputsFill() {
         var emptyInput = false;
         //FIRSTNAME
-        if ($('#new-int-firstName').val().length == 0) {
+        if ($.trim($('#new-int-firstName').val()).length == 0) {
             if (!$('#new-int-firstName + div.wrong-input').length) fieldWrongInput("#new-int-firstName", "Name cannot be empty");
             emptyInput = true;
             $('#new-int-firstName + div.wrong-input').show();
         } else $('#new-int-firstName + div.wrong-input').hide();
         //LASTNAME
-        if ($('#new-int-lastName').val().length == 0) {
+        if ($.trim($('#new-int-lastName').val()).length == 0) {
             if (!$('#new-int-lastName + div.wrong-input').length) fieldWrongInput("#new-int-lastName", "Surname cannot be empty");
             emptyInput = true;
             $('#new-int-lastName + div.wrong-input').show();
