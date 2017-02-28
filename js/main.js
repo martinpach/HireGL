@@ -196,6 +196,10 @@ $(document).ready(function () {
             event.preventDefault();
         }
     });
+    /*Forbidden keys - date*/
+    $(document).on('keypress', "#new-int-date", function (event) {
+        event.preventDefault();
+    });
     /*Input format validation - Email*/
     $(document).on('blur', "#new-int-email", function () {
         var email = $(this).val();
