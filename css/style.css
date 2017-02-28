@@ -396,8 +396,10 @@ option:first-child {
 .pagination-btn {
     width: 34px;
 }
-
-
+/* Edit Interview */
+.text-area {
+    resize: none;
+}
 /*
     My interviews
 */
